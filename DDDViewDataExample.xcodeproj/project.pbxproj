@@ -12,6 +12,10 @@
 		60C04BA91A18DFD700F4665D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BA81A18DFD700F4665D /* Images.xcassets */; };
 		60C04BAC1A18DFD700F4665D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BAA1A18DFD700F4665D /* MainMenu.xib */; };
 		60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */; };
+		60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
+		60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */; };
+		60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC61A18F71000F4665D /* PersistentStackTests.swift */; };
+		60C04BC81A18F81A00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,9 @@
 		60C04BB11A18DFD700F4665D /* DDDViewDataExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDDViewDataExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C04BB61A18DFD700F4665D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDDViewDataExampleTests.swift; sourceTree = "<group>"; };
+		60C04BC11A18DFFE00F4665D /* PersistentStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStack.swift; sourceTree = "<group>"; };
+		60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
+		60C04BC61A18F71000F4665D /* PersistentStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStackTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
+				60C04BC11A18DFFE00F4665D /* PersistentStack.swift */,
 				60C04BA81A18DFD700F4665D /* Images.xcassets */,
 				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
 				60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */,
@@ -96,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */,
+				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
 				60C04BB51A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExampleTests;
@@ -104,6 +113,7 @@
 		60C04BB51A18DFD700F4665D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */,
 				60C04BB61A18DFD700F4665D /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -209,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
+				60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */,
 				60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,7 +228,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */,
+				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
 				60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */,
+				60C04BC81A18F81A00F4665D /* PersistentStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
