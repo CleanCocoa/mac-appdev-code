@@ -15,7 +15,10 @@
 		60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
 		60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */; };
 		60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC61A18F71000F4665D /* PersistentStackTests.swift */; };
-		60C04BC81A18F81A00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
+		60C04BCA1A1916F600F4665D /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC91A1916F600F4665D /* ManagedItem.swift */; };
+		60C04BCD1A19179000F4665D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BCC1A19179000F4665D /* Item.swift */; };
+		60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */; };
+		60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +44,10 @@
 		60C04BC11A18DFFE00F4665D /* PersistentStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStack.swift; sourceTree = "<group>"; };
 		60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		60C04BC61A18F71000F4665D /* PersistentStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStackTests.swift; sourceTree = "<group>"; };
+		60C04BC91A1916F600F4665D /* ManagedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedItem.swift; sourceTree = "<group>"; };
+		60C04BCC1A19179000F4665D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepository.swift; sourceTree = "<group>"; };
+		60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepositoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,11 +89,9 @@
 		60C04BA01A18DFD700F4665D /* DDDViewDataExample */ = {
 			isa = PBXGroup;
 			children = (
-				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
-				60C04BC11A18DFFE00F4665D /* PersistentStack.swift */,
-				60C04BA81A18DFD700F4665D /* Images.xcassets */,
-				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
-				60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */,
+				60C04BCE1A191A6A00F4665D /* Infrastructure */,
+				60C04BD01A191A8300F4665D /* Domain */,
+				60C04BCF1A191A7500F4665D /* User Interface */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExample;
@@ -105,6 +110,7 @@
 			children = (
 				60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */,
 				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
+				60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */,
 				60C04BB51A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExampleTests;
@@ -117,6 +123,51 @@
 				60C04BB61A18DFD700F4665D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		60C04BCB1A19177D00F4665D /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */,
+				60C04BC11A18DFFE00F4665D /* PersistentStack.swift */,
+			);
+			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		60C04BCE1A191A6A00F4665D /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
+				60C04BCB1A19177D00F4665D /* Core Data */,
+				60C04BD31A191BBF00F4665D /* Item */,
+			);
+			name = Infrastructure;
+			sourceTree = "<group>";
+		};
+		60C04BCF1A191A7500F4665D /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BA81A18DFD700F4665D /* Images.xcassets */,
+				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
+			);
+			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		60C04BD01A191A8300F4665D /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BCC1A19179000F4665D /* Item.swift */,
+			);
+			name = Domain;
+			sourceTree = "<group>";
+		};
+		60C04BD31A191BBF00F4665D /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BC91A1916F600F4665D /* ManagedItem.swift */,
+				60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */,
+			);
+			name = Item;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +269,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
+				60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */,
+				60C04BCA1A1916F600F4665D /* ManagedItem.swift in Sources */,
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
 				60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */,
 				60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */,
@@ -231,7 +285,7 @@
 				60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
 				60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */,
-				60C04BC81A18F81A00F4665D /* PersistentStack.swift in Sources */,
+				60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

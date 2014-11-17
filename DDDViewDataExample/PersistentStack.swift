@@ -7,18 +7,20 @@
 //
 
 import Cocoa
+import CoreData
 
 public let kDefaultModelName: String = "DDDViewDataExample"
 
-class PersistentStack: NSObject {
+public class PersistentStack: NSObject {
     let storeType = NSSQLiteStoreType
     let storeURL:NSURL
     let modelURL:NSURL
-    var managedObjectContext: NSManagedObjectContext?
+
+    public var managedObjectContext: NSManagedObjectContext?
     
     // TODO forbid init()
     
-    init(storeURL:NSURL, modelURL:NSURL) {
+    public init(storeURL:NSURL, modelURL:NSURL) {
         self.storeURL = storeURL
         self.modelURL = modelURL
         
@@ -38,13 +40,13 @@ class PersistentStack: NSObject {
         self.managedObjectContext = managedObjectContext
     }
     
-    lazy var managedObjectModel: NSManagedObjectModel = {
+    public lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.) This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
@@ -71,7 +73,7 @@ class PersistentStack: NSObject {
     
     // MARK: - Core Data Saving and Undo support
     
-    func save() {
+    public func save() {
         // Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
         if let moc = self.managedObjectContext {
             if !moc.commitEditing() {
@@ -84,7 +86,7 @@ class PersistentStack: NSObject {
         }
     }
     
-    func undoManager() -> NSUndoManager? {
+    public func undoManager() -> NSUndoManager? {
         // Returns the NSUndoManager for the application. In this case, the manager returned is that of the managed object context for the application.
         if let moc = self.managedObjectContext {
             return moc.undoManager
@@ -92,12 +94,12 @@ class PersistentStack: NSObject {
         return nil
     }
     
-    func defaultStoreOptions() -> Dictionary<String, String> {
+    public func defaultStoreOptions() -> Dictionary<String, String> {
         let opts = Dictionary<String, String>()
         return opts
     }
     
-    func saveToTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
+    public func saveToTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
         // Save changes in the application's managed object context before the application terminates.
         
         if let moc = self.managedObjectContext {
