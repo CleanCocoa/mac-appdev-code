@@ -12,8 +12,6 @@ let kErrorDomain = "DDDViewDataExampleErrorDomain"
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet weak var window: NSWindow!
     
     func notificationCenter() -> NSNotificationCenter {
         return NSNotificationCenter.defaultCenter()
@@ -87,7 +85,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    lazy var windowController: ItemManagementWindowController = {
+        return ItemManagementWindowController()
+    }()
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        windowController.showWindow(self)
+        windowController.window?.makeKeyAndOrderFront(self)
     }
 
     func applicationShouldTerminate(sender: NSApplication) -> NSApplicationTerminateReply {

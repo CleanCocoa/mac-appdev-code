@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
+		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
+		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
 		60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA31A18DFD700F4665D /* AppDelegate.swift */; };
 		60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */; };
 		60C04BA91A18DFD700F4665D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BA81A18DFD700F4665D /* Images.xcassets */; };
@@ -19,6 +22,8 @@
 		60C04BCD1A19179000F4665D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BCC1A19179000F4665D /* Item.swift */; };
 		60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */; };
 		60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */; };
+		60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7EFEA1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift */; };
+		60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
+		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
+		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		60C04B9E1A18DFD700F4665D /* DDDViewDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDDViewDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C04BA21A18DFD700F4665D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C04BA31A18DFD700F4665D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +56,8 @@
 		60C04BCC1A19179000F4665D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepository.swift; sourceTree = "<group>"; };
 		60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepositoryTests.swift; sourceTree = "<group>"; };
+		60F7EFEA1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+CocoaBindings.swift"; sourceTree = "<group>"; };
+		60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +121,7 @@
 				60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */,
 				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
 				60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */,
+				60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */,
 				60C04BB51A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExampleTests;
@@ -120,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */,
+				60F7EFEA1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift */,
 				60C04BB61A18DFD700F4665D /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -149,6 +161,9 @@
 			children = (
 				60C04BA81A18DFD700F4665D /* Images.xcassets */,
 				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
+				60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */,
+				60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */,
+				60B2D70C1A1A40960045D11F /* ItemViewController.swift */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -250,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */,
 				60C04BA91A18DFD700F4665D /* Images.xcassets in Resources */,
 				60C04BAC1A18DFD700F4665D /* MainMenu.xib in Resources */,
 			);
@@ -270,8 +286,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
+				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */,
 				60C04BCA1A1916F600F4665D /* ManagedItem.swift in Sources */,
+				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
 				60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */,
 				60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */,
@@ -283,9 +301,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */,
+				60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
 				60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */,
+				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +485,7 @@
 				60C04BBD1A18DFD700F4665D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60C04BBE1A18DFD700F4665D /* Build configuration list for PBXNativeTarget "DDDViewDataExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +494,7 @@
 				60C04BC01A18DFD700F4665D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
