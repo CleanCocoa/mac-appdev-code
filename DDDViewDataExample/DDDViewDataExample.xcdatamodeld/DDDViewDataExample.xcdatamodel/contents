@@ -6,6 +6,7 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
+    <fetchRequest name="ManagedItemWithUniqueId" entity="ManagedItem" predicateString="uniqueId == $IDENTIFIER" resultType="1"/>
     <elements>
         <element name="ManagedItem" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>

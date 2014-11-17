@@ -11,13 +11,27 @@ import XCTest
 
 import DDDViewDataExample
 
+class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
+    let firstAttempt: IntegerId = 1234
+    let secondAttempt: IntegerId = 5678
+    var callCount = 0
+    
+    func integerId() -> IntegerId {
+        let identifier = (callCount == 0 ? firstAttempt : secondAttempt)
+        
+        callCount++
+        
+        return identifier
+    }
+}
+
 class CoreDataItemRepositoryTests: CoreDataTestCase {
     var repository: CoreDataItemRepository?
     
     override func setUp() {
         super.setUp()
         
-        self.repository = CoreDataItemRepository(managedObjectContext: self.context)
+        repository = CoreDataItemRepository(managedObjectContext: self.context)
     }
     
     override func tearDown() {
@@ -27,7 +41,7 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
     
     func allItems() -> [ManagedItem]? {
         let request = NSFetchRequest(entityName: ManagedItem.entityName())
-        return self.context.executeFetchRequest(request, error: nil) as [ManagedItem]?
+        return context.executeFetchRequest(request, error: nil) as [ManagedItem]?
     }
 
     //MARK: Adding Entities
@@ -37,7 +51,7 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
         let itemId = repository!.nextId()
         let item = Item(itemId: itemId, title: title)
     
-        self.repository!.addItem(item)
+        repository!.addItem(item)
 
         let items = self.allItems()!
         XCTAssert(items.count > 0, "items expected")
@@ -49,24 +63,17 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
         }
     }
 
+    //MARK: Generating IDs
+    
+    func testNextId_WhenGeneratedIdIsTaken_ReturnsAnotherId() {
+        let testGenerator = TestIntegerIdGenerator()
+        repository = CoreDataItemRepository(managedObjectContext: self.context, integerIdGenerator: testGenerator)
+        let existingId = ItemId(testGenerator.firstAttempt)
+        ManagedItem .insertManagedItem(existingId, title: "irrelevant", inManagedObjectContext: self.context)
+        
+        let itemId = repository!.nextId()
+        
+        let expectedNextId = ItemId(testGenerator.secondAttempt)
+        XCTAssertEqual(itemId, expectedNextId, "Should generate another ID because first one is taken")
+    }
 }
-
-//
-//- (void)testNextId_FirstCall_ReturnsProjectId {
-//    CTWProjectId *projectId = [repository nextId];
-//    
-//    assertThat(projectId, isNot(nilValue()));
-//    }
-//    
-//    - (void)testNextId_WhenGeneratedIdIsTaken_ReturnsNewId {
-//        repository = [[TestRepository alloc] initWithManagedObjectContext:self.context];
-//        CTWProjectId *existingId = [CTWProjectId projectIdWithIntegerId:[(TestRepository *)repository firstAttempt]];
-//        [CTWManagedProject insertManagedProjectWithProjectId:existingId title:@"irrelevant" inManagedObjectContext:self.context];
-//        
-//        CTWProjectId *projectId = [repository nextId];
-//        
-//        CTWProjectId *expectedNextId = [CTWProjectId projectIdWithIntegerId:[(TestRepository *)repository secondAttempt]];
-//        assertThat(projectId, equalTo(expectedNextId));
-//    }
-//    
-//

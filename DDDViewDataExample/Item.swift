@@ -10,11 +10,15 @@ import Cocoa
 
 public typealias IntegerId = Int64
 
-public struct ItemId: Equatable {
+public struct ItemId: Equatable, DebugPrintable {
     let identifier: IntegerId
     
     public init(_ identifier: IntegerId) {
         self.identifier = identifier
+    }
+    
+    public var debugDescription: String {
+        return "ItemId: \(identifier)"
     }
 }
 

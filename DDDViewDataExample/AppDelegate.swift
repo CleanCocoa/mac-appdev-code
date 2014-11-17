@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     lazy var persistentStack: PersistentStack = {
-        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ProjectModel.sqlite");
+        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite");
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)

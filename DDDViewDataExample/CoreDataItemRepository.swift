@@ -10,11 +10,35 @@ import Cocoa
 import CoreData
 import Security
 
+public protocol GeneratesIntegerId {
+    func integerId() -> IntegerId
+}
+
+struct DefaultIntegerIdGenerator: GeneratesIntegerId {
+    func integerId() -> IntegerId {
+        arc4random_stir()
+        var urandom: UInt64
+        urandom = (UInt64(arc4random()) << 32) | UInt64(arc4random())
+        
+        var random: IntegerId = (IntegerId) (urandom & 0x7FFFFFFFFFFFFFFF);
+        
+        return random
+    }
+}
+
 public class CoreDataItemRepository: NSObject, ItemRepository {
     let managedObjectContext: NSManagedObjectContext
+    let integerIdGenerator: GeneratesIntegerId
     
-    public init(managedObjectContext: NSManagedObjectContext) {
+    public convenience init(managedObjectContext: NSManagedObjectContext) {
+        self.init(managedObjectContext: managedObjectContext, integerIdGenerator: DefaultIntegerIdGenerator())
+    }
+    
+    public init(managedObjectContext: NSManagedObjectContext, integerIdGenerator: GeneratesIntegerId) {
         self.managedObjectContext = managedObjectContext
+        self.integerIdGenerator = integerIdGenerator
+        
+        super.init()
     }
     
     public func addItem(item: Item) {
@@ -32,17 +56,38 @@ public class CoreDataItemRepository: NSObject, ItemRepository {
     }
     
     public func nextId() -> ItemId {
-        return ItemId(self.integerId())
-        // TODO nextId
+        return ItemId(unusedIntegerId())
+    }
+    
+    func unusedIntegerId() -> IntegerId {
+        var identifier: IntegerId
+        
+        do {
+            identifier = integerId()
+        } while integerIdIsTaken(identifier)
+        
+        return identifier
     }
     
     func integerId() -> IntegerId {
-        arc4random_stir()
-        var urandom: UInt64
-        urandom = (UInt64(arc4random()) << 32) | UInt64(arc4random())
+        return integerIdGenerator.integerId()
+    }
+    
+    func integerIdIsTaken(identifier: IntegerId) -> Bool {
+        let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
+        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName("ManagedItemWithUniqueId", substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
         
-        var random: IntegerId = (IntegerId) (urandom & 0x7FFFFFFFFFFFFFFF);
+        assert(fetchRequest != nil, "Fetch request named 'ManagedItemWithUniqueId' is required")
         
-        return random
+        var error: NSError? = nil
+        let foundIdentifiers = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
+        
+        if (foundIdentifiers == nil)
+        {
+            //FIXME: handle error: send event to delete project from view and say that changes couldn't be saved
+            return false
+        }
+        
+        return foundIdentifiers!.count > 0;
     }
 }
