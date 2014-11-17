@@ -48,9 +48,8 @@ class ItemViewControllerTests: XCTestCase {
         let controller = viewController.itemsController
         let tableView = viewController.tableView
         
-        XCTAssertTrue(object(controller, shouldHaveBinding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"), "items controller should obtain sortDescriptors from view controller through bindings")
-        XCTAssertTrue(object(tableView, shouldHaveBinding: NSSelectionIndexesBinding, to: controller, throughKeyPath: "selectionIndexes"), "table view should have binding to items controller's selectionIndexes")
+        XCTAssertTrue(hasBinding(controller, binding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"), "items controller should obtain sortDescriptors from view controller through bindings")
+        XCTAssertTrue(hasBinding(tableView, binding: NSSelectionIndexesBinding, to: controller, throughKeyPath: "selectionIndexes"), "table view should have binding to items controller's selectionIndexes")
     }
-    
     
 }

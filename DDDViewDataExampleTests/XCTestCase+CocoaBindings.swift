@@ -10,7 +10,7 @@ import Cocoa
 import XCTest
 
 extension XCTestCase {
-    func object(object: NSObject, shouldHaveBinding binding:String, to boundObject: NSObject, throughKeyPath keyPath:String) -> Bool {
+    func hasBinding(object: NSObject, binding:String, to boundObject: NSObject, throughKeyPath keyPath:String) -> Bool {
         if let info = object.infoForBinding(binding) {
             return (info[NSObservedObjectKey] as NSObject == boundObject) && (info[NSObservedKeyPathKey] as String == keyPath)
         }
