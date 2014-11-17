@@ -46,7 +46,7 @@ public class PersistentStack: NSObject {
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
-    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = { [unowned self] in
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.) This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."

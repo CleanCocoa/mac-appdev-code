@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return NSNotificationCenter.defaultCenter()
     }
     
-    lazy var persistentStack: PersistentStack = {
+    lazy var persistentStack: PersistentStack = { [unowned self] in
         let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite");
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
         
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return persistentStack
     }()
 
-    lazy var applicationDocumentsDirectory: NSURL = {
+    lazy var applicationDocumentsDirectory: NSURL = { [unowned self] in
         // The directory the application uses to store the Core Data store file. This code uses a directory named "de.christiantietze.DDDViewDataExample" in the user's Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
         let appSupportURL = urls[urls.count - 1] as NSURL
