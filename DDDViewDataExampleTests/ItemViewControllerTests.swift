@@ -11,6 +11,22 @@ import XCTest
 
 import DDDViewDataExample
 
+class TestNode: NSObject {
+    dynamic var title: String = "title"
+    dynamic var count: UInt = 1234
+    dynamic var children: [TestNode] = []
+    dynamic var isLeaf: Bool = false
+    
+    override init() {
+        super.init()
+    }
+    
+    convenience init(title: String) {
+        self.init()
+        self.title = title
+    }
+}
+
 class ItemViewControllerTests: XCTestCase {
     var viewController: ItemViewController!
     
@@ -29,22 +45,16 @@ class ItemViewControllerTests: XCTestCase {
     
     func itemNodes() -> [AnyObject] {
         let arrangedObjects: AnyObject! = viewController.itemsController.arrangedObjects
-        return arrangedObjects.childNodes!!;
+        return arrangedObjects.childNodes!!
     }
     
     func itemNodeCount() -> Int {
         return itemNodes().count
     }
-//
-//    - (id)projectAtIndex:(NSUInteger)index
-//    {
-//    return [[self projectNodes] objectAtIndex:index];
-//    }
-//    
-//    - (id)nodeAtProjectIndex:(NSUInteger)projectIndex pathIndex:(NSUInteger)pathIndex
-//    {
-//    return [[[[self projectNodes] objectAtIndex:projectIndex] childNodes] objectAtIndex:pathIndex];
-//    }
+    
+    func itemAtIndex(index: Int) -> AnyObject {
+        return itemNodes()[index]
+    }
     
     
     //MARK: Nib Setup
@@ -87,17 +97,51 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertEqual(viewController.addItemButton.action, Selector("addItem:"), "'add item' button should be wired to addItem:");
     }
     
-    //MARK: Adding Item
+    func testItemRowView_TitleCell_SetUpProperly() {
+        viewController.itemsController.addObject(TestNode())
+        
+        let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as NSTableCellView
+        let titleTextField = titleCellView.textField!
+        XCTAssertTrue(titleTextField.editable, "title text field should be editable")
+        XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title"), "title text field should modify item title")
+    }
+    
+    func testItemRowView_CountCell_SetUpProperly() {
+        viewController.itemsController.addObject(TestNode())
+        
+        let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as NSTableCellView
+        let countTextField = countCellView.textField!
+        XCTAssertFalse(countTextField.editable, "count text field should not be editable")
+        XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"), "count text field should modify item count")
+    }
+    
+    
+    //MARK: - Adding Item
 
     func testInitially_TreeIsEmpty() {
         XCTAssertEqual(itemNodeCount(), 0, "start with empty tree")
     }
     
-    func testAddingItem_WithEmptyList_AddsItem() {
+    func testAddItem_WithEmptyList_AddsItem() {
         viewController.addItem(self)
         
         XCTAssertEqual(itemNodeCount(), 1, "adds item to tree")
     }
     
+    func testAddItem_WithExistingItem_OrdersThemByTitle() {
+        // Given
+        let bottomItem = TestNode(title: "ZZZ Should be at the bottom")
+        viewController.itemsController.addObject(bottomItem)
+        
+        let existingNode: NSObject = itemAtIndex(0) as NSObject
+        
+        // When
+        viewController.addItem(self)
+        
+        // Then
+        XCTAssertEqual(itemNodeCount(), 2, "add node to existing one")
+        let lastNode: NSObject = itemAtIndex(1) as NSObject
+        XCTAssertEqual(existingNode, lastNode, "new node should be put before existing one")
+    }
     
 }

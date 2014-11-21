@@ -9,23 +9,17 @@
 import Cocoa
 
 class ItemNode: NSObject {
-    dynamic var title: String
-    dynamic var count: UInt
-    dynamic var children: [ItemNode]
-    dynamic var isLeaf: Bool
+    dynamic var title: String = "New Item"
+    dynamic var count: UInt = 0
+    dynamic var children: [ItemNode] = []
+    dynamic var isLeaf: Bool = false
     
-    override init() {
-        title = "Test"
-        count = 666
-        children = []
-        isLeaf = false
-    }
 }
 
 public let kTitleColumnName = "Title"
 public let kCountColumnName = "Count"
 
-public class ItemViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
+public class ItemViewController: NSViewController, NSOutlineViewDelegate {
 
     @IBOutlet public weak var itemsController: NSTreeController!
     @IBOutlet public weak var addItemButton: NSButton!
@@ -51,7 +45,9 @@ public class ItemViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction public func addItem(sender: AnyObject) {
         let item = ItemNode()
+        item.children.append(ItemNode())
         let indexPath = NSIndexPath(index: nodeCount())
-        self.itemsController.insertObject(item, atArrangedObjectIndexPath: indexPath)
+        itemsController.insertObject(item, atArrangedObjectIndexPath: indexPath)
+        itemsController.rearrangeObjects() // TODO item loses focus
     }
 }

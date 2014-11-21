@@ -39,7 +39,6 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="WSV-4P-r4D" viewBased="YES" indentationPerLevel="16" outlineTableColumn="z66-s1-3mq" id="Jzx-Bo-sG9">
-                                    <rect key="frame" x="0.0" y="0.0" width="238" height="117"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -64,13 +63,13 @@
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bCg-pF-DYe">
                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Item Name" id="bWU-tB-xz7">
+                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Item Name" id="bWU-tB-xz7">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="eZH-iy-0Wy" name="value" keyPath="objectValue.title" id="2QY-Cn-tkZ"/>
+                                                                <binding destination="eZH-iy-0Wy" name="value" keyPath="objectValue.title" id="ICF-am-bB0"/>
                                                             </connections>
                                                         </textField>
                                                     </subviews>
@@ -83,7 +82,7 @@
                                                 <binding destination="l1V-qr-cFZ" name="value" keyPath="arrangedObjects.title" id="n5f-fT-pQB"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn identifier="Count" width="316" minWidth="40" maxWidth="1000" id="hJT-t8-ty4">
+                                        <tableColumn identifier="Count" editable="NO" width="314.5" minWidth="40" maxWidth="1000" id="hJT-t8-ty4">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Count">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -97,7 +96,7 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="1iP-Oh-1Td">
-                                                    <rect key="frame" x="120" y="1" width="316" height="17"/>
+                                                    <rect key="frame" x="120" y="1" width="315" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B2U-fQ-ueh">
@@ -124,12 +123,13 @@
                                     </tableColumns>
                                     <connections>
                                         <binding destination="l1V-qr-cFZ" name="content" keyPath="arrangedObjects" id="yPZ-2P-Kj9"/>
+                                        <outlet property="delegate" destination="pNN-YO-ueG" id="ytQ-KI-CEN"/>
                                     </connections>
                                 </outlineView>
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="sMU-er-Wds">
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="sMU-er-Wds">
                             <rect key="frame" x="1" y="119" width="223" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
