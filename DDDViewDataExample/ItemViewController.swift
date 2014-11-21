@@ -8,12 +8,30 @@
 
 import Cocoa
 
+class ItemNode: NSObject {
+    dynamic var title: String
+    dynamic var count: UInt
+    dynamic var children: [ItemNode]
+    dynamic var isLeaf: Bool
+    
+    override init() {
+        title = "Test"
+        count = 666
+        children = []
+        isLeaf = false
+    }
+}
+
+public let kTitleColumnName = "Title"
+public let kCountColumnName = "Count"
+
 public class ItemViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
 
-    @IBOutlet public weak var itemsController: NSArrayController!
+    @IBOutlet public weak var itemsController: NSTreeController!
+    @IBOutlet public weak var addItemButton: NSButton!
     
-    public var tableView: NSTableView {
-        return self.view as NSTableView
+    public var outlineView: NSOutlineView {
+        return self.view as NSOutlineView
     }
     
     public override func viewDidLoad() {
@@ -25,5 +43,15 @@ public class ItemViewController: NSViewController, NSTableViewDelegate, NSTableV
         let sortByTitle = NSSortDescriptor(key: "title", ascending: true, selector: "caseInsensitiveCompare:")
         
         return [sortByTitle]
+    }
+    
+    func nodeCount() -> Int {
+        return itemsController.arrangedObjects.childNodes!!.count
+    }
+    
+    @IBAction public func addItem(sender: AnyObject) {
+        let item = ItemNode()
+        let indexPath = NSIndexPath(index: nodeCount())
+        self.itemsController.insertObject(item, atArrangedObjectIndexPath: indexPath)
     }
 }
