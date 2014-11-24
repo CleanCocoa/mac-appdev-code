@@ -94,6 +94,14 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertTrue(hasBinding(countColumn!, binding: NSValueBinding, to: controller, throughKeyPath: "arrangedObjects.count"), "bind count column to count property")
     }
     
+    func testAddBoxButton_IsConnected() {
+        XCTAssertNotNil(viewController.addBoxButton, "add item button not connected")
+    }
+    
+    func testAddBoxButton_IsWiredToAction() {
+        XCTAssertEqual(viewController.addBoxButton.action, Selector("addBox:"), "'add box' button should be wired to addBox:");
+    }
+    
     func testAddItemButton_IsConnected() {
         XCTAssertNotNil(viewController.addItemButton, "add item button not connected")
     }

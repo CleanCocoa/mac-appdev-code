@@ -138,6 +138,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="addBox:" target="pNN-YO-ueG" id="Ozz-Jo-YUL"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9xY-gX-2jV">
                         <rect key="frame" x="107" y="13" width="98" height="32"/>
@@ -183,6 +186,7 @@
         </treeController>
         <viewController id="pNN-YO-ueG" customClass="ItemViewController" customModule="DDDViewDataExample" customModuleProvider="target">
             <connections>
+                <outlet property="addBoxButton" destination="wZO-0M-LlQ" id="bCp-RN-Wxd"/>
                 <outlet property="addItemButton" destination="9xY-gX-2jV" id="dkp-Z7-raE"/>
                 <outlet property="itemsController" destination="l1V-qr-cFZ" id="4n9-8d-G3D"/>
                 <outlet property="view" destination="Jzx-Bo-sG9" id="PI0-fk-89i"/>
