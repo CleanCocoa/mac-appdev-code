@@ -22,16 +22,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9xY-gX-2jV">
-                        <rect key="frame" x="14" y="13" width="98" height="32"/>
-                        <buttonCell key="cell" type="push" title="Add Item" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2jt-cD-Omc">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="addItem:" target="pNN-YO-ueG" id="1Mu-Kh-VKL"/>
-                        </connections>
-                    </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5W2-Ce-7r3">
                         <rect key="frame" x="20" y="61" width="440" height="189"/>
                         <clipView key="contentView" id="DN2-WF-WRw">
@@ -82,7 +72,7 @@
                                                 <binding destination="l1V-qr-cFZ" name="value" keyPath="arrangedObjects.title" id="n5f-fT-pQB"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn identifier="Count" editable="NO" width="314.5" minWidth="40" maxWidth="1000" id="hJT-t8-ty4">
+                                        <tableColumn identifier="Count" editable="NO" width="315.5" minWidth="40" maxWidth="1000" id="hJT-t8-ty4">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Count">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -142,11 +132,35 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wZO-0M-LlQ">
+                        <rect key="frame" x="14" y="13" width="93" height="32"/>
+                        <buttonCell key="cell" type="push" title="Add Box" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Gd-j8-5Dt">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9xY-gX-2jV">
+                        <rect key="frame" x="107" y="13" width="98" height="32"/>
+                        <buttonCell key="cell" type="push" title="Add Item" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2jt-cD-Omc">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="addItem:" target="pNN-YO-ueG" id="1Mu-Kh-VKL"/>
+                            <binding destination="l1V-qr-cFZ" name="enabled" keyPath="selectionIndexPath" id="23R-Lk-UJG">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSIsNotNil</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="wZO-0M-LlQ" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="092-xp-OxT"/>
                     <constraint firstAttribute="trailing" secondItem="5W2-Ce-7r3" secondAttribute="trailing" constant="20" id="7ZI-m9-Ogu"/>
+                    <constraint firstAttribute="bottom" secondItem="wZO-0M-LlQ" secondAttribute="bottom" constant="20" id="B8E-r4-Lpl"/>
                     <constraint firstItem="9xY-gX-2jV" firstAttribute="top" secondItem="5W2-Ce-7r3" secondAttribute="bottom" constant="20" id="M5I-Op-gYL"/>
-                    <constraint firstItem="9xY-gX-2jV" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="S3H-91-M5E"/>
+                    <constraint firstItem="9xY-gX-2jV" firstAttribute="leading" secondItem="wZO-0M-LlQ" secondAttribute="trailing" constant="12" id="VW3-dR-ISM"/>
                     <constraint firstItem="5W2-Ce-7r3" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="Wn8-OS-8pK"/>
                     <constraint firstAttribute="bottom" secondItem="9xY-gX-2jV" secondAttribute="bottom" constant="20" id="hBF-le-DyI"/>
                     <constraint firstItem="5W2-Ce-7r3" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="20" id="k15-c8-3zd"/>

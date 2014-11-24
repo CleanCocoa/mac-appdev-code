@@ -11,10 +11,10 @@ import XCTest
 
 import DDDViewDataExample
 
-class TestNode: NSObject {
+class TestNode: NSObject, TreeNode {
     dynamic var title: String = "title"
     dynamic var count: UInt = 1234
-    dynamic var children: [TestNode] = []
+    dynamic var children: [TreeNode] = []
     dynamic var isLeaf: Bool = false
     
     override init() {
@@ -43,17 +43,22 @@ class ItemViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func itemNodes() -> [AnyObject] {
+    func boxNodes() -> [AnyObject] {
         let arrangedObjects: AnyObject! = viewController.itemsController.arrangedObjects
         return arrangedObjects.childNodes!!
     }
     
-    func itemNodeCount() -> Int {
-        return itemNodes().count
+    func boxNodeCount() -> Int {
+        return boxNodes().count
     }
     
-    func itemAtIndex(index: Int) -> AnyObject {
-        return itemNodes()[index]
+    func boxAtIndex(index: Int) -> NSTreeNode {
+        return boxNodes()[index] as NSTreeNode
+    }
+    
+    func itemTreeNode(atBoxIndex boxIndex: Int, itemIndex: Int) -> NSTreeNode {
+        let boxNode: NSTreeNode = boxAtIndex(boxIndex)
+        return boxNode.childNodes![itemIndex] as NSTreeNode
     }
     
     
@@ -68,8 +73,8 @@ class ItemViewControllerTests: XCTestCase {
     func testOutlineViewColumns_NamedProperly() {
         let outlineView = viewController.outlineView
         
-        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kTitleColumnName), "outline should include title column")
-        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kCountColumnName), "outline should include count column")
+        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kColumnNameTitle), "outline should include title column")
+        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kColumnNameCount), "outline should include count column")
     }
     
     func testItemsController_IsConnected() {
@@ -79,8 +84,8 @@ class ItemViewControllerTests: XCTestCase {
     func testItemsController_CocoaBindings() {
         let controller = viewController.itemsController
         let outlineView = viewController.outlineView
-        let titleColumn = outlineView.tableColumnWithIdentifier(kTitleColumnName)
-        let countColumn = outlineView.tableColumnWithIdentifier(kCountColumnName)
+        let titleColumn = outlineView.tableColumnWithIdentifier(kColumnNameTitle)
+        let countColumn = outlineView.tableColumnWithIdentifier(kColumnNameCount)
         
         XCTAssertTrue(hasBinding(controller, binding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"), "items controller should obtain sortDescriptors from view controller through bindings")
         XCTAssertTrue(hasBinding(outlineView, binding: NSContentBinding, to: controller, throughKeyPath: "arrangedObjects"), "outline view should have binding to items controller's arrangedObjects")
@@ -95,6 +100,10 @@ class ItemViewControllerTests: XCTestCase {
     
     func testAddItemButton_IsWiredToAction() {
         XCTAssertEqual(viewController.addItemButton.action, Selector("addItem:"), "'add item' button should be wired to addItem:");
+    }
+    
+    func testAddItemButton_CocoaBindings() {
+        XCTAssertTrue(hasBinding(viewController.addItemButton, binding: NSEnabledBinding, to: viewController.itemsController, throughKeyPath: "selectionIndexPath", transformingWith: "NSIsNotNil"), "enable button in virtue of itemsController selection != nil")
     }
     
     func testItemRowView_TitleCell_SetUpProperly() {
@@ -116,32 +125,82 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     
-    //MARK: - Adding Item
+    //MARK: - 
+    //MARK: Adding Boxes
 
     func testInitially_TreeIsEmpty() {
-        XCTAssertEqual(itemNodeCount(), 0, "start with empty tree")
+        XCTAssertEqual(boxNodeCount(), 0, "start with empty tree")
     }
     
-    func testAddItem_WithEmptyList_AddsItem() {
-        viewController.addItem(self)
+    func testInitially_AddItemButtonIsDisabled() {
+        XCTAssertFalse(viewController.addItemButton.enabled, "disable item button without boxes")
+    }
+    
+    func testAddBox_WithEmptyList_AddsNode() {
+        viewController.addBox(self)
         
-        XCTAssertEqual(itemNodeCount(), 1, "adds item to tree")
+        XCTAssertEqual(boxNodeCount(), 1, "adds item to tree")
     }
     
-    func testAddItem_WithExistingItem_OrdersThemByTitle() {
+    func testAddBox_WithEmptyList_EnablesAddItemButton() {
+        viewController.addBox(self)
+        
+        XCTAssertTrue(viewController.addItemButton.enabled, "enable item button by adding boxes")
+    }
+    
+    func testAddBox_WithExistingBox_OrdersThemByTitle() {
         // Given
         let bottomItem = TestNode(title: "ZZZ Should be at the bottom")
         viewController.itemsController.addObject(bottomItem)
         
-        let existingNode: NSObject = itemAtIndex(0) as NSObject
+        let existingNode: NSObject = boxAtIndex(0)
         
         // When
+        viewController.addBox(self)
+        
+        // Then
+        XCTAssertEqual(boxNodeCount(), 2, "add node to existing one")
+        let lastNode: NSObject = boxAtIndex(1)
+        XCTAssertEqual(existingNode, lastNode, "new node should be put before existing one")
+    }
+
+    func testAddBox_Twice_SelectsSecondBox() {
+        let treeController = viewController.itemsController
+        treeController.addObject(TestNode(title: "first"))
+        treeController.addObject(TestNode(title: "second"))
+        
+        XCTAssertTrue(treeController.selectedNodes.count > 0, "should auto-select")
+        let selectedNode: NSTreeNode = treeController.selectedNodes[0] as NSTreeNode
+        let item: TreeNode = selectedNode.representedObject as TreeNode
+        XCTAssertEqual(item.title, "second", "select latest insertion")
+    }
+    
+    
+    //MARK: Adding Items
+    
+    func testAddItem_WithoutBoxes_DoesNothing() {
+        viewController.addItem(self)
+        
+        XCTAssertEqual(boxNodeCount(), 0, "don't add boxes")
+    }
+    
+    func testAddItem_WithSelectedBox_InsertsItemBelowSelectedBox() {
+        // Pre-populate
+        let treeController = viewController.itemsController
+        treeController.addObject(TestNode(title: "first"))
+        treeController.addObject(TestNode(title: "second"))
+        
+        // Select first node
+        let selectionIndexPath = NSIndexPath(index: 0)
+        treeController.setSelectionIndexPath(selectionIndexPath)
+        let selectedBox = (treeController.selectedNodes[0] as NSTreeNode).representedObject as TreeNode
+        XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
+        
         viewController.addItem(self)
         
         // Then
-        XCTAssertEqual(itemNodeCount(), 2, "add node to existing one")
-        let lastNode: NSObject = itemAtIndex(1) as NSObject
-        XCTAssertEqual(existingNode, lastNode, "new node should be put before existing one")
+        XCTAssertEqual(selectedBox.children.count, 1, "box contains new child")
+        XCTAssertEqual(selectedBox.children[0].isLeaf, true, "child should be item=leaf")
     }
-    
+
 }
