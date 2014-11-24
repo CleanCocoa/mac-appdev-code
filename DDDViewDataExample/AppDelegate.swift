@@ -89,7 +89,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return ItemManagementWindowController()
     }()
     
+    
+    //MARK: -
+    //MARK: NSAppDelegate callbacks
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        //TODO set up ServiceLocator
+        // ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
+        
         windowController.showWindow(self)
         windowController.window?.makeKeyAndOrderFront(self)
     }

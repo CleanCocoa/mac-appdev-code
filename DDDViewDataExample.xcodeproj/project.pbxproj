@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
 		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
+		60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C571A238676002598DB /* AddingItemsTests.swift */; };
+		60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */; };
+		60BF3C5C1A238B73002598DB /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5B1A238B73002598DB /* Box.swift */; };
+		60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5F1A238DA3002598DB /* ManagedBox.swift */; };
+		60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C611A238DA4002598DB /* ManagedItem.swift */; };
 		60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA31A18DFD700F4665D /* AppDelegate.swift */; };
 		60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */; };
 		60C04BA91A18DFD700F4665D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BA81A18DFD700F4665D /* Images.xcassets */; };
 		60C04BAC1A18DFD700F4665D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BAA1A18DFD700F4665D /* MainMenu.xib */; };
-		60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */; };
 		60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
 		60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */; };
 		60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC61A18F71000F4665D /* PersistentStackTests.swift */; };
-		60C04BCA1A1916F600F4665D /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC91A1916F600F4665D /* ManagedItem.swift */; };
 		60C04BCD1A19179000F4665D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BCC1A19179000F4665D /* Item.swift */; };
 		60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */; };
 		60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */; };
@@ -37,9 +41,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
 		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
+		60BF3C571A238676002598DB /* AddingItemsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingItemsTests.swift; sourceTree = "<group>"; };
+		60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBoxRepository.swift; sourceTree = "<group>"; };
+		60BF3C5B1A238B73002598DB /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		60BF3C5F1A238DA3002598DB /* ManagedBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBox.swift; sourceTree = "<group>"; };
+		60BF3C611A238DA4002598DB /* ManagedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedItem.swift; sourceTree = "<group>"; };
 		60C04B9E1A18DFD700F4665D /* DDDViewDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDDViewDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C04BA21A18DFD700F4665D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C04BA31A18DFD700F4665D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,11 +58,9 @@
 		60C04BAB1A18DFD700F4665D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		60C04BB11A18DFD700F4665D /* DDDViewDataExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDDViewDataExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C04BB61A18DFD700F4665D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDDViewDataExampleTests.swift; sourceTree = "<group>"; };
 		60C04BC11A18DFFE00F4665D /* PersistentStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStack.swift; sourceTree = "<group>"; };
 		60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		60C04BC61A18F71000F4665D /* PersistentStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStackTests.swift; sourceTree = "<group>"; };
-		60C04BC91A1916F600F4665D /* ManagedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedItem.swift; sourceTree = "<group>"; };
 		60C04BCC1A19179000F4665D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepository.swift; sourceTree = "<group>"; };
 		60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepositoryTests.swift; sourceTree = "<group>"; };
@@ -78,6 +86,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60BF3C551A238655002598DB /* Unit */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
+				60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */,
+				60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */,
+			);
+			name = Unit;
+			sourceTree = "<group>";
+		};
+		60BF3C561A23865A002598DB /* Functional */ = {
+			isa = PBXGroup;
+			children = (
+				60BF3C571A238676002598DB /* AddingItemsTests.swift */,
+			);
+			name = Functional;
+			sourceTree = "<group>";
+		};
 		60C04B951A18DFD700F4665D = {
 			isa = PBXGroup;
 			children = (
@@ -118,10 +144,8 @@
 		60C04BB41A18DFD700F4665D /* DDDViewDataExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				60C04BB71A18DFD700F4665D /* DDDViewDataExampleTests.swift */,
-				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
-				60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */,
-				60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */,
+				60BF3C561A23865A002598DB /* Functional */,
+				60BF3C551A238655002598DB /* Unit */,
 				60C04BB51A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExampleTests;
@@ -150,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
+				60AEEEC31A239A4300C05636 /* ServiceLocator.swift */,
 				60C04BCB1A19177D00F4665D /* Core Data */,
 				60C04BD31A191BBF00F4665D /* Item */,
 			);
@@ -172,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BCC1A19179000F4665D /* Item.swift */,
+				60BF3C5B1A238B73002598DB /* Box.swift */,
 			);
 			name = Domain;
 			sourceTree = "<group>";
@@ -179,8 +205,10 @@
 		60C04BD31A191BBF00F4665D /* Item */ = {
 			isa = PBXGroup;
 			children = (
-				60C04BC91A1916F600F4665D /* ManagedItem.swift */,
 				60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */,
+				60BF3C611A238DA4002598DB /* ManagedItem.swift */,
+				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
+				60BF3C5F1A238DA3002598DB /* ManagedBox.swift */,
 			);
 			name = Item;
 			sourceTree = "<group>";
@@ -285,14 +313,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */,
-				60C04BCA1A1916F600F4665D /* ManagedItem.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
+				60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */,
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
 				60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */,
 				60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */,
+				60BF3C5C1A238B73002598DB /* Box.swift in Sources */,
+				60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */,
+				60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +335,7 @@
 				60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */,
 				60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
-				60C04BB81A18DFD700F4665D /* DDDViewDataExampleTests.swift in Sources */,
+				60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
 			);

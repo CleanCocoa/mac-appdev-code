@@ -34,7 +34,7 @@ class ItemViewControllerTests: XCTestCase {
         super.setUp()
         
         let windowController = ItemManagementWindowController(windowNibName: kItemManagementWindowNibName)
-        windowController.loadWindow()//performSelectorOnMainThread("loadView", withObject: nil, waitUntilDone: true)
+        windowController.loadWindow()
         viewController = windowController.itemViewController
     }
     
