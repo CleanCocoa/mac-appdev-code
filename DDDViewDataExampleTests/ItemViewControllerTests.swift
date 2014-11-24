@@ -81,6 +81,10 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertNotNil(viewController.itemsController, "items controller should be connected in Nib")
     }
     
+    func testItemsController_PreservesSelection() {
+        XCTAssertTrue(viewController.itemsController.preservesSelection, "items controller should preserve selections")
+    }
+    
     func testItemsController_CocoaBindings() {
         let controller = viewController.itemsController
         let outlineView = viewController.outlineView

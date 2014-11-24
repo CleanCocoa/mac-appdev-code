@@ -76,7 +76,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func orderTree() {
-        itemsController.rearrangeObjects() // TODO item loses focus
+        itemsController.rearrangeObjects()
     }
     
     
@@ -121,8 +121,6 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
         let projectChildNodeCount: Int = node.childNodes!.count
         return projectChildNodeCount
     }
-    
-    
     
     func boxNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
         assert(indexPath.length == 1, "assumes index path of a project with 1 index only")
