@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
+		60AEEEC71A248AF300C05636 /* BoxAndItemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */; };
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
 		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemService.swift; sourceTree = "<group>"; };
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
 		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60AEEEC51A248ADA00C05636 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
 		60BF3C551A238655002598DB /* Unit */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 			children = (
 				60C04BCE1A191A6A00F4665D /* Infrastructure */,
 				60C04BD01A191A8300F4665D /* Domain */,
+				60AEEEC51A248ADA00C05636 /* Application */,
 				60C04BCF1A191A7500F4665D /* User Interface */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
@@ -313,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60AEEEC71A248AF300C05636 /* BoxAndItemService.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,

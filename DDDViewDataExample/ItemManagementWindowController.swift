@@ -12,6 +12,16 @@ public let kItemManagementWindowNibName: String = "ItemManagementWindowControlle
 
 public class ItemManagementWindowController: NSWindowController {
     
+    public weak var eventHandler: HandlesItemListEvents? {
+        get { return self.itemViewController.eventHandler }
+        set {
+            if let window = self.window {
+                // Ensure Nib is loaded
+                self.itemViewController.eventHandler = newValue
+            }
+        }
+    }
+    
     @IBOutlet public var itemViewController: ItemViewController!
     
     /// Initialize using the default Nib

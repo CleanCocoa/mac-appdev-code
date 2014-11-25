@@ -33,8 +33,18 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     public func count() -> Int {
-        return 0
-        //TODO: count
+        let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
+        fetchRequest.includesSubentities = false
+        
+        var error: NSError? = nil
+        let count = managedObjectContext.countForFetchRequest(fetchRequest, error: &error)
+        
+        if count == NSNotFound {
+            //FIXME: handle error
+            return NSNotFound
+        }
+        
+        return count
     }
     
     public func nextId() -> BoxId {

@@ -14,16 +14,19 @@ import DDDViewDataExample
 class AddingItemsTests: CoreDataTestCase {
     var repository: BoxRepository?
     var viewController: ItemViewController?
-    
+    var eventHandler: BoxAndItemService?
+
     override func setUp() {
         super.setUp()
         
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
         
         repository = ServiceLocator.boxRepository()
-        
-        let windowController = ItemManagementWindowController(windowNibName: kItemManagementWindowNibName)
+        eventHandler = BoxAndItemService()
+
+        let windowController = ItemManagementWindowController()
         windowController.loadWindow()
+        windowController.eventHandler = eventHandler
         viewController = windowController.itemViewController
     }
     

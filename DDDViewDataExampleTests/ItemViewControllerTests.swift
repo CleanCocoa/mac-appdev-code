@@ -27,15 +27,29 @@ class TestNode: NSObject, TreeNode {
     }
 }
 
+
+class EventHandlerStub: HandlesItemListEvents {
+    func provisionNewBoxId() -> BoxId {
+        return BoxId(0)
+    }
+    
+    func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
+        return ItemId(0)
+    }
+}
+
+
 class ItemViewControllerTests: XCTestCase {
     var viewController: ItemViewController!
+    var testEventHandler: EventHandlerStub! = EventHandlerStub()
     
     override func setUp() {
         super.setUp()
         
-        let windowController = ItemManagementWindowController(windowNibName: kItemManagementWindowNibName)
+        let windowController = ItemManagementWindowController()
         windowController.loadWindow()
         viewController = windowController.itemViewController
+        viewController.eventHandler = testEventHandler
     }
     
     override func tearDown() {

@@ -84,18 +84,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             abort()
         }
     }
-
-    lazy var windowController: ItemManagementWindowController = {
-        return ItemManagementWindowController()
-    }()
-    
     
     //MARK: -
     //MARK: NSAppDelegate callbacks
     
+    lazy var windowController = ItemManagementWindowController()
+    lazy var boxAndItemService = BoxAndItemService()
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         //TODO set up ServiceLocator
         // ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
+        windowController.eventHandler = boxAndItemService
         
         windowController.showWindow(self)
         windowController.window?.makeKeyAndOrderFront(self)

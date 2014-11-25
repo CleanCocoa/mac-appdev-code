@@ -8,6 +8,12 @@
 
 import Cocoa
 
+public protocol HandlesItemListEvents: class {
+    func provisionNewBoxId() -> BoxId;
+    func provisionNewItemId(inBox boxId: BoxId) -> ItemId;
+}
+
+
 @objc(TreeNode)
 public protocol TreeNode {
     var title: String { get set }
@@ -21,7 +27,11 @@ class BoxNode: NSObject, TreeNode {
     dynamic var count: UInt = 0
     dynamic var children: [TreeNode] = []
     dynamic var isLeaf: Bool = false
+    let boxId: BoxId
     
+    init(boxId: BoxId) {
+        self.boxId = boxId
+    }
 }
 
 class ItemNode: NSObject, TreeNode {
@@ -37,6 +47,7 @@ public let kColumnNameCount = "Count"
 
 public class ItemViewController: NSViewController, NSOutlineViewDelegate {
 
+    public weak var eventHandler: HandlesItemListEvents!
     @IBOutlet public weak var itemsController: NSTreeController!
     @IBOutlet public weak var addBoxButton: NSButton!
     @IBOutlet public weak var addItemButton: NSButton!
@@ -69,10 +80,13 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     //MARK: Add Boxes
     
     @IBAction public func addBox(sender: AnyObject) {
-        let box = BoxNode()
-        let indexPath = NSIndexPath(index: nodeCount())
-        itemsController.insertObject(box, atArrangedObjectIndexPath: indexPath)
-        orderTree()
+        if let eventHandler = self.eventHandler {
+            let boxId = eventHandler.provisionNewBoxId()
+            let box = BoxNode(boxId: boxId)
+            let indexPath = NSIndexPath(index: nodeCount())
+            itemsController.insertObject(box, atArrangedObjectIndexPath: indexPath)
+            orderTree()
+        }
     }
     
     func orderTree() {
