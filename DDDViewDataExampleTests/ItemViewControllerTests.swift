@@ -11,14 +11,14 @@ import XCTest
 
 import DDDViewDataExample
 
-class TestNode: NSObject, TreeNode {
-    dynamic var title: String = "title"
-    dynamic var count: UInt = 1234
-    dynamic var children: [TreeNode] = []
-    dynamic var isLeaf: Bool = false
-    
-    override init() {
-        super.init()
+class TestBoxNode: BoxNode {
+    convenience init() {
+        self.init(boxId: BoxId(0))
+        
+        title = "title"
+        count = 1234
+        children = []
+        isLeaf = false
     }
     
     convenience init(title: String) {
@@ -133,7 +133,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testItemRowView_TitleCell_SetUpProperly() {
-        viewController.itemsController.addObject(TestNode())
+        viewController.itemsController.addObject(TestBoxNode())
         
         let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as NSTableCellView
         let titleTextField = titleCellView.textField!
@@ -142,7 +142,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testItemRowView_CountCell_SetUpProperly() {
-        viewController.itemsController.addObject(TestNode())
+        viewController.itemsController.addObject(TestBoxNode())
         
         let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as NSTableCellView
         let countTextField = countCellView.textField!
@@ -176,7 +176,7 @@ class ItemViewControllerTests: XCTestCase {
     
     func testAddBox_WithExistingBox_OrdersThemByTitle() {
         // Given
-        let bottomItem = TestNode(title: "ZZZ Should be at the bottom")
+        let bottomItem = TestBoxNode(title: "ZZZ Should be at the bottom")
         viewController.itemsController.addObject(bottomItem)
         
         let existingNode: NSObject = boxAtIndex(0)
@@ -192,8 +192,8 @@ class ItemViewControllerTests: XCTestCase {
 
     func testAddBox_Twice_SelectsSecondBox() {
         let treeController = viewController.itemsController
-        treeController.addObject(TestNode(title: "first"))
-        treeController.addObject(TestNode(title: "second"))
+        treeController.addObject(TestBoxNode(title: "first"))
+        treeController.addObject(TestBoxNode(title: "second"))
         
         XCTAssertTrue(treeController.selectedNodes.count > 0, "should auto-select")
         let selectedNode: NSTreeNode = treeController.selectedNodes[0] as NSTreeNode
@@ -213,8 +213,8 @@ class ItemViewControllerTests: XCTestCase {
     func testAddItem_WithSelectedBox_InsertsItemBelowSelectedBox() {
         // Pre-populate
         let treeController = viewController.itemsController
-        treeController.addObject(TestNode(title: "first"))
-        treeController.addObject(TestNode(title: "second"))
+        treeController.addObject(TestBoxNode(title: "first"))
+        treeController.addObject(TestBoxNode(title: "second"))
         
         // Select first node
         let selectionIndexPath = NSIndexPath(index: 0)

@@ -8,11 +8,12 @@
 
 import Cocoa
 
-public struct BoxId: Equatable, DebugPrintable {
-    let identifier: IntegerId
+public struct BoxId: Equatable, DebugPrintable, Identifiable {
+    public var identifier: IntegerId { return _identifier }
+    private var _identifier: IntegerId
     
     public init(_ identifier: IntegerId) {
-        self.identifier = identifier
+        _identifier = identifier
     }
     
     public var debugDescription: String {

@@ -22,23 +22,28 @@ public protocol TreeNode {
     var isLeaf: Bool { get }
 }
 
-class BoxNode: NSObject, TreeNode {
-    dynamic var title: String = "New Box"
-    dynamic var count: UInt = 0
-    dynamic var children: [TreeNode] = []
-    dynamic var isLeaf: Bool = false
-    let boxId: BoxId
+public class BoxNode: NSObject, TreeNode {
+    public dynamic var title: String = "New Box"
+    public dynamic var count: UInt = 0
+    public dynamic var children: [TreeNode] = []
+    public dynamic var isLeaf: Bool = false
+    public let boxId: BoxId
     
-    init(boxId: BoxId) {
+    public init(boxId: BoxId) {
         self.boxId = boxId
     }
 }
 
-class ItemNode: NSObject, TreeNode {
-    dynamic var title: String = "New Item"
-    dynamic var count: UInt = 0
-    dynamic var children: [TreeNode] = []
-    dynamic var isLeaf = true
+public class ItemNode: NSObject, TreeNode {
+    public dynamic var title: String = "New Item"
+    public dynamic var count: UInt = 0
+    public dynamic var children: [TreeNode] = []
+    public dynamic var isLeaf = true
+    public let itemId: ItemId
+    
+    public init(itemId: ItemId) {
+        self.itemId = itemId
+    }
 }
 
 
@@ -97,8 +102,10 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     //MARK: Add Items
     
     @IBAction public func addItem(sender: AnyObject) {
-        addItemNodeToSelectedBox()
-        orderTree()
+        if let eventHandler = self.eventHandler {
+            addItemNodeToSelectedBox()
+            orderTree()
+        }
     }
     
     func addItemNodeToSelectedBox() {
@@ -115,7 +122,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
         
         let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
         
-        if (firstSelectedTreeNode.leaf) {
+        if (treeNodeRepresentsBoxNode(firstSelectedTreeNode)) {
             let parentNode = firstSelectedTreeNode.parentNode!
             return parentNode.indexPath
         }
@@ -123,21 +130,33 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
         return firstSelectedTreeNode.indexPath
     }
     
+    func treeNodeRepresentsBoxNode(treeNode: NSTreeNode) -> Bool {
+        return treeNode.leaf
+    }
+    
     func appendItemNodeToBoxIndexPath(parentIndexPath: NSIndexPath) {
-        let item = ItemNode()
-        let childNodeCount = childNodeCountAtIndexPath(parentIndexPath)
-        let indexPath = parentIndexPath.indexPathByAddingIndex(childNodeCount)
-        itemsController.insertObject(item, atArrangedObjectIndexPath: indexPath)
+        let parentTreeNode = boxTreeNodeAtIndexPath(parentIndexPath)
+        let itemIndexPath = indexPath(appendedToTreeNode: parentTreeNode)
+        let item = itemNode(belowBoxTreeNode: parentTreeNode)
+        
+        itemsController.insertObject(item, atArrangedObjectIndexPath: itemIndexPath)
     }
     
-    func childNodeCountAtIndexPath(indexPath: NSIndexPath) -> Int {
-        let node: NSTreeNode = boxNodeAtIndexPath(indexPath)
-        let projectChildNodeCount: Int = node.childNodes!.count
-        return projectChildNodeCount
+    func indexPath(appendedToTreeNode treeNode: NSTreeNode) -> NSIndexPath {
+        let parentIndexPath = treeNode.indexPath
+        let childNodeCount = treeNode.childNodes!.count
+        return parentIndexPath.indexPathByAddingIndex(childNodeCount)
     }
     
-    func boxNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
-        assert(indexPath.length == 1, "assumes index path of a project with 1 index only")
+    func itemNode(belowBoxTreeNode boxTreeNode: NSTreeNode)-> ItemNode {
+        let boxNode = boxTreeNode.representedObject as BoxNode
+        let itemId = eventHandler.provisionNewItemId(inBox: boxNode.boxId)
+    
+        return ItemNode(itemId: itemId)
+    }
+    
+    func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
+        assert(indexPath.length == 1, "assumes index path of a box with 1 index only")
         
         let boxNodes: [AnyObject] = itemsController.arrangedObjects.childNodes!!
         let boxIndex = indexPath.indexAtPosition(0)

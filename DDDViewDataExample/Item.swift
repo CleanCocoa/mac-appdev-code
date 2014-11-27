@@ -8,14 +8,12 @@
 
 import Cocoa
 
-// TODO put this typealias into a helper file
-public typealias IntegerId = Int64
-
-public struct ItemId: Equatable, DebugPrintable {
-    let identifier: IntegerId
+public struct ItemId: Equatable, DebugPrintable, Identifiable {
+    public var identifier: IntegerId { return _identifier }
+    private var _identifier: IntegerId
     
     public init(_ identifier: IntegerId) {
-        self.identifier = identifier
+        _identifier = identifier
     }
     
     public var debugDescription: String {

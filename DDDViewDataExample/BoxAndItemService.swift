@@ -22,7 +22,15 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
-        //FIXME: this is a stub
+//        This would be so wrong:
+//
+//        let repository = ServiceLocator.itemRepository()
+//        let itemId = repository.nextId()
+//        let item = Item(itemId: ItemId, title: "New Item")
+//        
+//        repository.addItem(item)
+//        
+//        return itemId
         return ItemId(0)
     }
 }

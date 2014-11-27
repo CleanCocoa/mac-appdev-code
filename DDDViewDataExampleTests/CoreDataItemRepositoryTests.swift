@@ -31,7 +31,7 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         
-        repository = CoreDataItemRepository(managedObjectContext: self.context)
+        repository = CoreDataItemRepository(managedObjectContext: context)
     }
     
     override func tearDown() {
@@ -67,9 +67,9 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
     
     func testNextId_WhenGeneratedIdIsTaken_ReturnsAnotherId() {
         let testGenerator = TestIntegerIdGenerator()
-        repository = CoreDataItemRepository(managedObjectContext: self.context, integerIdGenerator: testGenerator)
+        repository = CoreDataItemRepository(managedObjectContext: context, integerIdGenerator: testGenerator)
         let existingId = ItemId(testGenerator.firstAttempt)
-        ManagedItem .insertManagedItem(existingId, title: "irrelevant", inManagedObjectContext: self.context)
+        ManagedItem.insertManagedItem(existingId, title: "irrelevant", inManagedObjectContext: context)
         
         let itemId = repository!.nextId()
         

@@ -16,12 +16,22 @@ public class ServiceLocator {
         return Static.instance
     }
     
+    public class func resetSharedInstance() {
+        sharedInstance.reset()
+    }
+    
+    func reset() {
+        managedObjectContext = nil
+    }
+    
     var managedObjectContext: NSManagedObjectContext?
     
     public func setManagedObjectContext(managedObjectContext: NSManagedObjectContext) {
         assert(self.managedObjectContext == nil, "managedObjectContext can be set up only once")
         self.managedObjectContext = managedObjectContext
     }
+    
+    //MARK: Repository Access
     
     public class func boxRepository() -> BoxRepository {
         return sharedInstance.boxRepository()

@@ -12,7 +12,7 @@ import XCTest
 import DDDViewDataExample
 
 class AddingItemsTests: CoreDataTestCase {
-    var repository: BoxRepository?
+    var boxRepository: BoxRepository?
     var viewController: ItemViewController?
     var eventHandler: BoxAndItemService?
 
@@ -21,7 +21,7 @@ class AddingItemsTests: CoreDataTestCase {
         
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
         
-        repository = ServiceLocator.boxRepository()
+        boxRepository = ServiceLocator.boxRepository()
         eventHandler = BoxAndItemService()
 
         let windowController = ItemManagementWindowController()
@@ -31,7 +31,7 @@ class AddingItemsTests: CoreDataTestCase {
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        ServiceLocator.resetSharedInstance()
         super.tearDown()
     }
     
@@ -48,13 +48,13 @@ class AddingItemsTests: CoreDataTestCase {
 
     func testAddFirstBox_CreatesBoxRecord() {
         // Precondition
-        XCTAssertEqual(repository!.count(), 0, "repo starts empty")
+        XCTAssertEqual(boxRepository!.count(), 0, "repo starts empty")
         
         // When
         viewController!.addBox(self)
     
         // Then
-        XCTAssertEqual(repository!.count(), 1, "stores box record")
+        XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
         
         if let box: ManagedBox = allBoxes().first {
             XCTAssertEqual(box.title, "New Box")
@@ -63,4 +63,24 @@ class AddingItemsTests: CoreDataTestCase {
         }
     }
 
+    func testAddItem_WithBoxInRepo_CreatesItemBelowBox() {
+        let existingId = BoxId(1337)
+        ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
+        XCTAssertEqual(boxRepository!.count(), 1, "repo contains a box")
+        
+        // When
+        viewController!.addItem(self)
+        
+        // Then
+        if let box: ManagedBox = allBoxes().first {
+            XCTAssertEqual(box.items.count, 1, "contains an item")
+            
+            if let item: ManagedItem = box.items.anyObject() as? ManagedItem {
+                XCTAssertEqual(item.title, "New Item")
+                XCTAssertEqual(item.box, box)
+            }
+        } else {
+            XCTFail("no boxes found")
+        }
+    }
 }
