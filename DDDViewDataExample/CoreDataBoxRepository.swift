@@ -28,8 +28,22 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     public func boxes() -> [Box] {
-        return []
-        //TODO: items
+        let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
+        
+        var error: NSError? = nil
+        let results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
+        
+        if results == nil {
+            assert(false, "error")
+            //TODO: handle fetch error
+            return []
+        }
+        
+        let managedBoxes: [ManagedBox] = results as [ManagedBox]
+        
+        return managedBoxes.map({ (managedBox: ManagedBox) -> Box in
+            return managedBox.box
+        })
     }
     
     public func boxWithId(boxId: BoxId) -> Box? {
@@ -56,26 +70,35 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     public func nextId() -> BoxId {
-        return BoxId(unusedIntegerId())
+        let integerId = unusedIntegerId(ManagedBox.self)
+        return BoxId(integerId)
     }
     
-    func unusedIntegerId() -> IntegerId {
+    public func nextItemId() -> ItemId {
+        let integerId = unusedIntegerId(ManagedItem.self)
+        return ItemId(integerId)
+    }
+    
+    func unusedIntegerId(type: ManagedEntity.Type) -> IntegerId {
         var identifier: IntegerId
         
         do {
-            identifier = integerId()
-        } while integerIdIsTaken(identifier)
+            identifier = integerId(type)
+        } while integerIdIsTaken(type, identifier: identifier)
         
         return identifier
     }
     
-    func integerId() -> IntegerId {
+    func integerId(type: ManagedEntity.Type) -> IntegerId {
         return integerIdGenerator.integerId()
     }
     
-    func integerIdIsTaken(identifier: IntegerId) -> Bool {
-        if let foundBox = managedBoxWithUniqueId(identifier) {
-            return true
+    func integerIdIsTaken(type: ManagedEntity.Type, identifier: IntegerId) -> Bool {
+        
+        if type is ManagedBox.Type {
+            return managedBoxWithUniqueId(identifier) != nil
+        } else if type is ManagedItem.Type {
+            return managedItemWithUniqueId(identifier) != nil
         }
         
         return false
@@ -83,7 +106,8 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     
     func managedBoxWithUniqueId(identifier: IntegerId) -> ManagedBox? {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
-        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName("ManagedBoxWithUniqueId", substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
+        let templateName = "ManagedBoxWithUniqueId"
+        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
         
         assert(fetchRequest != nil, "Fetch request named 'ManagedBoxWithUniqueId' is required")
         
@@ -102,5 +126,29 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         }
         
         return foundIdentifiers![0] as? ManagedBox
+    }
+    
+    func managedItemWithUniqueId(identifier: IntegerId) -> ManagedItem? {
+        let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
+        let templateName = "ManagedItemWithUniqueId"
+        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
+        
+        assert(fetchRequest != nil, "Fetch request named 'ManagedItemWithUniqueId' is required")
+        
+        var error: NSError? = nil
+        let foundIdentifiers = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
+        
+        if (foundIdentifiers == nil)
+        {
+            assert(false, "error")
+            //FIXME: handle error: send event to delete project from view and say that changes couldn't be saved
+            return nil
+        }
+        
+        if foundIdentifiers!.count == 0 {
+            return nil
+        }
+        
+        return foundIdentifiers![0] as? ManagedItem
     }
 }

@@ -27,6 +27,7 @@ public func ==(lhs: BoxId, rhs: BoxId) -> Bool {
 
 public protocol BoxRepository {
     func nextId() -> BoxId
+    func nextItemId() -> ItemId
     func addBox(box: Box)
     func boxes() -> [Box]
     func boxWithId(boxId: BoxId) -> Box?
@@ -37,9 +38,16 @@ public protocol BoxRepository {
 public class Box: NSObject {
     public let boxId: BoxId
     public dynamic var title: String
+    dynamic var items: [Item] = []
     
     public init(boxId: BoxId, title: String) {
         self.boxId = boxId
         self.title = title
+    }
+    
+    public func addItem(item: Item) {
+        assert(item.box == nil, "item should not have a parent box already")
+        
+        items.append(item)
     }
 }

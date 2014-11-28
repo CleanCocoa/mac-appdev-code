@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public struct ItemId: Equatable, DebugPrintable, Identifiable {
+public struct ItemId: Equatable, Hashable, DebugPrintable, Identifiable {
     public var identifier: IntegerId { return _identifier }
     private var _identifier: IntegerId
     
@@ -18,6 +18,10 @@ public struct ItemId: Equatable, DebugPrintable, Identifiable {
     
     public var debugDescription: String {
         return "ItemId: \(identifier)"
+    }
+    
+    public var hashValue: Int {
+        return self._identifier.hashValue
     }
 }
 
@@ -35,9 +39,26 @@ public protocol ItemRepository {
 public class Item: NSObject {
     public let itemId: ItemId
     public let title: String
+    public var box: Box?
     
     public init(itemId: ItemId, title: String) {
         self.itemId = itemId
         self.title = title
     }
+    
+    public override func isEqual(object: AnyObject?) -> Bool {
+        if let other = object as? Item {
+            return other.itemId == self.itemId
+        }
+        
+        return false
+    }
+    
+    public override var hashValue: Int {
+        return 173 &+ self.itemId.hashValue
+    }
+}
+
+public func ==(lhs: Item, rhs: Item) -> Bool {
+    return lhs.itemId == rhs.itemId
 }

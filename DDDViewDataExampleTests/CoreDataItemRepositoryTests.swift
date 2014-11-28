@@ -57,7 +57,6 @@ class CoreDataItemRepositoryTests: CoreDataTestCase {
         XCTAssert(items.count > 0, "items expected")
         
         if let managedItem = items.first {
-            let thing: ManagedItem = managedItem as ManagedItem
             XCTAssertEqual(managedItem.title, title, "Title should be saved")
             XCTAssertEqual(managedItem.itemId(), itemId, "Item ID should be saved")
         }

@@ -43,7 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Make sure the application files directory is there
         var error: NSError? = nil
         var success: Bool = true
-        let propertiesOpt = self.applicationDocumentsDirectory.resourceValuesForKeys([NSURLIsDirectoryKey], error: &error)
+        let propertiesOpt = directory.resourceValuesForKeys([NSURLIsDirectoryKey], error: &error)
         
         if let properties = propertiesOpt {
             if let isDirectory = properties[NSURLIsDirectoryKey]!.boolValue {
@@ -88,16 +88,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //MARK: -
     //MARK: NSAppDelegate callbacks
     
-    lazy var windowController = ItemManagementWindowController()
-    lazy var boxAndItemService = BoxAndItemService()
+    lazy var manageBoxesAndItems: ManageBoxesAndItems! = ManageBoxesAndItems()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         //TODO set up ServiceLocator
-        // ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
-        windowController.eventHandler = boxAndItemService
-        
-        windowController.showWindow(self)
-        windowController.window?.makeKeyAndOrderFront(self)
+        ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
+        manageBoxesAndItems.showBoxManagementWindow()
     }
 
     func applicationShouldTerminate(sender: NSApplication) -> NSApplicationTerminateReply {

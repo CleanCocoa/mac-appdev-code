@@ -9,10 +9,10 @@
 import Foundation
 import CoreData
 
-private var kBoxContext = 0
+private var boxContext = 0
 
 @objc(ManagedBox)
-public class ManagedBox: NSManagedObject {
+public class ManagedBox: NSManagedObject, ManagedEntity {
 
     @NSManaged public var creationDate: NSDate
     @NSManaged public var modificationDate: NSDate
@@ -45,6 +45,7 @@ public class ManagedBox: NSManagedObject {
         return BoxId(uniqueId.longLongValue)
     }
     
+    
     //MARK: -
     //MARK: Box Management
     
@@ -52,7 +53,8 @@ public class ManagedBox: NSManagedObject {
     public lazy var box: Box = {
         
         let box = Box(boxId: self.boxId(), title: self.title)
-        box.addObserver(self, forKeyPath: "title", options: .New, context: &kBoxContext)
+        box.addObserver(self, forKeyPath: "title", options: .New, context: &boxContext)
+        box.addObserver(self, forKeyPath: "items", options: .New, context: &boxContext)
         
         self._box = box
         return box
@@ -60,19 +62,47 @@ public class ManagedBox: NSManagedObject {
     
     public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         
-        if context != &kBoxContext {
+        if context != &boxContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
             return
         }
         
         if keyPath == "title" {
             self.title = change[NSKeyValueChangeNewKey] as String
+        } else if keyPath == "items" {
+            let items = change[NSKeyValueChangeNewKey] as [Item]
+            mergeItems(items)
+        }
+    }
+    
+    func mergeItems(items: [Item]) {
+        //TODO: create 2 delta arrays instead of iterating over all items twice
+        let existingItems = self.mutableSetValueForKey("items")
+        for item in existingItems
+        {
+            if let managedItem: ManagedItem = item as? ManagedItem {
+                if !contains(items, managedItem.item) {
+                    existingItems.removeObject(item)
+                }
+            }
+        }
+        
+        for item in items {
+            let exists = contains(existingItems, { (existingItem: AnyObject) -> Bool in
+                
+                let managedItem = existingItem as ManagedItem
+                return managedItem.item == item
+            })
+            if !exists {
+                ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
+            }
         }
     }
     
     deinit {
         if let box = _box {
             box.removeObserver(self, forKeyPath: "title")
+            box.removeObserver(self, forKeyPath: "items")
         }
     }
 

@@ -9,8 +9,20 @@
 import Cocoa
 
 public protocol HandlesItemListEvents: class {
-    func provisionNewBoxId() -> BoxId;
-    func provisionNewItemId(inBox boxId: BoxId) -> ItemId;
+    func provisionNewBoxId() -> BoxId
+    func provisionNewItemId(inBox boxId: BoxId) -> ItemId
+}
+
+
+public struct BoxData {
+    let boxId: BoxId
+    let title: String
+    let itemData: [ItemData]
+}
+
+public struct ItemData {
+    let itemId: ItemId
+    let title: String
 }
 
 
@@ -32,6 +44,20 @@ public class BoxNode: NSObject, TreeNode {
     public init(boxId: BoxId) {
         self.boxId = boxId
     }
+    
+    public init(boxData: BoxData) {
+        self.boxId = boxData.boxId
+        self.title = boxData.title
+        super.init()
+        
+        addItemNodes(boxData.itemData)
+    }
+    
+    func addItemNodes(allItemData: [ItemData]) {
+        for itemData in allItemData {
+            children.append(ItemNode(itemData: itemData))
+        }
+    }
 }
 
 public class ItemNode: NSObject, TreeNode {
@@ -43,6 +69,11 @@ public class ItemNode: NSObject, TreeNode {
     
     public init(itemId: ItemId) {
         self.itemId = itemId
+    }
+    
+    public init(itemData: ItemData) {
+        self.itemId = itemData.itemId
+        self.title = itemData.title
     }
 }
 
@@ -57,14 +88,8 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     @IBOutlet public weak var addBoxButton: NSButton!
     @IBOutlet public weak var addItemButton: NSButton!
     
-    
     public var outlineView: NSOutlineView {
         return self.view as NSOutlineView
-    }
-    
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
     }
     
     var itemsSortDescriptors: [NSSortDescriptor] {
@@ -79,6 +104,15 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     
     func hasSelection() -> Bool {
         return itemsController.selectedObjects.count > 0
+    }
+    
+    
+    //MARK: Populate View
+    
+    public func displayBoxData(boxData: [BoxData]) {
+        for data in boxData {
+            itemsController.addObject(BoxNode(boxData: data))
+        }
     }
 
     

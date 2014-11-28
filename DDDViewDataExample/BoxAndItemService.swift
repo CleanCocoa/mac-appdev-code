@@ -22,15 +22,14 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
-//        This would be so wrong:
-//
-//        let repository = ServiceLocator.itemRepository()
-//        let itemId = repository.nextId()
-//        let item = Item(itemId: ItemId, title: "New Item")
-//        
-//        repository.addItem(item)
-//        
-//        return itemId
-        return ItemId(0)
+        let repository = ServiceLocator.boxRepository()
+        let itemId = repository.nextItemId()
+        
+        if let box = repository.boxWithId(boxId) {
+            let item = Item(itemId: itemId, title: "New Item")
+            box.addItem(item)
+        }
+        
+        return itemId //TODO: return NotFound ID
     }
 }

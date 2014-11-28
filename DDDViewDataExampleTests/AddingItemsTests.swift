@@ -13,21 +13,18 @@ import DDDViewDataExample
 
 class AddingItemsTests: CoreDataTestCase {
     var boxRepository: BoxRepository?
-    var viewController: ItemViewController?
-    var eventHandler: BoxAndItemService?
+    var useCase: ManageBoxesAndItems! = ManageBoxesAndItems()
+    lazy var viewController: ItemViewController = {
+        return self.useCase.itemViewController
+    }()
 
     override func setUp() {
         super.setUp()
         
+        ServiceLocator.resetSharedInstance()
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
         
         boxRepository = ServiceLocator.boxRepository()
-        eventHandler = BoxAndItemService()
-
-        let windowController = ItemManagementWindowController()
-        windowController.loadWindow()
-        windowController.eventHandler = eventHandler
-        viewController = windowController.itemViewController
     }
     
     override func tearDown() {
@@ -47,11 +44,11 @@ class AddingItemsTests: CoreDataTestCase {
     }
 
     func testAddFirstBox_CreatesBoxRecord() {
-        // Precondition
+        useCase.showBoxManagementWindow()
         XCTAssertEqual(boxRepository!.count(), 0, "repo starts empty")
         
         // When
-        viewController!.addBox(self)
+        viewController.addBox(self)
     
         // Then
         XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
@@ -62,14 +59,32 @@ class AddingItemsTests: CoreDataTestCase {
             XCTFail("no boxes found")
         }
     }
+    
+    func boxNodes() -> [AnyObject] {
+        let arrangedObjects: AnyObject! = viewController.itemsController.arrangedObjects
+        return arrangedObjects.childNodes!!
+    }
+    
+    func boxNodeCount() -> Int {
+        return boxNodes().count
+    }
+    
+    func testExistingBoxes_ShowInView() {
+        let existingId = BoxId(1337)
+        ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
+        useCase.showBoxManagementWindow()
+        
+        XCTAssertEqual(boxNodeCount(), 1)
+    }
 
     func testAddItem_WithBoxInRepo_CreatesItemBelowBox() {
         let existingId = BoxId(1337)
         ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
-        XCTAssertEqual(boxRepository!.count(), 1, "repo contains a box")
+        XCTAssertNotNil(boxRepository!.boxWithId(existingId))
+        useCase.showBoxManagementWindow()
         
         // When
-        viewController!.addItem(self)
+        viewController.addItem(self)
         
         // Then
         if let box: ManagedBox = allBoxes().first {
