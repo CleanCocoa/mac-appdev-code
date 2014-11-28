@@ -14,10 +14,10 @@
         <attribute name="uniqueId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="box" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedBox" inverseName="items" inverseEntity="ManagedBox" syncable="YES"/>
     </entity>
-    <fetchRequest name="ManagedBoxWithUniqueId" entity="ManagedItem" predicateString="uniqueId == $IDENTIFIER"/>
+    <fetchRequest name="ManagedBoxWithUniqueId" entity="ManagedBox" predicateString="uniqueId == $IDENTIFIER"/>
     <fetchRequest name="ManagedItemWithUniqueId" entity="ManagedItem" predicateString="uniqueId == $IDENTIFIER" resultType="1"/>
     <elements>
-        <element name="ManagedItem" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="ManagedBox" positionX="-63" positionY="9" width="128" height="118"/>
+        <element name="ManagedItem" positionX="-63" positionY="-18" width="128" height="118"/>
     </elements>
 </model>

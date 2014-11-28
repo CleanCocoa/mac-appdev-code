@@ -32,6 +32,14 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         //TODO: items
     }
     
+    public func boxWithId(boxId: BoxId) -> Box? {
+        if let managedBox = managedBoxWithUniqueId(boxId.identifier) {
+            return managedBox.box
+        }
+        
+        return nil
+    }
+    
     public func count() -> Int {
         let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
         fetchRequest.includesSubentities = false
@@ -66,6 +74,14 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     func integerIdIsTaken(identifier: IntegerId) -> Bool {
+        if let foundBox = managedBoxWithUniqueId(identifier) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func managedBoxWithUniqueId(identifier: IntegerId) -> ManagedBox? {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName("ManagedBoxWithUniqueId", substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
         
@@ -76,10 +92,15 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         
         if (foundIdentifiers == nil)
         {
+            assert(false, "error")
             //FIXME: handle error: send event to delete project from view and say that changes couldn't be saved
-            return false
+            return nil
         }
         
-        return foundIdentifiers!.count > 0;
+        if foundIdentifiers!.count == 0 {
+            return nil
+        }
+        
+        return foundIdentifiers![0] as? ManagedBox
     }
 }

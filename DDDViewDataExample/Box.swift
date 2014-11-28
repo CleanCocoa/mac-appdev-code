@@ -29,13 +29,14 @@ public protocol BoxRepository {
     func nextId() -> BoxId
     func addBox(box: Box)
     func boxes() -> [Box]
+    func boxWithId(boxId: BoxId) -> Box?
     func count() -> Int
 }
 
 
 public class Box: NSObject {
     public let boxId: BoxId
-    public let title: String
+    public dynamic var title: String
     
     public init(boxId: BoxId, title: String) {
         self.boxId = boxId
