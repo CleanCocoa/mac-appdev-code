@@ -9,13 +9,13 @@
 import Cocoa
 
 public class ManageBoxesAndItems {
-    lazy var windowController: ItemManagementWindowController = {
+    lazy var boxAndItemService: BoxAndItemService! = BoxAndItemService()
+    lazy var windowController: ItemManagementWindowController! = {
         let controller = ItemManagementWindowController()
         controller.loadWindow()
+        controller.eventHandler = self.boxAndItemService
         return controller
     }()
-    
-    lazy var boxAndItemService = BoxAndItemService()
     
     public init() { }
     
@@ -24,32 +24,36 @@ public class ManageBoxesAndItems {
     }()
     
     public func showBoxManagementWindow() {
+        displayBoxes()
+        showWindow()
+    }
+    
+    func displayBoxes() {
         let repository = ServiceLocator.boxRepository()
         let allBoxes = repository.boxes()
         let allBoxData = boxData(allBoxes)
         
         windowController.displayBoxData(allBoxData)
-        windowController.eventHandler = boxAndItemService
-        
-        windowController.showWindow(self)
-        windowController.window?.makeKeyAndOrderFront(self)
     }
     
     func boxData(boxes: [Box]) -> [BoxData] {
-        var allBoxData: [BoxData] = []
-        
-        for box in boxes {
-            var allItemData: [ItemData] = []
+        let allBoxData: [BoxData] = boxes.map() { (box: Box) -> BoxData in
+            let allItemData: [ItemData] = self.itemData(box.items)
             
-            for item in box.items {
-                let itemData = ItemData(itemId: item.itemId, title: item.title)
-                allItemData.append(itemData)
-            }
-            
-            let boxData = BoxData(boxId: box.boxId, title: box.title, itemData: allItemData)
-            allBoxData.append(boxData)
+            return BoxData(boxId: box.boxId, title: box.title, itemData: allItemData)
         }
         
         return allBoxData
+    }
+    
+    func itemData(items: [Item]) -> [ItemData] {
+        return items.map() { (item: Item) -> ItemData in
+            return ItemData(itemId: item.itemId, title: item.title)
+        }
+    }
+    
+    func showWindow() {
+        windowController.showWindow(self)
+        windowController.window?.makeKeyAndOrderFront(self)
     }
 }
