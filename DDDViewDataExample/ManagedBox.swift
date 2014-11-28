@@ -78,8 +78,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     func mergeItems(items: [Item]) {
         //TODO: create 2 delta arrays instead of iterating over all items twice
         let existingItems = self.mutableSetValueForKey("items")
-        for item in existingItems
-        {
+        for item in existingItems {
             if let managedItem: ManagedItem = item as? ManagedItem {
                 if !contains(items, managedItem.item) {
                     existingItems.removeObject(item)
@@ -88,12 +87,12 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         }
         
         for item in items {
-            let exists = contains(existingItems, { (existingItem: AnyObject) -> Bool in
-                
+            let itemIsInExistingItems = contains(existingItems, { (existingItem: AnyObject) -> Bool in
                 let managedItem = existingItem as ManagedItem
                 return managedItem.item == item
             })
-            if !exists {
+            
+            if !itemIsInExistingItems {
                 ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
             }
         }

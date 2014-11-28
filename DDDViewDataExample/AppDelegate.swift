@@ -91,7 +91,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var manageBoxesAndItems: ManageBoxesAndItems! = ManageBoxesAndItems()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        //TODO set up ServiceLocator
         ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
         manageBoxesAndItems.showBoxManagementWindow()
     }

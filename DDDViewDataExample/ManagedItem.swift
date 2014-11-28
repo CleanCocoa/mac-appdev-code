@@ -28,14 +28,6 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
     }
     
-    public class func insertManagedItem(itemId: ItemId, title: NSString, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
-        let item: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
-        var managedItem: ManagedItem = item as ManagedItem
-        
-        managedItem.uniqueId = uniqueIdFromItemId(itemId)
-        managedItem.title = title
-    }
-    
     public class func insertManagedItem(item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         let theItem: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
         var managedItem: ManagedItem = theItem as ManagedItem
