@@ -27,8 +27,7 @@
 		60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */; };
 		60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC61A18F71000F4665D /* PersistentStackTests.swift */; };
 		60C04BCD1A19179000F4665D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BCC1A19179000F4665D /* Item.swift */; };
-		60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */; };
-		60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */; };
+		60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataBoxRepositoryTests.swift */; };
 		60DBD0661A2787BB00ED4783 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DBD0651A2787BB00ED4783 /* Identifiable.swift */; };
 		60DBD0681A27939600ED4783 /* ManagedBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */; };
 		60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7EFEA1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift */; };
@@ -70,8 +69,7 @@
 		60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		60C04BC61A18F71000F4665D /* PersistentStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStackTests.swift; sourceTree = "<group>"; };
 		60C04BCC1A19179000F4665D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepository.swift; sourceTree = "<group>"; };
-		60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataItemRepositoryTests.swift; sourceTree = "<group>"; };
+		60C04BD41A191CE000F4665D /* CoreDataBoxRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBoxRepositoryTests.swift; sourceTree = "<group>"; };
 		60DBD0651A2787BB00ED4783 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 		60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBoxTests.swift; sourceTree = "<group>"; };
 		60F7EFEA1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+CocoaBindings.swift"; sourceTree = "<group>"; };
@@ -109,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				60C04BC61A18F71000F4665D /* PersistentStackTests.swift */,
-				60C04BD41A191CE000F4665D /* CoreDataItemRepositoryTests.swift */,
+				60C04BD41A191CE000F4665D /* CoreDataBoxRepositoryTests.swift */,
 				60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */,
 				60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */,
 			);
@@ -217,9 +215,9 @@
 		60C04BD01A191A8300F4665D /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
 				60C04BCC1A19179000F4665D /* Item.swift */,
 				60BF3C5B1A238B73002598DB /* Box.swift */,
-				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
 			);
 			name = Domain;
 			sourceTree = "<group>";
@@ -230,7 +228,6 @@
 				60A11C051A288763006954EA /* ManagedEntity.swift */,
 				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
 				60BF3C5F1A238DA3002598DB /* ManagedBox.swift */,
-				60C04BD11A191BB700F4665D /* CoreDataItemRepository.swift */,
 				60BF3C611A238DA4002598DB /* ManagedItem.swift */,
 			);
 			name = Item;
@@ -342,7 +339,6 @@
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
-				60C04BD21A191BB800F4665D /* CoreDataItemRepository.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
 				60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */,
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
@@ -364,7 +360,7 @@
 				60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
 				60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */,
-				60C04BD51A191CE000F4665D /* CoreDataItemRepositoryTests.swift in Sources */,
+				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

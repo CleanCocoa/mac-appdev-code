@@ -7,6 +7,47 @@
 //
 
 import Cocoa
+import CoreData
+import Security
+
+public protocol GeneratesIntegerId {
+    func integerId() -> IntegerId
+}
+
+struct DefaultIntegerIdGenerator: GeneratesIntegerId {
+    func integerId() -> IntegerId {
+        arc4random_stir()
+        var urandom: UInt64
+        urandom = (UInt64(arc4random()) << 32) | UInt64(arc4random())
+        
+        var random: IntegerId = (IntegerId) (urandom & 0x7FFFFFFFFFFFFFFF);
+        
+        return random
+    }
+}
+
+struct IdGenerator<Id: Identifiable> {
+    let integerIdGenerator: GeneratesIntegerId
+    let integerIdIsTaken: (IntegerId) -> Bool
+    
+    func nextId() -> Id {
+        return Id(unusedIntegerId())
+    }
+
+    func unusedIntegerId() -> IntegerId {
+        var identifier: IntegerId
+        
+        do {
+            identifier = integerId()
+        } while integerIdIsTaken(identifier)
+        
+        return identifier
+    }
+
+    func integerId() -> IntegerId {
+        return integerIdGenerator.integerId()
+    }
+}
 
 public class CoreDataBoxRepository: NSObject, BoxRepository {
     let managedObjectContext: NSManagedObjectContext
@@ -27,14 +68,23 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         ManagedBox.insertManagedBox(box.boxId, title: box.title, inManagedObjectContext: self.managedObjectContext)
     }
     
+    public func boxWithId(boxId: BoxId) -> Box? {
+        if let managedBox = managedBoxWithUniqueId(boxId.identifier) {
+            return managedBox.box
+        }
+        
+        return nil
+    }
+    
     public func boxes() -> [Box] {
         let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
+        fetchRequest.includesSubentities = true
         
         var error: NSError? = nil
         let results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
         
         if results == nil {
-            assert(false, "error")
+            assert(false, "error fetching boxes")
             //TODO: handle fetch error
             return []
         }
@@ -46,14 +96,6 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         })
     }
     
-    public func boxWithId(boxId: BoxId) -> Box? {
-        if let managedBox = managedBoxWithUniqueId(boxId.identifier) {
-            return managedBox.box
-        }
-        
-        return nil
-    }
-    
     public func count() -> Int {
         let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
         fetchRequest.includesSubentities = false
@@ -62,6 +104,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         let count = managedObjectContext.countForFetchRequest(fetchRequest, error: &error)
         
         if count == NSNotFound {
+            assert(false, "error fetching count")
             //FIXME: handle error
             return NSNotFound
         }
@@ -69,39 +112,16 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         return count
     }
     
+    
+    //MARK: Box ID Generation
+    
     public func nextId() -> BoxId {
-        let integerId = unusedIntegerId(ManagedBox.self)
-        return BoxId(integerId)
+        let generator = IdGenerator<BoxId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasManagedBoxWithUniqueId)
+        return generator.nextId()
     }
     
-    public func nextItemId() -> ItemId {
-        let integerId = unusedIntegerId(ManagedItem.self)
-        return ItemId(integerId)
-    }
-    
-    func unusedIntegerId(type: ManagedEntity.Type) -> IntegerId {
-        var identifier: IntegerId
-        
-        do {
-            identifier = integerId(type)
-        } while integerIdIsTaken(type, identifier: identifier)
-        
-        return identifier
-    }
-    
-    func integerId(type: ManagedEntity.Type) -> IntegerId {
-        return integerIdGenerator.integerId()
-    }
-    
-    func integerIdIsTaken(type: ManagedEntity.Type, identifier: IntegerId) -> Bool {
-        
-        if type is ManagedBox.Type {
-            return managedBoxWithUniqueId(identifier) != nil
-        } else if type is ManagedItem.Type {
-            return managedItemWithUniqueId(identifier) != nil
-        }
-        
-        return false
+    func hasManagedBoxWithUniqueId(identifier: IntegerId) -> Bool {
+        return self.managedBoxWithUniqueId(identifier) != nil
     }
     
     func managedBoxWithUniqueId(identifier: IntegerId) -> ManagedBox? {
@@ -112,23 +132,30 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         assert(fetchRequest != nil, "Fetch request named 'ManagedBoxWithUniqueId' is required")
         
         var error: NSError? = nil
-        let foundIdentifiers = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
+        let result = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
         
-        if (foundIdentifiers == nil)
-        {
-            assert(false, "error")
+        if result == nil {
+            assert(false, "error fetching box with id")
             //FIXME: handle error: send event to delete project from view and say that changes couldn't be saved
             return nil
         }
         
-        if foundIdentifiers!.count == 0 {
+        if result!.count == 0 {
             return nil
         }
         
-        return foundIdentifiers![0] as? ManagedBox
+        return result![0] as? ManagedBox
     }
     
-    func managedItemWithUniqueId(identifier: IntegerId) -> ManagedItem? {
+    
+    //MARK: Item ID Generation
+    
+    public func nextItemId() -> ItemId {
+        let generator = IdGenerator<ItemId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasManagedItemWithUniqueId)
+        return generator.nextId()
+    }
+    
+    func hasManagedItemWithUniqueId(identifier: IntegerId) -> Bool {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedItemWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
@@ -136,19 +163,14 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         assert(fetchRequest != nil, "Fetch request named 'ManagedItemWithUniqueId' is required")
         
         var error: NSError? = nil
-        let foundIdentifiers = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
+        let count = managedObjectContext.countForFetchRequest(fetchRequest!, error: &error)
         
-        if (foundIdentifiers == nil)
-        {
-            assert(false, "error")
+        if count == NSNotFound {
+            assert(false, "error fetch item with id")
             //FIXME: handle error: send event to delete project from view and say that changes couldn't be saved
-            return nil
+            return false
         }
         
-        if foundIdentifiers!.count == 0 {
-            return nil
-        }
-        
-        return foundIdentifiers![0] as? ManagedItem
+        return count > 0
     }
 }

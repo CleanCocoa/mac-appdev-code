@@ -104,44 +104,46 @@ public class PersistentStack: NSObject {
         return opts
     }
     
+    /// Save changes in the application's managed object context before the application terminates.
     public func saveToTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
-        // Save changes in the application's managed object context before the application terminates.
+        if managedObjectContext == nil {
+            return .TerminateNow
+        }
         
-        if let moc = self.managedObjectContext {
-            if !moc.commitEditing() {
-                NSLog("\(NSStringFromClass(self.dynamicType)) unable to commit editing to terminate")
+        let moc = managedObjectContext!
+        
+        if !moc.commitEditing() {
+            NSLog("\(NSStringFromClass(self.dynamicType)) unable to commit editing to terminate")
+            return .TerminateCancel
+        }
+        
+        if !moc.hasChanges {
+            return .TerminateNow
+        }
+        
+        var error: NSError? = nil
+        if !moc.save(&error) {
+            // Customize this code block to include application-specific recovery steps.
+            let result = sender.presentError(error!)
+            if (result) {
                 return .TerminateCancel
             }
             
-            if !moc.hasChanges {
-                return .TerminateNow
-            }
+            let question = NSLocalizedString("Could not save changes while quitting. Quit anyway?", comment: "Quit without saves error question message")
+            let info = NSLocalizedString("Quitting now will lose any changes you have made since the last successful save", comment: "Quit without saves error question info");
+            let quitButton = NSLocalizedString("Quit anyway", comment: "Quit anyway button title")
+            let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
+            let alert = NSAlert()
+            alert.messageText = question
+            alert.informativeText = info
+            alert.addButtonWithTitle(quitButton)
+            alert.addButtonWithTitle(cancelButton)
             
-            var error: NSError? = nil
-            if !moc.save(&error) {
-                // Customize this code block to include application-specific recovery steps.
-                let result = sender.presentError(error!)
-                if (result) {
-                    return .TerminateCancel
-                }
-                
-                let question = NSLocalizedString("Could not save changes while quitting. Quit anyway?", comment: "Quit without saves error question message")
-                let info = NSLocalizedString("Quitting now will lose any changes you have made since the last successful save", comment: "Quit without saves error question info");
-                let quitButton = NSLocalizedString("Quit anyway", comment: "Quit anyway button title")
-                let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
-                let alert = NSAlert()
-                alert.messageText = question
-                alert.informativeText = info
-                alert.addButtonWithTitle(quitButton)
-                alert.addButtonWithTitle(cancelButton)
-                
-                let answer = alert.runModal()
-                if answer == NSAlertFirstButtonReturn {
-                    return .TerminateCancel
-                }
+            let answer = alert.runModal()
+            if answer == NSAlertFirstButtonReturn {
+                return .TerminateCancel
             }
         }
-        // If we got here, it is time to quit.
         return .TerminateNow
     }
 }
