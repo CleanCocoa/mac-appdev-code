@@ -60,39 +60,35 @@ class AddingItemsTests: CoreDataTestCase {
         }
     }
     
-    func boxNodes() -> [AnyObject] {
-        let arrangedObjects: AnyObject! = viewController.itemsController.arrangedObjects
-        return arrangedObjects.childNodes!!
-    }
-    
-    func boxNodeCount() -> Int {
-        return boxNodes().count
-    }
-    
     func testExistingBoxes_ShowInView() {
-        let existingId = BoxId(1337)
-        ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
+        let existingId = BoxId(678)
+        let existingTitle = "a title"
+        ManagedBox.insertManagedBox(existingId, title: existingTitle, inManagedObjectContext: context)
+        
         useCase.showBoxManagementWindow()
         
-        XCTAssertEqual(boxNodeCount(), 1)
+        let boxNodes = viewController.itemsController.arrangedObjects.childNodes!!
+        XCTAssertEqual(boxNodes.count, 1)
+        let boxNode = boxNodes[0].representedObject as BoxNode
+        XCTAssertEqual(boxNode.boxId, existingId)
+        XCTAssertEqual(boxNode.title, existingTitle)
     }
 
     func testAddItem_WithBoxInRepo_CreatesItemBelowBox() {
         let existingId = BoxId(1337)
         ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
-        XCTAssertNotNil(boxRepository!.boxWithId(existingId))
         useCase.showBoxManagementWindow()
         
         // When
         viewController.addItem(self)
         
         // Then
-        if let box: ManagedBox = allBoxes().first {
-            XCTAssertEqual(box.items.count, 1, "contains an item")
-            
-            if let item: ManagedItem = box.items.anyObject() as? ManagedItem {
-                XCTAssertEqual(item.title, "New Item")
-                XCTAssertEqual(item.box, box)
+        if let managedBox: ManagedBox = allBoxes().first {
+            if let managedItem: ManagedItem = managedBox.items.anyObject() as? ManagedItem {
+                XCTAssertEqual(managedItem.title, "New Item")
+                XCTAssertEqual(managedItem.box, managedBox)
+            } else {
+                XCTFail("no items found")
             }
         } else {
             XCTFail("no boxes found")

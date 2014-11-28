@@ -63,7 +63,7 @@ public class PersistentStack: NSObject {
             if error != nil {
                 dict[NSUnderlyingErrorKey] = error
             }
-            error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
+            error = NSError(domain: kErrorDomain, code: 9999, userInfo: dict)
             NSApplication.sharedApplication().presentError(error!)
             return nil
         }
@@ -71,7 +71,12 @@ public class PersistentStack: NSObject {
         return coordinator
     }()
     
+    
     // MARK: - Core Data Saving and Undo support
+    
+    public func objectContextWillSave() {
+        // TODO: update creation/modification dates
+    }
     
     public func save() {
         // Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
