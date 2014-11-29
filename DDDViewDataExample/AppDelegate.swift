@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             success = false
         } else if error!.code == NSFileReadNoSuchFileError {
             let fileManager = NSFileManager.defaultManager()
-            if fileManager.createDirectoryAtPath(self.applicationDocumentsDirectory.path!, withIntermediateDirectories: true, attributes: nil, error: &error) {
+            if fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil, error: &error) {
                 return
             }
             
