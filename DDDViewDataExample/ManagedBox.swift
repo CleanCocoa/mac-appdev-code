@@ -53,6 +53,12 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     public lazy var box: Box = {
         
         let box = Box(boxId: self.boxId(), title: self.title)
+        let managedItems = self.items.allObjects as [ManagedItem]
+        let items = managedItems.map() { (item: ManagedItem) -> Item in
+            return item.item
+        }
+        box.items = items
+            
         box.addObserver(self, forKeyPath: "title", options: .New, context: &boxContext)
         box.addObserver(self, forKeyPath: "items", options: .New, context: &boxContext)
         

@@ -57,9 +57,8 @@ class ItemViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
-    func boxNodes() -> [AnyObject] {
-        let arrangedObjects: AnyObject! = viewController.itemsController.arrangedObjects
-        return arrangedObjects.childNodes!!
+    func boxNodes() -> [NSTreeNode] {
+        return viewController.itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
     }
     
     func boxNodeCount() -> Int {
@@ -67,7 +66,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func boxAtIndex(index: Int) -> NSTreeNode {
-        return boxNodes()[index] as NSTreeNode
+        return boxNodes()[index]
     }
     
     func itemTreeNode(atBoxIndex boxIndex: Int, itemIndex: Int) -> NSTreeNode {
@@ -229,4 +228,40 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertEqual(selectedBox.children[0].isLeaf, true, "child should be item=leaf")
     }
 
+    
+    //MARK: Displaying Box Data
+    
+    func testDisplayData_Once_PopulatesTree() {
+        let itemId = ItemId(444)
+        let itemData = ItemData(itemId: itemId, title: "irrelevant item title")
+        let boxId = BoxId(1122)
+        let boxData = BoxData(boxId: boxId, title: "irrelevant box title", itemData: [itemData])
+
+        viewController.displayBoxData([boxData])
+        
+        XCTAssertEqual(boxNodeCount(), 1)
+        let soleBoxTreeNode = boxAtIndex(0)
+        let boxNode = soleBoxTreeNode.representedObject as BoxNode
+        XCTAssertEqual(boxNode.boxId, boxId)
+        
+        let itemNodes = soleBoxTreeNode.childNodes! as [NSTreeNode]
+        XCTAssertEqual(itemNodes.count, 1)
+        if let soleItemTreeNode = itemNodes.first {
+            let itemNode = soleItemTreeNode.representedObject as ItemNode
+            XCTAssertEqual(itemNode.itemId, itemId)
+        }
+    }
+    
+    func testDisplayData_Twice_ReplacedNodes() {
+        let itemId = ItemId(444)
+        let itemData = ItemData(itemId: itemId, title: "irrelevant item title")
+        let boxId = BoxId(1122)
+        let boxData = BoxData(boxId: boxId, title: "irrelevant box title", itemData: [itemData])
+        
+        viewController.displayBoxData([boxData])
+        viewController.displayBoxData([boxData])
+        
+        XCTAssertEqual(boxNodeCount(), 1)
+        XCTAssertEqual(boxAtIndex(0).childNodes!.count, 1)
+    }
 }

@@ -42,6 +42,12 @@ class AddingItemsTests: CoreDataTestCase {
         
         return []
     }
+    
+    func allBoxNodes() -> [NSTreeNode] {
+        return viewController.itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+    }
+    
+    //MARK: Box
 
     func testAddFirstBox_CreatesBoxRecord() {
         useCase.showBoxManagementWindow()
@@ -67,13 +73,15 @@ class AddingItemsTests: CoreDataTestCase {
         
         useCase.showBoxManagementWindow()
         
-        let boxNodes = viewController.itemsController.arrangedObjects.childNodes!!
+        let boxNodes = allBoxNodes()
         XCTAssertEqual(boxNodes.count, 1)
         let boxNode = boxNodes[0].representedObject as BoxNode
         XCTAssertEqual(boxNode.boxId, existingId)
         XCTAssertEqual(boxNode.title, existingTitle)
     }
 
+    //MARK: Item
+    
     func testAddItem_WithBoxInRepo_CreatesItemBelowBox() {
         let existingId = BoxId(1337)
         ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
@@ -92,6 +100,27 @@ class AddingItemsTests: CoreDataTestCase {
             }
         } else {
             XCTFail("no boxes found")
+        }
+    }
+    
+    func testExistingItems_ShowInView() {
+        let existingBoxId = BoxId(123)
+        ManagedBox.insertManagedBox(existingBoxId, title: "the box", inManagedObjectContext: context)
+        let managedBox = allBoxes().first!
+        let existingItemId = ItemId(456)
+        let existingItem = Item(itemId: existingItemId, title: "the item")
+        ManagedItem.insertManagedItem(existingItem, managedBox: managedBox, inManagedObjectContext: context)
+        
+        useCase.showBoxManagementWindow()
+        
+        let boxNodes = allBoxNodes()
+        XCTAssertEqual(boxNodes.count, 1)
+        let boxNode = boxNodes[0].representedObject as BoxNode
+        XCTAssertEqual(boxNode.children.count, 1)
+        if let itemNode = boxNode.children.first as? ItemNode {
+            XCTAssertEqual(itemNode.itemId, existingItemId)
+        } else {
+            XCTFail("no item was recreated")
         }
     }
 }

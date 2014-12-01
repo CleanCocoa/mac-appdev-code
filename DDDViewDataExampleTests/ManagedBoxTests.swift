@@ -57,13 +57,12 @@ class ManagedBoxTests: CoreDataTestCase {
             let item = Item(itemId: itemId, title: "the item")
             box.addItem(item)
             
-            let foundBox = allBoxes()!.first! as ManagedBox
-            let items = foundBox.items
-            XCTAssertEqual(items.count, 1, "contains item")
-            if let foundItem = items.anyObject() as? ManagedItem {
-                XCTAssertEqual(foundItem.item, item)
+            let managedBox = allBoxes()!.first! as ManagedBox
+            XCTAssertEqual(managedBox.items.count, 1, "contains item")
+            if let managedItem = managedBox.items.anyObject() as? ManagedItem {
+                XCTAssertEqual(managedItem.item, item)
             } else {
-                XCTFail("no item")
+                XCTFail("no managed item")
             }
             
         } else {

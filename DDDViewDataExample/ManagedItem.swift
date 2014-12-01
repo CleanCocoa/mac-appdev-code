@@ -53,6 +53,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
     public lazy var item: Item = {
         
         let item = Item(itemId: self.itemId(), title: self.title)
+        // TODO add back-reference to box
         item.addObserver(self, forKeyPath: "title", options: .New, context: &itemContext)
         
         self._item = item

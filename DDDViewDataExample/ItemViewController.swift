@@ -18,11 +18,22 @@ public struct BoxData {
     let boxId: BoxId
     let title: String
     let itemData: [ItemData]
+    
+    public init(boxId: BoxId, title: String, itemData: [ItemData]) {
+        self.boxId = boxId
+        self.title = title
+        self.itemData = itemData
+    }
 }
 
 public struct ItemData {
     let itemId: ItemId
     let title: String
+    
+    public init(itemId: ItemId, title: String) {
+        self.itemId = itemId
+        self.title = title
+    }
 }
 
 
@@ -110,6 +121,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     //MARK: Populate View
     
     public func displayBoxData(boxData: [BoxData]) {
+        itemsController.content = NSMutableArray()
         for data in boxData {
             itemsController.addObject(BoxNode(boxData: data))
         }
