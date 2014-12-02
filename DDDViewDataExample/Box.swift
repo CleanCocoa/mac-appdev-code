@@ -29,6 +29,7 @@ public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
     func addBox(box: Box)
+    func removeBox(#boxId: BoxId)
     func boxes() -> [Box]
     func boxWithId(boxId: BoxId) -> Box?
     func count() -> Int
@@ -52,9 +53,23 @@ public class Box: NSObject {
     }
     
     public func item(#itemId: ItemId) -> Item? {
-        for item in items {
+        if let index = indexOfItem(itemId: itemId) {
+            return items[index]
+        }
+        
+        return nil
+    }
+    
+    public func removeItem(#itemId: ItemId) {
+        if let index = indexOfItem(itemId: itemId) {
+            items.removeAtIndex(index)
+        }
+    }
+    
+    func indexOfItem(#itemId: ItemId) -> Int? {
+        for (index, item) in enumerate(items) {
             if item.itemId == itemId {
-                return item
+                return index
             }
         }
         

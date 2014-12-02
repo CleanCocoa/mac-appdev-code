@@ -10,9 +10,10 @@ import Cocoa
 
 public class BoxAndItemService: HandlesItemListEvents {
     public init() { }
+    
+    lazy var repository = ServiceLocator.boxRepository()
 
     public func provisionNewBoxId() -> BoxId {
-        let repository = ServiceLocator.boxRepository()
         let boxId = repository.nextId()
         let box = Box(boxId: boxId, title: "New Box")
         
@@ -22,7 +23,6 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
-        let repository = ServiceLocator.boxRepository()
         let itemId = repository.nextItemId()
         
         if let box = repository.boxWithId(boxId) {
@@ -34,20 +34,26 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func changeBoxTitle(boxId: BoxId, title: String) {
-        let repository = ServiceLocator.boxRepository()
-        
         if let box = repository.boxWithId(boxId) {
             box.title = title
         }
     }
     
     public func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
-        let repository = ServiceLocator.boxRepository()
-        
         if let box = repository.boxWithId(boxId) {
             if let item = box.item(itemId: itemId) {
                 item.title = title
             }
+        }
+    }
+    
+    public func removeBox(boxId: BoxId) {
+        repository.removeBox(boxId: boxId)
+    }
+    
+    public func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
+        if let box = repository.boxWithId(boxId) {
+            box.removeItem(itemId: itemId)
         }
     }
 }

@@ -44,6 +44,14 @@ class EventHandlerStub: HandlesItemListEvents {
     func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
         // no op
     }
+    
+    func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
+        // no op
+    }
+    
+    func removeBox(boxId: BoxId) {
+        // no op
+    }
 }
 
 
@@ -87,7 +95,7 @@ class ItemViewControllerTests: XCTestCase {
     
     func testView_IsLoaded() {
         XCTAssertNotNil(viewController.view, "view should be set in Nib")
-        XCTAssertEqual(viewController.view.className, "NSOutlineView", "view should be table view")
+        XCTAssertEqual(viewController.view.className, "NSOutlineView", "view should be outline view")
         XCTAssertEqual(viewController.view, viewController.outlineView, "tableView should be alternative to view")
     }
 
@@ -99,11 +107,11 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testItemsController_IsConnected() {
-        XCTAssertNotNil(viewController.itemsController, "items controller should be connected in Nib")
+        XCTAssertNotNil(viewController.itemsController)
     }
     
     func testItemsController_PreservesSelection() {
-        XCTAssertTrue(viewController.itemsController.preservesSelection, "items controller should preserve selections")
+        XCTAssertTrue(viewController.itemsController.preservesSelection)
     }
     
     func testItemsController_CocoaBindings() {
@@ -112,31 +120,43 @@ class ItemViewControllerTests: XCTestCase {
         let titleColumn = outlineView.tableColumnWithIdentifier(kColumnNameTitle)
         let countColumn = outlineView.tableColumnWithIdentifier(kColumnNameCount)
         
-        XCTAssertTrue(hasBinding(controller, binding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"), "items controller should obtain sortDescriptors from view controller through bindings")
-        XCTAssertTrue(hasBinding(outlineView, binding: NSContentBinding, to: controller, throughKeyPath: "arrangedObjects"), "outline view should have binding to items controller's arrangedObjects")
+        XCTAssertTrue(hasBinding(controller, binding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"))
+        XCTAssertTrue(hasBinding(outlineView, binding: NSContentBinding, to: controller, throughKeyPath: "arrangedObjects"))
         
-        XCTAssertTrue(hasBinding(titleColumn!, binding: NSValueBinding, to: controller, throughKeyPath: "arrangedObjects.title"), "bind title column to title property")
-        XCTAssertTrue(hasBinding(countColumn!, binding: NSValueBinding, to: controller, throughKeyPath: "arrangedObjects.count"), "bind count column to count property")
+        XCTAssertTrue(hasBinding(titleColumn!, binding: NSValueBinding, to: controller, throughKeyPath: "arrangedObjects.title"))
+        XCTAssertTrue(hasBinding(countColumn!, binding: NSValueBinding, to: controller, throughKeyPath: "arrangedObjects.count"))
     }
     
     func testAddBoxButton_IsConnected() {
-        XCTAssertNotNil(viewController.addBoxButton, "add item button not connected")
+        XCTAssertNotNil(viewController.addBoxButton)
     }
     
     func testAddBoxButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.addBoxButton.action, Selector("addBox:"), "'add box' button should be wired to addBox:");
+        XCTAssertEqual(viewController.addBoxButton.action, Selector("addBox:"))
     }
     
     func testAddItemButton_IsConnected() {
-        XCTAssertNotNil(viewController.addItemButton, "add item button not connected")
+        XCTAssertNotNil(viewController.addItemButton)
     }
     
     func testAddItemButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.addItemButton.action, Selector("addItem:"), "'add item' button should be wired to addItem:");
+        XCTAssertEqual(viewController.addItemButton.action, Selector("addItem:"))
     }
     
     func testAddItemButton_CocoaBindings() {
         XCTAssertTrue(hasBinding(viewController.addItemButton, binding: NSEnabledBinding, to: viewController.itemsController, throughKeyPath: "selectionIndexPath", transformingWith: "NSIsNotNil"), "enable button in virtue of itemsController selection != nil")
+    }
+    
+    func testRemoveButton_IsConnected() {
+        XCTAssertNotNil(viewController.removeButton)
+    }
+
+    func testRemoveButton_IsWiredToAction() {
+        XCTAssertEqual(viewController.removeButton.action, Selector("removeSelectedObject:"))
+    }
+    
+    func testRemoveButton_CocoaBindings() {
+        XCTAssertTrue(hasBinding(viewController.removeButton, binding: NSEnabledBinding, to: viewController.itemsController, throughKeyPath: "selectionIndexPath", transformingWith: "NSIsNotNil"), "enable button in virtue of itemsController selection != nil")
     }
     
     func testItemRowView_TitleCell_SetUpProperly() {
@@ -144,8 +164,8 @@ class ItemViewControllerTests: XCTestCase {
         
         let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as NSTableCellView
         let titleTextField = titleCellView.textField!
-        XCTAssertTrue(titleTextField.editable, "title text field should be editable")
-        XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title"), "title text field should modify item title")
+        XCTAssertTrue(titleTextField.editable)
+        XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title"))
     }
     
     func testItemRowView_CountCell_SetUpProperly() {
@@ -154,7 +174,7 @@ class ItemViewControllerTests: XCTestCase {
         let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as NSTableCellView
         let countTextField = countCellView.textField!
         XCTAssertFalse(countTextField.editable, "count text field should not be editable")
-        XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"), "count text field should modify item count")
+        XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"))
     }
     
     
@@ -235,7 +255,7 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertEqual(selectedBox.children.count, 1, "box contains new child")
         XCTAssertEqual(selectedBox.children[0].isLeaf, true, "child should be item=leaf")
     }
-
+    
     
     //MARK: Displaying Box Data
     

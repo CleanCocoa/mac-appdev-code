@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
@@ -17,14 +17,14 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5W2-Ce-7r3">
                         <rect key="frame" x="20" y="61" width="440" height="189"/>
-                        <clipView key="contentView" id="DN2-WF-WRw">
+                        <clipView key="contentView" misplaced="YES" id="DN2-WF-WRw">
                             <rect key="frame" x="1" y="17" width="238" height="117"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -119,7 +119,7 @@
                             <rect key="frame" x="1" y="119" width="223" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="F74-kd-vGJ">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="F74-kd-vGJ">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -129,7 +129,7 @@
                         </tableHeaderView>
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wZO-0M-LlQ">
-                        <rect key="frame" x="14" y="13" width="93" height="32"/>
+                        <rect key="frame" x="14" y="13" width="94" height="32"/>
                         <buttonCell key="cell" type="push" title="Add Box" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Gd-j8-5Dt">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -139,7 +139,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9xY-gX-2jV">
-                        <rect key="frame" x="107" y="13" width="98" height="32"/>
+                        <rect key="frame" x="108" y="13" width="96" height="32"/>
                         <buttonCell key="cell" type="push" title="Add Item" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2jt-cD-Omc">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -153,6 +153,21 @@
                             </binding>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bur-DI-7jM">
+                        <rect key="frame" x="375" y="13" width="91" height="32"/>
+                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SC6-eG-S5l">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="removeSelectedObject:" target="pNN-YO-ueG" id="IaH-jp-7Ho"/>
+                            <binding destination="l1V-qr-cFZ" name="enabled" keyPath="selectionIndexPath" id="Pfy-xq-hsI">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSIsNotNil</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="wZO-0M-LlQ" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="092-xp-OxT"/>
@@ -160,7 +175,9 @@
                     <constraint firstAttribute="bottom" secondItem="wZO-0M-LlQ" secondAttribute="bottom" constant="20" id="B8E-r4-Lpl"/>
                     <constraint firstItem="9xY-gX-2jV" firstAttribute="top" secondItem="5W2-Ce-7r3" secondAttribute="bottom" constant="20" id="M5I-Op-gYL"/>
                     <constraint firstItem="9xY-gX-2jV" firstAttribute="leading" secondItem="wZO-0M-LlQ" secondAttribute="trailing" constant="12" id="VW3-dR-ISM"/>
+                    <constraint firstAttribute="bottom" secondItem="bur-DI-7jM" secondAttribute="bottom" constant="20" id="Wd9-L4-f0R"/>
                     <constraint firstItem="5W2-Ce-7r3" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="Wn8-OS-8pK"/>
+                    <constraint firstAttribute="trailing" secondItem="bur-DI-7jM" secondAttribute="trailing" constant="20" id="eRF-T1-KUo"/>
                     <constraint firstAttribute="bottom" secondItem="9xY-gX-2jV" secondAttribute="bottom" constant="20" id="hBF-le-DyI"/>
                     <constraint firstItem="5W2-Ce-7r3" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="20" id="k15-c8-3zd"/>
                 </constraints>
@@ -168,6 +185,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
+            <point key="canvasLocation" x="504" y="452"/>
         </window>
         <treeController objectClassName="ItemNode" childrenKeyPath="children" leafKeyPath="isLeaf" id="l1V-qr-cFZ" userLabel="Items Controller">
             <declaredKeys>
@@ -185,6 +203,7 @@
                 <outlet property="addBoxButton" destination="wZO-0M-LlQ" id="bCp-RN-Wxd"/>
                 <outlet property="addItemButton" destination="9xY-gX-2jV" id="dkp-Z7-raE"/>
                 <outlet property="itemsController" destination="l1V-qr-cFZ" id="4n9-8d-G3D"/>
+                <outlet property="removeButton" destination="bur-DI-7jM" id="ctR-Hm-WrD"/>
                 <outlet property="view" destination="Jzx-Bo-sG9" id="PI0-fk-89i"/>
             </connections>
         </viewController>

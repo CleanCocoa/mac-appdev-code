@@ -1,5 +1,5 @@
 //
-//  AddingItemsTests.swift
+//  UseBoxAndItemTests.swift
 //  DDDViewDataExample
 //
 //  Created by Christian Tietze on 24.11.14.
@@ -11,7 +11,7 @@ import XCTest
 
 import DDDViewDataExample
 
-class AddingItemsTests: CoreDataTestCase {
+class UseBoxAndItemTests: CoreDataTestCase {
     var boxRepository: BoxRepository?
     var useCase: ManageBoxesAndItems! = ManageBoxesAndItems()
     lazy var viewController: ItemViewController = {
@@ -43,11 +43,23 @@ class AddingItemsTests: CoreDataTestCase {
         return []
     }
     
+    func allItems() -> [ManagedItem] {
+        let request = NSFetchRequest(entityName: ManagedItem.entityName())
+        let results: [AnyObject]? = context.executeFetchRequest(request, error: nil)
+        
+        if let items = results as? [ManagedItem] {
+            return items
+        }
+        
+        return []
+    }
+    
     func allBoxNodes() -> [NSTreeNode] {
         return viewController.itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
     }
     
-    //MARK: Box
+    //MARK: -
+    //MARK: Add Box
 
     func testAddFirstBox_CreatesBoxRecord() {
         useCase.showBoxManagementWindow()
@@ -80,7 +92,8 @@ class AddingItemsTests: CoreDataTestCase {
         XCTAssertEqual(boxNode.title, existingTitle)
     }
 
-    //MARK: Item
+    
+    //MARK: Add Item
     
     func testAddItem_WithBoxInRepo_CreatesItemBelowBox() {
         let existingId = BoxId(1337)
@@ -122,5 +135,95 @@ class AddingItemsTests: CoreDataTestCase {
         } else {
             XCTFail("no item was recreated")
         }
+    }
+    
+
+    //MARK: -
+    //MARK: Edit Box
+    
+    func testChangeBoxTitle_PersistsChanges() {
+        let existingId = BoxId(1337)
+        ManagedBox.insertManagedBox(existingId, title: "old title", inManagedObjectContext: context)
+        useCase.showBoxManagementWindow()
+        
+        let newTitle = "new title"
+        changeSoleBox(title: newTitle)
+        
+        let managedBox = allBoxes().first!
+        XCTAssertEqual(managedBox.title, newTitle)
+    }
+    
+    func changeSoleBox(title newTitle: String) {
+        let soleBoxTreeNode = allBoxNodes().first!
+        let boxNode = soleBoxTreeNode.representedObject as BoxNode
+        boxNode.title = newTitle
+    }
+    
+    //MARK: Edit Item
+    
+    func testChangeItemTitle_PersistsChanges() {
+        createBoxWithItem()
+        useCase.showBoxManagementWindow()
+        
+        let newTitle = "new title"
+        changeSoleItem(title: newTitle)
+        
+        let managedBox = allBoxes().first!
+        let managedItem = managedBox.items.anyObject()! as ManagedItem
+        XCTAssertEqual(managedItem.title, newTitle)
+    }
+    
+    func createBoxWithItem() {
+        let existingBoxId = BoxId(123)
+        ManagedBox.insertManagedBox(existingBoxId, title: "the box", inManagedObjectContext: context)
+        
+        let managedBox = allBoxes().first!
+        let existingItemId = ItemId(456)
+        let existingItem = Item(itemId: existingItemId, title: "old title")
+        ManagedItem.insertManagedItem(existingItem, managedBox: managedBox, inManagedObjectContext: context)
+    }
+    
+    func changeSoleItem(title newTitle: String) {
+        let soleBoxTreeNode = allBoxNodes().first!
+        let boxNode = soleBoxTreeNode.representedObject as BoxNode
+        let itemNode = boxNode.children.first! as ItemNode
+        itemNode.title = newTitle
+    }
+    
+    
+    //MARK: -
+    //MARK: Remove Box
+    
+    func testRemoveBox_PersistsChanged() {
+        createBoxWithItem()
+        
+        useCase.showBoxManagementWindow()
+        let itemIndexPath = NSIndexPath(index: 0)
+        viewController.itemsController.setSelectionIndexPath(itemIndexPath)
+        
+        // When
+        viewController.removeSelectedObject(self)
+        
+        // Then
+        XCTAssertEqual(allBoxes().count, 0)
+        XCTAssertEqual(allItems().count, 0)
+    }
+    
+    //MARK: Remove Item
+    
+    func testRemoveItem_PersistsChanges() {
+        createBoxWithItem()
+        let managedBox = allBoxes().first!
+        XCTAssertEqual(managedBox.items.count, 1)
+
+        useCase.showBoxManagementWindow()
+        let itemIndexPath = NSIndexPath(index: 0).indexPathByAddingIndex(0)
+        viewController.itemsController.setSelectionIndexPath(itemIndexPath)
+        
+        // When
+        viewController.removeSelectedObject(self)
+        
+        // Then
+        XCTAssertEqual(managedBox.items.count, 0)
     }
 }

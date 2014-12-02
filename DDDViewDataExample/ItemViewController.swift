@@ -91,6 +91,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     @IBOutlet public weak var itemsController: NSTreeController!
     @IBOutlet public weak var addBoxButton: NSButton!
     @IBOutlet public weak var addItemButton: NSButton!
+    @IBOutlet public weak var removeButton: NSButton!
     
     public var outlineView: NSOutlineView {
         return self.view as NSOutlineView
@@ -258,5 +259,29 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         return rootNodes.map { (treeNode: NSTreeNode) -> BoxNode in
             return treeNode.representedObject as BoxNode
         }
+    }
+    
+    
+    //MARK: Remove items
+    
+    @IBAction public func removeSelectedObject(sender: AnyObject) {
+        if (!hasSelection()) {
+            return
+        }
+        
+        let treeNode: TreeNode = selectedNode()
+        
+        if let boxNode = treeNode as? BoxNode {
+            eventHandler.removeBox(boxNode.boxId)
+        } else if let itemNode = treeNode as? ItemNode {
+            if let boxNode = itemNode.parentBoxNode(inArray: boxNodes()) {
+                eventHandler.removeItem(itemNode.itemId, fromBox: boxNode.boxId)
+            }
+        }
+    }
+    
+    func selectedNode() -> TreeNode {
+        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
+        return firstSelectedTreeNode.representedObject as TreeNode
     }
 }

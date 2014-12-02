@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5001C0DA1A2DBDA800819479 /* ChangingItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
@@ -16,7 +15,7 @@
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
 		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
-		60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C571A238676002598DB /* AddingItemsTests.swift */; };
+		60BF3C581A238676002598DB /* UseBoxAndItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C571A238676002598DB /* UseBoxAndItemTests.swift */; };
 		60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */; };
 		60BF3C5C1A238B73002598DB /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5B1A238B73002598DB /* Box.swift */; };
 		60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5F1A238DA3002598DB /* ManagedBox.swift */; };
@@ -47,7 +46,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangingItemsTests.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
@@ -56,7 +54,7 @@
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
 		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
-		60BF3C571A238676002598DB /* AddingItemsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingItemsTests.swift; sourceTree = "<group>"; };
+		60BF3C571A238676002598DB /* UseBoxAndItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseBoxAndItemTests.swift; sourceTree = "<group>"; };
 		60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBoxRepository.swift; sourceTree = "<group>"; };
 		60BF3C5B1A238B73002598DB /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		60BF3C5F1A238DA3002598DB /* ManagedBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBox.swift; sourceTree = "<group>"; };
@@ -121,8 +119,7 @@
 		60BF3C561A23865A002598DB /* Functional */ = {
 			isa = PBXGroup;
 			children = (
-				60BF3C571A238676002598DB /* AddingItemsTests.swift */,
-				5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */,
+				60BF3C571A238676002598DB /* UseBoxAndItemTests.swift */,
 			);
 			name = Functional;
 			sourceTree = "<group>";
@@ -366,10 +363,9 @@
 				60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */,
 				60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
-				60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */,
+				60BF3C581A238676002598DB /* UseBoxAndItemTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
-				5001C0DA1A2DBDA800819479 /* ChangingItemsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

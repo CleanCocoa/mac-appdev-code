@@ -68,14 +68,24 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         ManagedBox.insertManagedBox(box.boxId, title: box.title, inManagedObjectContext: self.managedObjectContext)
     }
     
+    public func removeBox(#boxId: BoxId) {
+        if let managedBox = managedBoxWithId(boxId) {
+            managedObjectContext.deleteObject(managedBox)
+        }
+    }
+    
     public func boxWithId(boxId: BoxId) -> Box? {
-        if let managedBox = managedBoxWithUniqueId(boxId.identifier) {
+        if let managedBox = managedBoxWithId(boxId) {
             return managedBox.box
         }
         
         return nil
     }
     
+    func managedBoxWithId(boxId: BoxId) -> ManagedBox? {
+        return managedBoxWithUniqueId(boxId.identifier)
+    }
+        
     public func boxes() -> [Box] {
         let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
         fetchRequest.includesSubentities = true
