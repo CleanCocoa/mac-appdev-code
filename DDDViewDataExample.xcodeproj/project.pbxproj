@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5001C0DA1A2DBDA800819479 /* ChangingItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */; };
+		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangingItemsTests.swift; sourceTree = "<group>"; };
+		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */,
 				60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */,
 				60B2D70C1A1A40960045D11F /* ItemViewController.swift */,
+				502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				60A11C061A288763006954EA /* ManagedEntity.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
+				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
