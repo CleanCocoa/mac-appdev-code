@@ -269,8 +269,10 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
             return
         }
         
-        let treeNode: TreeNode = selectedNode()
-        
+        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
+        let indexPath = firstSelectedTreeNode.indexPath
+        let treeNode: TreeNode = firstSelectedTreeNode.representedObject as TreeNode
+
         if let boxNode = treeNode as? BoxNode {
             eventHandler.removeBox(boxNode.boxId)
         } else if let itemNode = treeNode as? ItemNode {
@@ -278,10 +280,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
                 eventHandler.removeItem(itemNode.itemId, fromBox: boxNode.boxId)
             }
         }
-    }
-    
-    func selectedNode() -> TreeNode {
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
-        return firstSelectedTreeNode.representedObject as TreeNode
+        
+        itemsController.removeObjectAtArrangedObjectIndexPath(indexPath)
     }
 }

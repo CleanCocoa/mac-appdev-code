@@ -292,4 +292,34 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertEqual(boxNodeCount(), 1)
         XCTAssertEqual(boxAtIndex(0).childNodes!.count, 1)
     }
+
+    
+    //MARK: -
+    //MARK: Removing Boxes
+    
+    func testRemoveBox_RemovesNodeFromTree() {
+        let treeController = viewController.itemsController
+        treeController.addObject(TestBoxNode(title: "the box"))
+        treeController.setSelectionIndexPath(NSIndexPath(index: 0))
+        XCTAssertEqual(boxNodeCount(), 1)
+        
+        viewController.removeSelectedObject(self)
+        
+        XCTAssertEqual(boxNodeCount(), 0)
+    }
+    
+    func testRemoveItem_RemovesNodeFromTree() {
+        let treeController = viewController.itemsController
+        let rootNode = TestBoxNode(title: "the box")
+        rootNode.children = [TestBoxNode(title: "the item")]
+        treeController.addObject(rootNode)
+        treeController.setSelectionIndexPath(NSIndexPath(index: 0).indexPathByAddingIndex(0))
+        XCTAssertEqual(boxNodes().first!.childNodes!.count, 1)
+        
+        viewController.removeSelectedObject(self)
+        
+        XCTAssertEqual(boxNodeCount(), 1)
+        XCTAssertEqual(boxNodes().first!.childNodes!.count, 0)
+    }
+
 }
