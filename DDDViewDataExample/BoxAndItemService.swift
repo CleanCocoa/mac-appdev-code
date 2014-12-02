@@ -11,7 +11,9 @@ import Cocoa
 public class BoxAndItemService: HandlesItemListEvents {
     public init() { }
     
-    lazy var repository = ServiceLocator.boxRepository()
+    var repository: BoxRepository! {
+        return ServiceLocator.boxRepository()
+    }
 
     public func provisionNewBoxId() -> BoxId {
         let boxId = repository.nextId()
