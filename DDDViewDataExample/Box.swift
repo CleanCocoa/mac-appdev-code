@@ -50,4 +50,14 @@ public class Box: NSObject {
         
         items.append(item)
     }
+    
+    public func item(#itemId: ItemId) -> Item? {
+        for item in items {
+            if item.itemId == itemId {
+                return item
+            }
+        }
+        
+        return nil
+    }
 }

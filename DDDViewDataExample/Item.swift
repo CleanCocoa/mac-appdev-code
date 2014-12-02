@@ -38,7 +38,7 @@ public protocol ItemRepository {
 
 public class Item: NSObject {
     public let itemId: ItemId
-    public let title: String
+    public dynamic var title: String
     public var box: Box?
     
     public init(itemId: ItemId, title: String) {
