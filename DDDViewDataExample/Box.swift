@@ -31,7 +31,7 @@ public protocol BoxRepository {
     func addBox(box: Box)
     func removeBox(#boxId: BoxId)
     func boxes() -> [Box]
-    func boxWithId(boxId: BoxId) -> Box?
+    func box(#boxId: BoxId) -> Box?
     func count() -> Int
 }
 

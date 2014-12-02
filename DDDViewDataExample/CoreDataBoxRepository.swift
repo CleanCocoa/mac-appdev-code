@@ -74,7 +74,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         }
     }
     
-    public func boxWithId(boxId: BoxId) -> Box? {
+    public func box(#boxId: BoxId) -> Box? {
         if let managedBox = managedBoxWithId(boxId) {
             return managedBox.box
         }

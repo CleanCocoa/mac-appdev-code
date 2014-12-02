@@ -38,7 +38,7 @@ class ManagedBoxTests: CoreDataTestCase {
         let boxId = BoxId(1234)
         ManagedBox.insertManagedBox(boxId, title: "before", inManagedObjectContext: context)
         
-        if let box = repository!.boxWithId(boxId) {
+        if let box = repository!.box(boxId: boxId) {
             box.title = "new title"
 
             let foundBox = allBoxes()!.first! as ManagedBox
@@ -52,7 +52,7 @@ class ManagedBoxTests: CoreDataTestCase {
         let boxId = BoxId(1234)
         ManagedBox.insertManagedBox(boxId, title: "irrelevant", inManagedObjectContext: context)
         
-        if let box = repository!.boxWithId(boxId) {
+        if let box = repository!.box(boxId: boxId) {
             let itemId = ItemId(6789)
             let item = Item(itemId: itemId, title: "the item")
             box.addItem(item)

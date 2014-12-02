@@ -25,7 +25,7 @@ public class BoxAndItemService: HandlesItemListEvents {
     public func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
         let itemId = repository.nextItemId()
         
-        if let box = repository.boxWithId(boxId) {
+        if let box = repository.box(boxId: boxId) {
             let item = Item(itemId: itemId, title: "New Item")
             box.addItem(item)
         }
@@ -34,13 +34,13 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func changeBoxTitle(boxId: BoxId, title: String) {
-        if let box = repository.boxWithId(boxId) {
+        if let box = repository.box(boxId: boxId) {
             box.title = title
         }
     }
     
     public func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
-        if let box = repository.boxWithId(boxId) {
+        if let box = repository.box(boxId: boxId) {
             if let item = box.item(itemId: itemId) {
                 item.title = title
             }
@@ -52,7 +52,7 @@ public class BoxAndItemService: HandlesItemListEvents {
     }
     
     public func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
-        if let box = repository.boxWithId(boxId) {
+        if let box = repository.box(boxId: boxId) {
             box.removeItem(itemId: itemId)
         }
     }
