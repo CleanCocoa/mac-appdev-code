@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5001C0DA1A2DBDA800819479 /* ChangingItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangingItemsTests.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				60BF3C571A238676002598DB /* AddingItemsTests.swift */,
+				5001C0D91A2DBDA800819479 /* ChangingItemsTests.swift */,
 			);
 			name = Functional;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				60BF3C581A238676002598DB /* AddingItemsTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
+				5001C0DA1A2DBDA800819479 /* ChangingItemsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

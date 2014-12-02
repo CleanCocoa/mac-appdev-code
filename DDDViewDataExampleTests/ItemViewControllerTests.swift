@@ -36,6 +36,14 @@ class EventHandlerStub: HandlesItemListEvents {
     func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
         return ItemId(0)
     }
+    
+    func boxDidChange(boxId: BoxId, title: String) {
+        // no op
+    }
+    
+    func itemDidChange(itemId: ItemId, title: String) {
+        // no op
+    }
 }
 
 

@@ -32,4 +32,16 @@ public class BoxAndItemService: HandlesItemListEvents {
         
         return itemId //TODO: return NotFound ID
     }
+    
+    public func boxDidChange(boxId: BoxId, title: String) {
+        let repository = ServiceLocator.boxRepository()
+        
+        if let box = repository.boxWithId(boxId) {
+            box.title = title
+        }
+    }
+    
+    public func itemDidChange(itemId: ItemId, title: String) {
+        
+    }
 }
