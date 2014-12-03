@@ -131,6 +131,8 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     func boxNode(boxData: BoxData) -> BoxNode {
         let boxNode = BoxNode(boxData: boxData)
+        // TODO test the title setup
+//        boxNode.title = boxData.title
         boxNode.eventHandler = self
         boxNode.children = itemNodes(boxData.itemData)
         
@@ -146,6 +148,8 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     func itemNode(itemData: ItemData) -> ItemNode {
         let itemNode = ItemNode(itemData: itemData)
+        // TODO test the title setup
+//        itemNode.title = itemData.title
         itemNode.eventHandler = self
         
         return itemNode
@@ -226,9 +230,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         if let boxId = itemData.boxId {
             if let boxNode = existingBoxNode(boxId) {
                 let itemId = itemData.itemId
-                let itemNode = ItemNode(itemId: itemId)
-                itemNode.title = itemData.title
-                itemNode.eventHandler = self
+                let itemNode = self.itemNode(itemData)
                 
                 boxNode.addItemNode(itemNode)
                 orderTree()

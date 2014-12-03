@@ -21,6 +21,9 @@ class UseBoxAndItemTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         
+        DomainEventPublisher.resetSharedInstance()
+        DomainEventPublisher.sharedInstance.setDefaultCenter(NSNotificationCenter())
+        
         ServiceLocator.resetSharedInstance()
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
         
@@ -29,6 +32,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     override func tearDown() {
         ServiceLocator.resetSharedInstance()
+        DomainEventPublisher.resetSharedInstance()
         super.tearDown()
     }
     

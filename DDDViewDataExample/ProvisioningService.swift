@@ -8,12 +8,6 @@
 
 import Foundation
 
-class DomainEventPublisher {
-    class func defaultCenter() -> NSNotificationCenter {
-        return NSNotificationCenter.defaultCenter()
-    }
-}
-
 let kBoxProvisioned = "Box Provisioned"
 let kBoxItemProvisioned = "Box Item Provisioned"
 

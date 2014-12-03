@@ -9,20 +9,25 @@
 import Cocoa
 
 public class ManageBoxesAndItems {
-    lazy var boxAndItemService: BoxAndItemService! = {
+    public init() { }
+    
+    lazy var eventHandler: HandleBoxAndItemModifications! = {
         let provisioningService = ProvisioningService(repository: ServiceLocator.boxRepository())
-        return BoxAndItemService(provisioningService: provisioningService)
+        return HandleBoxAndItemModifications(provisioningService: provisioningService)
+    }()
+    
+    lazy var presenter: DisplayBoxesAndItems! = {
+        let service = DisplayBoxesAndItems()
+        return service
     }()
 
     lazy var windowController: ItemManagementWindowController! = {
         let controller = ItemManagementWindowController()
         controller.loadWindow()
-        controller.eventHandler = self.boxAndItemService
-        self.boxAndItemService.consumer = controller.itemViewController
+        controller.eventHandler = self.eventHandler
+        self.presenter.consumer = controller.itemViewController
         return controller
     }()
-    
-    public init() { }
     
     public lazy var itemViewController: ItemViewController = {
         return self.windowController.itemViewController

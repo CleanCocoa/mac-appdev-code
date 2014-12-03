@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
+		503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */; };
+		503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */; };
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
-		60AEEEC71A248AF300C05636 /* BoxAndItemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */; };
+		60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */; };
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
 		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
@@ -50,11 +52,13 @@
 /* Begin PBXFileReference section */
 		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
+		503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayBoxesAndItems.swift; sourceTree = "<group>"; };
+		503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisher.swift; sourceTree = "<group>"; };
 		50C251801A2FA0D400595098 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
-		60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemService.swift; sourceTree = "<group>"; };
+		60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandleBoxAndItemModifications.swift; sourceTree = "<group>"; };
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
 		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
@@ -100,11 +104,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		504D01711A2FD2A700403673 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				60C04BA81A18DFD700F4665D /* Images.xcassets */,
+				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		60AEEEC51A248ADA00C05636 /* Application */ = {
 			isa = PBXGroup;
 			children = (
 				602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */,
-				60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */,
+				60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */,
+				503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -154,6 +168,7 @@
 				60AEEEC51A248ADA00C05636 /* Application */,
 				60C04BCF1A191A7500F4665D /* User Interface */,
 				50C251801A2FA0D400595098 /* Utilities.swift */,
+				504D01711A2FD2A700403673 /* Resources */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExample;
@@ -210,8 +225,6 @@
 		60C04BCF1A191A7500F4665D /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				60C04BA81A18DFD700F4665D /* Images.xcassets */,
-				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
 				60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */,
 				60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */,
 				60B2D70C1A1A40960045D11F /* ItemViewController.swift */,
@@ -224,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				5024903D1A2F64B200CDA666 /* ProvisioningService.swift */,
+				503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */,
 				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
 				60C04BCC1A19179000F4665D /* Item.swift */,
 				60BF3C5B1A238B73002598DB /* Box.swift */,
@@ -342,13 +356,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60AEEEC71A248AF300C05636 /* BoxAndItemService.swift in Sources */,
+				60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */,
+				503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */,
 				60A11C061A288763006954EA /* ManagedEntity.swift in Sources */,
 				5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
 				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
 				50C251811A2FA0D400595098 /* Utilities.swift in Sources */,
+				503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
