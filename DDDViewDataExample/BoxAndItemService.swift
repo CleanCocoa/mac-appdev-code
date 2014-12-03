@@ -8,33 +8,99 @@
 
 import Cocoa
 
+// App service
+public protocol ConsumesBoxAndItem: class {
+    func consume(boxData: BoxData)
+    func consume(itemData: ItemData)
+}
+
 public class BoxAndItemService: HandlesItemListEvents {
-    public init() { }
+    let provisioningService: ProvisioningService
+    var boxProvisioningObserver: NSObjectProtocol!
+    var itemProvisioningObserver: NSObjectProtocol!
+    
+    public var consumer: ConsumesBoxAndItem?
+    
+    public init(provisioningService: ProvisioningService) {
+        self.provisioningService = provisioningService
+        self.subscribe()
+    }
+    
+    func subscribe() {
+        let mainQueue = NSOperationQueue.mainQueue()
+        let publisher = DomainEventPublisher.defaultCenter()
+        
+        self.boxProvisioningObserver = publisher.addObserverForName(kBoxProvisioned, object: nil, queue: mainQueue) {
+            [unowned self] (notification: NSNotification!) in
+            
+            if notification.userInfo == nil {
+                return
+            }
+            
+            let boxId = self.boxId(notification.userInfo!)
+            self.didAddBox(boxId)
+        }
+
+        self.itemProvisioningObserver = publisher.addObserverForName(kBoxItemProvisioned, object: nil, queue: mainQueue) {
+            [unowned self] (notification: NSNotification!) in
+            
+            if notification.userInfo == nil {
+                return
+            }
+            
+            let itemId = self.itemId(notification.userInfo!)
+            let boxId = self.boxId(notification.userInfo!)
+            self.didAddItem(itemId, inBox: boxId)
+        }
+    }
+    
+    func boxId(userInfo: [NSObject : AnyObject]) -> BoxId {
+        let boxInfo = userInfo["boxId"] as NSNumber
+        return BoxId(boxInfo.longLongValue)
+    }
+    
+    func itemId(userInfo: [NSObject : AnyObject]) -> ItemId {
+        let itemInfo = userInfo["itemId"] as NSNumber
+        return ItemId(itemInfo.longLongValue)
+    }
+    
+    func didAddBox(boxId: BoxId) {
+        if consumer == nil {
+            return
+        }
+        
+        let box = repository.box(boxId: boxId)
+        let boxData = BoxData(boxId: boxId, title: box!.title, itemData: [])
+        
+        consumer!.consume(boxData)
+    }
+    
+    func didAddItem(itemId: ItemId, inBox boxId: BoxId) {
+        if consumer == nil {
+            return
+        }
+    
+        let box = repository.box(boxId: boxId)
+        let item = box!.item(itemId: itemId)
+        let itemData = ItemData(itemId: itemId, title: item!.title, boxId: boxId)
+        
+        consumer!.consume(itemData)
+    }
     
     var repository: BoxRepository! {
         return ServiceLocator.boxRepository()
     }
 
-    public func provisionNewBoxId() -> BoxId {
-        let boxId = repository.nextId()
-        let box = Box(boxId: boxId, title: "New Box")
-        
-        repository.addBox(box)
-        
-        return boxId
+    public func createBox() {
+        provisioningService.provisionBox()
     }
     
-    public func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
-        let itemId = repository.nextItemId()
-        
+    public func createItem(boxId: BoxId) {
         if let box = repository.box(boxId: boxId) {
-            let item = Item(itemId: itemId, title: "New Item")
-            box.addItem(item)
+            provisioningService.provisionItem(inBox: box)
         }
-        
-        return itemId //TODO: return NotFound ID
     }
-    
+        
     public func changeBoxTitle(boxId: BoxId, title: String) {
         if let box = repository.box(boxId: boxId) {
             box.title = title
@@ -43,6 +109,7 @@ public class BoxAndItemService: HandlesItemListEvents {
     
     public func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
         if let box = repository.box(boxId: boxId) {
+            // TODO add changeItemTitle()
             if let item = box.item(itemId: itemId) {
                 item.title = title
             }

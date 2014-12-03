@@ -23,7 +23,7 @@ public protocol HandlesItemListChanges: class {
 }
 
 public class BoxNode: NSObject, TreeNode {
-    public dynamic var title: String = "New Box" {
+    public dynamic var title: String = "Box Node" {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
@@ -45,10 +45,14 @@ public class BoxNode: NSObject, TreeNode {
         self.title = boxData.title
         super.init()
     }
+    
+    public func addItemNode(itemNode: ItemNode) {
+        children.append(itemNode)
+    }
 }
 
 public class ItemNode: NSObject, TreeNode {
-    public dynamic var title: String = "New Item" {
+    public dynamic var title: String = "Item Node" {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
@@ -85,7 +89,7 @@ public class ItemNode: NSObject, TreeNode {
 public let kColumnNameTitle = "Title"
 public let kColumnNameCount = "Count"
 
-public class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesItemListChanges {
+public class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesItemListChanges, ConsumesBoxAndItem {
 
     public weak var eventHandler: HandlesItemListEvents!
     @IBOutlet public weak var itemsController: NSTreeController!
@@ -152,19 +156,15 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     @IBAction public func addBox(sender: AnyObject) {
         if let eventHandler = self.eventHandler {
-            let boxNode = self.boxNode()
-            let indexPath = NSIndexPath(index: nodeCount())
-            itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
-            orderTree()
+            eventHandler.createBox()
         }
     }
     
-    func boxNode() -> BoxNode {
-        let boxId = eventHandler.provisionNewBoxId()
-        let boxNode = BoxNode(boxId: boxId)
-        boxNode.eventHandler = self
-        
-        return boxNode
+    public func consume(boxData: BoxData) {
+        let boxNode = self.boxNode(boxData)
+        let indexPath = NSIndexPath(index: nodeCount())
+        itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
+        orderTree()
     }
     
     func orderTree() {
@@ -177,7 +177,6 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     @IBAction public func addItem(sender: AnyObject) {
         if let eventHandler = self.eventHandler {
             addItemNodeToSelectedBox()
-            orderTree()
         }
     }
     
@@ -209,25 +208,8 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     func appendItemNodeToBoxIndexPath(parentIndexPath: NSIndexPath) {
         let parentTreeNode = boxTreeNodeAtIndexPath(parentIndexPath)
-        let itemIndexPath = indexPath(appendedToTreeNode: parentTreeNode)
-        let item = itemNode(belowBoxTreeNode: parentTreeNode)
-        
-        itemsController.insertObject(item, atArrangedObjectIndexPath: itemIndexPath)
-    }
-    
-    func indexPath(appendedToTreeNode treeNode: NSTreeNode) -> NSIndexPath {
-        let parentIndexPath = treeNode.indexPath
-        let childNodeCount = treeNode.childNodes!.count
-        return parentIndexPath.indexPathByAddingIndex(childNodeCount)
-    }
-    
-    func itemNode(belowBoxTreeNode boxTreeNode: NSTreeNode)-> ItemNode {
-        let boxNode = boxTreeNode.representedObject as BoxNode
-        let itemId = eventHandler.provisionNewItemId(inBox: boxNode.boxId)
-        let itemNode = ItemNode(itemId: itemId)
-        itemNode.eventHandler = self
-        
-        return itemNode
+        let boxNode = parentTreeNode.representedObject as BoxNode
+        eventHandler.createItem(boxNode.boxId)
     }
     
     func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
@@ -238,6 +220,31 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         let boxNode = boxNodes[boxIndex] as NSTreeNode
         
         return boxNode
+    }
+    
+    public func consume(itemData: ItemData) {
+        if let boxId = itemData.boxId {
+            if let boxNode = existingBoxNode(boxId) {
+                let itemId = itemData.itemId
+                let itemNode = ItemNode(itemId: itemId)
+                itemNode.title = itemData.title
+                itemNode.eventHandler = self
+                
+                boxNode.addItemNode(itemNode)
+                orderTree()
+            }
+        }
+    }
+    
+    func existingBoxNode(boxId: BoxId) -> BoxNode? {
+        let boxNodes = itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+        for treeNode in boxNodes {
+            let boxNode = treeNode.representedObject as BoxNode
+            if boxNode.boxId == boxId {
+                return boxNode
+            }
+        }
+        return nil
     }
     
     

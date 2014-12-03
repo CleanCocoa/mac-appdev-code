@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
+		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
@@ -46,7 +48,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
+		50C251801A2FA0D400595098 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
@@ -99,8 +103,8 @@
 		60AEEEC51A248ADA00C05636 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */,
 				602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */,
+				60AEEEC61A248AF300C05636 /* BoxAndItemService.swift */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -149,6 +153,7 @@
 				60C04BD01A191A8300F4665D /* Domain */,
 				60AEEEC51A248ADA00C05636 /* Application */,
 				60C04BCF1A191A7500F4665D /* User Interface */,
+				50C251801A2FA0D400595098 /* Utilities.swift */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
 			path = DDDViewDataExample;
@@ -218,6 +223,7 @@
 		60C04BD01A191A8300F4665D /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				5024903D1A2F64B200CDA666 /* ProvisioningService.swift */,
 				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
 				60C04BCC1A19179000F4665D /* Item.swift */,
 				60BF3C5B1A238B73002598DB /* Box.swift */,
@@ -338,9 +344,11 @@
 			files = (
 				60AEEEC71A248AF300C05636 /* BoxAndItemService.swift in Sources */,
 				60A11C061A288763006954EA /* ManagedEntity.swift in Sources */,
+				5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
 				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
+				50C251811A2FA0D400595098 /* Utilities.swift in Sources */,
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,

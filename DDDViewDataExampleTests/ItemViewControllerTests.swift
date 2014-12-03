@@ -12,29 +12,32 @@ import XCTest
 import DDDViewDataExample
 
 class TestBoxNode: BoxNode {
-    convenience init() {
-        self.init(boxId: BoxId(0))
-        
-        title = "title"
+    convenience init(title: String, boxId: BoxId) {
+        self.init(boxId: boxId)
+
+        self.title = title
         count = 1234
         children = []
         isLeaf = false
     }
     
     convenience init(title: String) {
-        self.init()
-        self.title = title
+        self.init(title: title, boxId: BoxId(0))
+    }
+    
+    convenience init() {
+        self.init(title: "title")
     }
 }
 
 
 class EventHandlerStub: HandlesItemListEvents {
-    func provisionNewBoxId() -> BoxId {
-        return BoxId(0)
+    func createBox() {
+        // no op
     }
     
-    func provisionNewItemId(inBox boxId: BoxId) -> ItemId {
-        return ItemId(0)
+    func createItem(boxId: BoxId) {
+        // no op
     }
     
     func changeBoxTitle(boxId: BoxId, title: String) {
@@ -90,6 +93,17 @@ class ItemViewControllerTests: XCTestCase {
         return boxNode.childNodes![itemIndex] as NSTreeNode
     }
     
+    func boxDataStub() -> BoxData {
+        return BoxData(boxId: BoxId(0), title: "irrelevant", itemData: [])
+    }
+    
+    func itemDataStub() -> ItemData {
+        return itemDataStub(parentBoxId: BoxId(666))
+    }
+    
+    func itemDataStub(parentBoxId boxId: BoxId) -> ItemData {
+        return ItemData(itemId: ItemId(0), title: "irrelevant", boxId: boxId)
+    }
     
     //MARK: Nib Setup
     
@@ -189,19 +203,19 @@ class ItemViewControllerTests: XCTestCase {
         XCTAssertFalse(viewController.addItemButton.enabled, "disable item button without boxes")
     }
     
-    func testAddBox_WithEmptyList_AddsNode() {
-        viewController.addBox(self)
+    func testConsumeBox_WithEmptyList_AddsNode() {
+        viewController.consume(boxDataStub())
         
         XCTAssertEqual(boxNodeCount(), 1, "adds item to tree")
     }
     
-    func testAddBox_WithEmptyList_EnablesAddItemButton() {
-        viewController.addBox(self)
+    func testConsumeBox_WithEmptyList_EnablesAddItemButton() {
+        viewController.consume(boxDataStub())
         
         XCTAssertTrue(viewController.addItemButton.enabled, "enable item button by adding boxes")
     }
     
-    func testAddBox_WithExistingBox_OrdersThemByTitle() {
+    func testConsumeBox_WithExistingBox_OrdersThemByTitle() {
         // Given
         let bottomItem = TestBoxNode(title: "ZZZ Should be at the bottom")
         viewController.itemsController.addObject(bottomItem)
@@ -209,7 +223,7 @@ class ItemViewControllerTests: XCTestCase {
         let existingNode: NSObject = boxAtIndex(0)
         
         // When
-        viewController.addBox(self)
+        viewController.consume(boxDataStub())
         
         // Then
         XCTAssertEqual(boxNodeCount(), 2, "add node to existing one")
@@ -231,17 +245,17 @@ class ItemViewControllerTests: XCTestCase {
     
     //MARK: Adding Items
     
-    func testAddItem_WithoutBoxes_DoesNothing() {
-        viewController.addItem(self)
+    func testConsumeItem_WithoutBoxes_DoesNothing() {
+        viewController.consume(itemDataStub())
         
-        XCTAssertEqual(boxNodeCount(), 0, "don't add boxes")
+        XCTAssertEqual(boxNodeCount(), 0, "don't add boxes or anything")
     }
     
-    func testAddItem_WithSelectedBox_InsertsItemBelowSelectedBox() {
+    func testConsumeItem_WithSelectedBox_InsertsItemBelowSelectedBox() {
         // Pre-populate
         let treeController = viewController.itemsController
-        treeController.addObject(TestBoxNode(title: "first"))
-        treeController.addObject(TestBoxNode(title: "second"))
+        treeController.addObject(TestBoxNode(title: "first", boxId: BoxId(1)))
+        treeController.addObject(TestBoxNode(title: "second", boxId: BoxId(2)))
         
         // Select first node
         let selectionIndexPath = NSIndexPath(index: 0)
@@ -249,11 +263,14 @@ class ItemViewControllerTests: XCTestCase {
         let selectedBox = (treeController.selectedNodes[0] as NSTreeNode).representedObject as TreeNode
         XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
         
-        viewController.addItem(self)
+        viewController.consume(itemDataStub(parentBoxId: BoxId(1)))
         
         // Then
-        XCTAssertEqual(selectedBox.children.count, 1, "box contains new child")
-        XCTAssertEqual(selectedBox.children[0].isLeaf, true, "child should be item=leaf")
+        if selectedBox.children.count > 0 {
+            XCTAssert(selectedBox.children[0].isLeaf)
+        } else {
+            XCTFail("box contains no child")
+        }
     }
     
     

@@ -9,8 +9,8 @@
 import Foundation
 
 public protocol HandlesItemListEvents: class {
-    func provisionNewBoxId() -> BoxId
-    func provisionNewItemId(inBox boxId: BoxId) -> ItemId
+    func createBox()
+    func createItem(boxId: BoxId)
     
     func changeBoxTitle(boxId: BoxId, title: String)
     func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId)
@@ -34,9 +34,16 @@ public struct BoxData {
 public struct ItemData {
     let itemId: ItemId
     let title: String
+    var boxId: BoxId?
     
     public init(itemId: ItemId, title: String) {
         self.itemId = itemId
         self.title = title
+    }
+    
+    public init(itemId: ItemId, title: String, boxId: BoxId) {
+        self.itemId = itemId
+        self.title = title
+        self.boxId = boxId
     }
 }
