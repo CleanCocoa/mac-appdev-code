@@ -24,6 +24,10 @@ public struct BoxData {
     let title: String
     let itemData: [ItemData]
     
+    public init(boxId: BoxId, title: String) {
+        self.init(boxId: boxId, title: title, itemData: [])
+    }
+    
     public init(boxId: BoxId, title: String, itemData: [ItemData]) {
         self.boxId = boxId
         self.title = title

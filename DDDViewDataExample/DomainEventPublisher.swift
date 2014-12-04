@@ -8,24 +8,6 @@
 
 import Foundation
 
-public enum DomainEventType: String {
-    case BoxProvisioned = "Box Provisioned"
-    case BoxItemProvisioned = "Box Item Provisioned"
-    
-    var name: String {
-        return self.rawValue
-    }
-}
-
-public protocol DomainEvent {
-    /// The `DomainEventType` to identify this kind of DomainEvent
-    class var eventType: DomainEventType { get }
-    
-    init(userInfo: UserInfo)
-    func userInfo() -> UserInfo
-    func notification() -> NSNotification
-}
-
 private struct DomainEventPublisherStatic {
     static var singleton: DomainEventPublisher? = nil
     static var onceToken: dispatch_once_t = 0
@@ -70,7 +52,7 @@ public class DomainEventPublisher {
         notificationCenter.postNotification(event.notification())
     }
     
-    public func subscribe<T: DomainEvent>(event: T.Type, queue: NSOperationQueue, usingBlock block: (T!) -> Void) -> NSObjectProtocol {
+    public func subscribe<T: DomainEvent>(eventKind: T.Type, queue: NSOperationQueue, usingBlock block: (T!) -> Void) -> NSObjectProtocol {
         let eventType: DomainEventType = T.eventType
         return notificationCenter.addObserverForName(eventType.name, object: nil, queue: queue) {
             (notification: NSNotification!) -> Void in

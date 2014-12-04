@@ -30,19 +30,20 @@ class DisplayBoxesAndItems {
     func subscribe() {
         let mainQueue = NSOperationQueue.mainQueue()
         
-        self.boxProvisioningObserver = publisher.subscribe(BoxProvisionedEvent.self, queue: mainQueue) {
+        boxProvisioningObserver = publisher.subscribe(BoxProvisionedEvent.self, queue: mainQueue) {
             [unowned self] (event: BoxProvisionedEvent!) in
 
-            self.didAddBox(event.boxId, title: event.title)
+            let boxData = BoxData(boxId: event.boxId, title: event.title)
+            self.consumeBox(boxData)
         }
         
-        self.itemProvisioningObserver = publisher.subscribe(BoxItemProvisionedEvent.self, queue: mainQueue) {
+        itemProvisioningObserver = publisher.subscribe(BoxItemProvisionedEvent.self, queue: mainQueue) {
             [unowned self] (event: BoxItemProvisionedEvent!) in
             
-            self.didAddItem(event.itemId, title: event.itemTitle, inBox: event.boxId)
+            let itemData = ItemData(itemId: event.itemId, title: event.itemTitle, boxId: event.boxId)
+            self.consumeItem(itemData)
         }
     }
-    
     
     deinit {
         unsubscribe()
@@ -60,21 +61,16 @@ class DisplayBoxesAndItems {
         return ServiceLocator.boxRepository()
     }
     
-    func didAddBox(boxId: BoxId, title: String) {
-        if consumer == nil {
-            return
+    //TODO: rename "consume" to something better
+    func consumeBox(boxData: BoxData) {
+        if let consumer = self.consumer {
+            consumer.consume(boxData)
         }
-        
-        let boxData = BoxData(boxId: boxId, title: title, itemData: [])
-        consumer!.consume(boxData)
     }
     
-    func didAddItem(itemId: ItemId, title: String, inBox boxId: BoxId) {
-        if consumer == nil {
-            return
+    func consumeItem(itemData: ItemData) {
+        if let consumer = self.consumer {
+            consumer.consume(itemData)
         }
-        
-        let itemData = ItemData(itemId: itemId, title: title, boxId: boxId)
-        consumer!.consume(itemData)
     }
 }
