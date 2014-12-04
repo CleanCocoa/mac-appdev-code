@@ -11,6 +11,27 @@ import XCTest
 
 import DDDViewDataExample
 
+class NullNotificationCenter: NSNotificationCenter {
+    override func addObserverForName(name: String?, object obj: AnyObject?, queue: NSOperationQueue?, usingBlock block: (NSNotification!) -> Void) -> NSObjectProtocol {
+        return NSObject()
+    }
+    
+    override func removeObserver(observer: AnyObject) {
+        // no op
+    }
+    
+    override func postNotification(notification: NSNotification) {
+        // no op
+    }
+}
+
+/// Doesn't actually notify anyone thanks to the no-op `NullNotificationCenter`.
+class TestDomainEventPublisher: DomainEventPublisher {
+    init() {
+        super.init(notificationCenter: NullNotificationCenter())
+    }
+}
+
 class UseBoxAndItemTests: CoreDataTestCase {
     var boxRepository: BoxRepository?
     var useCase: ManageBoxesAndItems! = ManageBoxesAndItems()
@@ -21,7 +42,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         
-        DomainEventPublisher.setSharedInstance(DomainEventPublisher(notificationCenter: NSNotificationCenter()))
+        DomainEventPublisher.setSharedInstance(TestDomainEventPublisher())
         
         ServiceLocator.resetSharedInstance()
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
