@@ -10,26 +10,25 @@ import Foundation
 
 public typealias UserInfo = [NSObject : AnyObject]
 
-struct BoxProvisionedEvent: DomainEvent {
-    static var eventType: DomainEventType {
+public struct BoxProvisionedEvent: DomainEvent {
+    public static var eventType: DomainEventType {
         return DomainEventType.BoxProvisioned
     }
     
-    let boxId: BoxId
-    let title: String
+    public let boxId: BoxId
+    public let title: String
     
-    init(boxId: BoxId, title: String) {
+    public init(boxId: BoxId, title: String) {
         self.boxId = boxId
         self.title = title
     }
     
-    init(userInfo: UserInfo) {
+    public init(userInfo: UserInfo) {
         let boxIdData = userInfo["id"] as NSNumber
-        self.boxId = BoxId(boxIdData)
-        self.title = userInfo["title"] as String
+        self.init(boxId: BoxId(boxIdData), title: userInfo["title"] as String)
     }
     
-    func userInfo() -> UserInfo {
+    public func userInfo() -> UserInfo {
         // TODO replace NSNumber(...) by using StringLiteralConvertible
         return [
             "id": NSNumber(longLong: boxId.identifier),
@@ -37,27 +36,27 @@ struct BoxProvisionedEvent: DomainEvent {
         ]
     }
     
-    func notification() -> NSNotification {
+    public func notification() -> NSNotification {
         return NSNotification(name: BoxProvisionedEvent.eventType.name, object: nil, userInfo: userInfo())
     }
 }
 
-struct BoxItemProvisionedEvent: DomainEvent {
-    static var eventType: DomainEventType {
+public struct BoxItemProvisionedEvent: DomainEvent {
+    public static var eventType: DomainEventType {
         return DomainEventType.BoxItemProvisioned
     }
     
-    let boxId: BoxId
-    let itemId: ItemId
-    let itemTitle: String
+    public let boxId: BoxId
+    public let itemId: ItemId
+    public let itemTitle: String
     
-    init(boxId: BoxId, itemId: ItemId, itemTitle: String) {
+    public init(boxId: BoxId, itemId: ItemId, itemTitle: String) {
         self.boxId = boxId
         self.itemId = itemId
         self.itemTitle = itemTitle
     }
     
-    init(userInfo: UserInfo) {
+    public init(userInfo: UserInfo) {
         let boxData = userInfo["box"] as UserInfo
         let boxIdData = boxData["id"] as NSNumber
         self.boxId = BoxId(boxIdData)
@@ -68,7 +67,7 @@ struct BoxItemProvisionedEvent: DomainEvent {
         self.itemTitle = itemData["title"] as String
     }
     
-    func userInfo() -> UserInfo {
+    public func userInfo() -> UserInfo {
         return [
             "box" : [
                 "id" : NSNumber(longLong: boxId.identifier)
@@ -80,7 +79,7 @@ struct BoxItemProvisionedEvent: DomainEvent {
         ]
     }
     
-    func notification() -> NSNotification {
+    public func notification() -> NSNotification {
         return NSNotification(name: BoxItemProvisionedEvent.eventType.name, object: nil, userInfo: userInfo())
     }
 }
@@ -92,7 +91,7 @@ public class ProvisioningService {
         return DomainEventPublisher.sharedInstance
     }
     
-    init(repository: BoxRepository) {
+    public init(repository: BoxRepository) {
         self.repository = repository
     }
     
