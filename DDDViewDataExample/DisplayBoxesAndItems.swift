@@ -19,8 +19,8 @@ class DisplayBoxesAndItems {
     
     var consumer: ConsumesBoxAndItem?
 
-    var publisher: NSNotificationCenter! {
-        return DomainEventPublisher.defaultCenter()
+    var publisher: DomainEventPublisher! {
+        return DomainEventPublisher.sharedInstance
     }
     
     init() {
@@ -30,47 +30,27 @@ class DisplayBoxesAndItems {
     func subscribe() {
         let mainQueue = NSOperationQueue.mainQueue()
         
-        self.boxProvisioningObserver = publisher.addObserverForName(kBoxProvisioned, object: nil, queue: mainQueue) {
-            [unowned self] (notification: NSNotification!) in
-            
-            if notification.userInfo == nil {
-                return
-            }
-            
-            let boxId = self.boxId(notification.userInfo!)
-            self.didAddBox(boxId)
+        self.boxProvisioningObserver = publisher.subscribe(BoxProvisionedEvent.self, queue: mainQueue) {
+            [unowned self] (event: BoxProvisionedEvent!) in
+
+            self.didAddBox(event.boxId, title: event.title)
         }
         
-        self.itemProvisioningObserver = publisher.addObserverForName(kBoxItemProvisioned, object: nil, queue: mainQueue) {
-            [unowned self] (notification: NSNotification!) in
+        self.itemProvisioningObserver = publisher.subscribe(BoxItemProvisionedEvent.self, queue: mainQueue) {
+            [unowned self] (event: BoxItemProvisionedEvent!) in
             
-            if notification.userInfo == nil {
-                return
-            }
-            
-            let itemId = self.itemId(notification.userInfo!)
-            let boxId = self.boxId(notification.userInfo!)
-            self.didAddItem(itemId, inBox: boxId)
+            self.didAddItem(event.itemId, title: event.itemTitle, inBox: event.boxId)
         }
     }
     
-    func boxId(userInfo: [NSObject : AnyObject]) -> BoxId {
-        let boxInfo = userInfo["boxId"] as NSNumber
-        return BoxId(boxInfo.longLongValue)
-    }
-    
-    func itemId(userInfo: [NSObject : AnyObject]) -> ItemId {
-        let itemInfo = userInfo["itemId"] as NSNumber
-        return ItemId(itemInfo.longLongValue)
-    }
     
     deinit {
         unsubscribe()
     }
     
     func unsubscribe() {
-        publisher.removeObserver(boxProvisioningObserver)
-        publisher.removeObserver(itemProvisioningObserver)
+        publisher.unsubscribe(boxProvisioningObserver)
+        publisher.unsubscribe(itemProvisioningObserver)
     }
     
     
@@ -80,26 +60,21 @@ class DisplayBoxesAndItems {
         return ServiceLocator.boxRepository()
     }
     
-    func didAddBox(boxId: BoxId) {
+    func didAddBox(boxId: BoxId, title: String) {
         if consumer == nil {
             return
         }
         
-        let box = repository.box(boxId: boxId)
-        let boxData = BoxData(boxId: boxId, title: box!.title, itemData: [])
-        
+        let boxData = BoxData(boxId: boxId, title: title, itemData: [])
         consumer!.consume(boxData)
     }
     
-    func didAddItem(itemId: ItemId, inBox boxId: BoxId) {
+    func didAddItem(itemId: ItemId, title: String, inBox boxId: BoxId) {
         if consumer == nil {
             return
         }
         
-        let box = repository.box(boxId: boxId)
-        let item = box!.item(itemId: itemId)
-        let itemData = ItemData(itemId: itemId, title: item!.title, boxId: boxId)
-        
+        let itemData = ItemData(itemId: itemId, title: title, boxId: boxId)
         consumer!.consume(itemData)
     }
 }

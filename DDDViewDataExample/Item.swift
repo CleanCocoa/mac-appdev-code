@@ -16,6 +16,10 @@ public struct ItemId: Equatable, Hashable, DebugPrintable, Identifiable {
         _identifier = identifier
     }
     
+    init(_ identifierNumber: NSNumber) {
+        _identifier = identifierNumber.longLongValue
+    }
+    
     public var debugDescription: String {
         return "ItemId: \(identifier)"
     }
