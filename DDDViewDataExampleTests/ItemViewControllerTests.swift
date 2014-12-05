@@ -179,7 +179,7 @@ class ItemViewControllerTests: XCTestCase {
         let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as NSTableCellView
         let titleTextField = titleCellView.textField!
         XCTAssertTrue(titleTextField.editable)
-        XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title"))
+        XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title", transformingWith: "NonNilStringValueTransformer"))
     }
     
     func testItemRowView_CountCell_SetUpProperly() {

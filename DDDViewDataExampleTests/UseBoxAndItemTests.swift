@@ -144,32 +144,45 @@ class UseBoxAndItemTests: CoreDataTestCase {
     //MARK: -
     //MARK: Edit Box
     
-    func testChangeBoxTitle_PersistsChanges() {
+    func testChangeBoxNodeTitle_PersistsChanges() {
         let existingId = BoxId(1337)
         ManagedBox.insertManagedBox(existingId, title: "old title", inManagedObjectContext: context)
         useCase.showBoxManagementWindow()
         
         let newTitle = "new title"
-        changeSoleBox(title: newTitle)
+        changeSoleBoxNode(title: newTitle)
         
         let managedBox = allBoxes().first!
         XCTAssertEqual(managedBox.title, newTitle)
     }
     
-    func changeSoleBox(title newTitle: String) {
+    func testChangeBoxNodeTitle_ToEmptyString_PersistsChanges() {
+        let existingId = BoxId(1337)
+        ManagedBox.insertManagedBox(existingId, title: "old title", inManagedObjectContext: context)
+        useCase.showBoxManagementWindow()
+        
+        let newTitle = ""
+        changeSoleBoxNode(title: newTitle)
+        
+        let managedBox = allBoxes().first!
+        XCTAssertEqual(managedBox.title, newTitle)
+    }
+    
+    func changeSoleBoxNode(title newTitle: String) {
         let soleBoxTreeNode = allBoxNodes().first!
         let boxNode = soleBoxTreeNode.representedObject as BoxNode
         boxNode.title = newTitle
     }
     
+    
     //MARK: Edit Item
     
-    func testChangeItemTitle_PersistsChanges() {
+    func testChangeItemNodeTitle_PersistsChanges() {
         createBoxWithItem()
         useCase.showBoxManagementWindow()
         
         let newTitle = "new title"
-        changeSoleItem(title: newTitle)
+        changeSoleItemNode(title: newTitle)
         
         let managedBox = allBoxes().first!
         let managedItem = managedBox.items.anyObject()! as ManagedItem
@@ -186,7 +199,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         ManagedItem.insertManagedItem(existingItem, managedBox: managedBox, inManagedObjectContext: context)
     }
     
-    func changeSoleItem(title newTitle: String) {
+    func changeSoleItemNode(title newTitle: String) {
         let soleBoxTreeNode = allBoxNodes().first!
         let boxNode = soleBoxTreeNode.representedObject as BoxNode
         let itemNode = boxNode.children.first! as ItemNode

@@ -22,6 +22,17 @@ public protocol HandlesItemListChanges: class {
     func treeNodeDidChange(treeNode: TreeNode, title: String)
 }
 
+@objc(NonNilStringValueTransformer)
+public class NonNilStringValueTransformer: NSValueTransformer {
+    override public func transformedValue(value: AnyObject?) -> AnyObject? {
+        if value == nil {
+            return ""
+        }
+        
+        return value
+    }
+}
+
 public class BoxNode: NSObject, TreeNode {
     public dynamic var title: String = "Box Node" {
         didSet {

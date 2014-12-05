@@ -48,6 +48,20 @@ class ManagedBoxTests: CoreDataTestCase {
         }
     }
     
+    func testChangingFetchedBoxTitle_ToEmptyString_PersistsChanges() {
+        let boxId = BoxId(1234)
+        ManagedBox.insertManagedBox(boxId, title: "before", inManagedObjectContext: context)
+        
+        if let box = repository!.box(boxId: boxId) {
+            box.title = ""
+            
+            let foundBox = allBoxes()!.first! as ManagedBox
+            XCTAssertEqual(foundBox.title, "")
+        } else {
+            XCTFail("box not found")
+        }
+    }
+    
     func testAddingItemToFetchedBox_PersistsChanges() {
         let boxId = BoxId(1234)
         ManagedBox.insertManagedBox(boxId, title: "irrelevant", inManagedObjectContext: context)
