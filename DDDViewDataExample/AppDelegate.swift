@@ -13,7 +13,7 @@ let kErrorDomain = "DDDViewDataExampleErrorDomain"
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    func notificationCenter() -> NSNotificationCenter {
+    var notificationCenter: NSNotificationCenter {
         return NSNotificationCenter.defaultCenter()
     }
     
@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
         
-        self.notificationCenter().addObserver(persistentStack, selector: "objectContextWillSave", name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
+        self.notificationCenter.addObserver(persistentStack, selector: "objectContextWillSave", name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
         
         return persistentStack
     }()
@@ -89,22 +89,50 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //MARK: NSAppDelegate callbacks
     
     lazy var manageBoxesAndItems: ManageBoxesAndItems! = ManageBoxesAndItems()
+    var readErrorCallback: NSObjectProtocol?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        subscribeToCoreDataReadErrors()
+        
         ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
         manageBoxesAndItems.showBoxManagementWindow()
     }
+    
+    func subscribeToCoreDataReadErrors() {
+        readErrorCallback = notificationCenter.addObserverForName(kCoreDataReadErrorNotificationName, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+            
+            let question = NSLocalizedString("Could not read data. Report and Quit?", comment: "Read error quit question message")
+            let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info");
+            let quitButton = NSLocalizedString("Report and Quit", comment: "Report and Quit button title")
+            let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
+            let alert = NSAlert()
+            alert.messageText = question
+            alert.informativeText = info
+            alert.addButtonWithTitle(quitButton)
+            alert.addButtonWithTitle(cancelButton)
+            
+            let answer = alert.runModal()
+            if answer == NSAlertFirstButtonReturn {
+                //TODO: Add error reporting here
+                return NSApplication.sharedApplication().terminate(self)
+            }
+        }
+    }
 
     func applicationShouldTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
-        return self.persistentStack.saveToTerminate(sender)
+        return persistentStack.saveToTerminate(sender)
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
-        self.notificationCenter().removeObserver(persistentStack, name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
+        if readErrorCallback != nil {
+            notificationCenter.removeObserver(readErrorCallback!)
+        }
+        
+        notificationCenter.removeObserver(persistentStack, name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
     }
     
     func windowWillReturnUndoManager(window: NSWindow) -> NSUndoManager? {
-        return self.persistentStack.undoManager()
+        return persistentStack.undoManager()
     }
 }
 

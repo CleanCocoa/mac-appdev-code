@@ -42,7 +42,6 @@ public class DomainEventPublisher {
     
     public init(notificationCenter: NSNotificationCenter) {
         self.notificationCenter = notificationCenter
-        NSLog("init")
     }
     
     //MARK: -

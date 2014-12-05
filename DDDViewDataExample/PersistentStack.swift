@@ -84,9 +84,13 @@ public class PersistentStack: NSObject {
             if !moc.commitEditing() {
                 NSLog("\(NSStringFromClass(self.dynamicType)) unable to commit editing before saving")
             }
+            
             var error: NSError? = nil
             if moc.hasChanges && !moc.save(&error) {
                 NSApplication.sharedApplication().presentError(error!)
+                
+                NSLog("Failed to save to data store: \(error!.localizedDescription)")
+                logDetailledErrors(error!)
             }
         }
     }
@@ -123,6 +127,9 @@ public class PersistentStack: NSObject {
         
         var error: NSError? = nil
         if !moc.save(&error) {
+            NSLog("Failed to save to data store: \(error!.localizedDescription)")
+            logDetailledErrors(error!)
+            
             // Customize this code block to include application-specific recovery steps.
             let result = sender.presentError(error!)
             if (result) {
