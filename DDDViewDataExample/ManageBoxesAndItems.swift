@@ -28,7 +28,7 @@ public class ManageBoxesAndItems {
         self.presenter.consumer = controller.itemViewController
         return controller
     }()
-    
+        
     public lazy var itemViewController: ItemViewController = {
         return self.windowController.itemViewController
     }()

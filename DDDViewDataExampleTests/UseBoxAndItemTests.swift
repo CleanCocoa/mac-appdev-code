@@ -35,6 +35,10 @@ class UseBoxAndItemTests: CoreDataTestCase {
         super.tearDown()
     }
     
+    func soleBox() -> ManagedBox? {
+        return allBoxes().first
+    }
+    
     func allBoxes() -> [ManagedBox] {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
         let results: [AnyObject]? = context.executeFetchRequest(request, error: nil)
@@ -74,7 +78,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
         
-        if let box: ManagedBox = allBoxes().first {
+        if let box: ManagedBox = soleBox() {
             XCTAssertEqual(box.title, "New Box")
         } else {
             XCTFail("no boxes found")
@@ -107,7 +111,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         viewController.addItem(self)
         
         // Then
-        if let managedBox: ManagedBox = allBoxes().first {
+        if let managedBox: ManagedBox = soleBox() {
             if let managedItem: ManagedItem = managedBox.items.anyObject() as? ManagedItem {
                 XCTAssertEqual(managedItem.title, "New Item")
                 XCTAssertEqual(managedItem.box, managedBox)
@@ -122,7 +126,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     func testExistingItems_ShowInView() {
         let existingBoxId = BoxId(123)
         ManagedBox.insertManagedBox(existingBoxId, title: "the box", inManagedObjectContext: context)
-        let managedBox = allBoxes().first!
+        let managedBox = soleBox()!
         let existingItemId = ItemId(456)
         let existingItem = Item(itemId: existingItemId, title: "the item")
         ManagedItem.insertManagedItem(existingItem, managedBox: managedBox, inManagedObjectContext: context)
@@ -152,20 +156,19 @@ class UseBoxAndItemTests: CoreDataTestCase {
         let newTitle = "new title"
         changeSoleBoxNode(title: newTitle)
         
-        let managedBox = allBoxes().first!
+        let managedBox = soleBox()!
         XCTAssertEqual(managedBox.title, newTitle)
     }
     
-    func testChangeBoxNodeTitle_ToEmptyString_PersistsChanges() {
+    func testChangeBoxNodeTitle_ToEmptyString_ResetsTitle() {
         let existingId = BoxId(1337)
         ManagedBox.insertManagedBox(existingId, title: "old title", inManagedObjectContext: context)
         useCase.showBoxManagementWindow()
         
-        let newTitle = ""
-        changeSoleBoxNode(title: newTitle)
+        changeSoleBoxNode(title: "")
         
-        let managedBox = allBoxes().first!
-        XCTAssertEqual(managedBox.title, newTitle)
+        let managedBox = soleBox()!
+        XCTAssertEqual(managedBox.title, BoxNode.defaultTitle)
     }
     
     func changeSoleBoxNode(title newTitle: String) {
@@ -184,7 +187,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         let newTitle = "new title"
         changeSoleItemNode(title: newTitle)
         
-        let managedBox = allBoxes().first!
+        let managedBox = soleBox()!
         let managedItem = managedBox.items.anyObject()! as ManagedItem
         XCTAssertEqual(managedItem.title, newTitle)
     }
@@ -193,7 +196,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         let existingBoxId = BoxId(123)
         ManagedBox.insertManagedBox(existingBoxId, title: "the box", inManagedObjectContext: context)
         
-        let managedBox = allBoxes().first!
+        let managedBox = soleBox()!
         let existingItemId = ItemId(456)
         let existingItem = Item(itemId: existingItemId, title: "old title")
         ManagedItem.insertManagedItem(existingItem, managedBox: managedBox, inManagedObjectContext: context)
@@ -229,7 +232,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func testRemoveItem_PersistsChanges() {
         createBoxWithItem()
-        let managedBox = allBoxes().first!
+        let managedBox = soleBox()!
         XCTAssertEqual(managedBox.items.count, 1)
 
         useCase.showBoxManagementWindow()

@@ -11,6 +11,9 @@ import Cocoa
 class HandleBoxAndItemModifications: HandlesItemListEvents {
     let provisioningService: ProvisioningService
     
+    // This could be injected since it's needed for ProvisioningService setup
+    // anyway. Since the ServiceLocator is easily available in this layer, 
+    // there's no benefit architecture-wise.
     var repository: BoxRepository! {
         return ServiceLocator.boxRepository()
     }

@@ -15,6 +15,7 @@ public protocol TreeNode {
     var children: [TreeNode] { get }
     var isLeaf: Bool { get }
     weak var eventHandler: HandlesItemListChanges? { get }
+    func resetTitleToDefaultTitle()
 }
 
 @objc(HandlesItemListChanges)
@@ -34,7 +35,8 @@ public class NonNilStringValueTransformer: NSValueTransformer {
 }
 
 public class BoxNode: NSObject, TreeNode {
-    public dynamic var title: String = "Box Node" {
+    public class var defaultTitle: String! { return "Box" }
+    public dynamic var title: String = BoxNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
@@ -60,10 +62,15 @@ public class BoxNode: NSObject, TreeNode {
     public func addItemNode(itemNode: ItemNode) {
         children.append(itemNode)
     }
+    
+    public func resetTitleToDefaultTitle() {
+        self.title = BoxNode.defaultTitle
+    }
 }
 
 public class ItemNode: NSObject, TreeNode {
-    public dynamic var title: String = "Item Node" {
+    public class var defaultTitle: String! { return "Item" }
+    public dynamic var title: String = ItemNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
@@ -93,6 +100,10 @@ public class ItemNode: NSObject, TreeNode {
         }
         
         return nil
+    }
+    
+    public func resetTitleToDefaultTitle() {
+        self.title = ItemNode.defaultTitle
     }
 }
 
@@ -180,6 +191,10 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         let indexPath = NSIndexPath(index: nodeCount())
         itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
         orderTree()
+        
+        delay(3, { () -> () in
+            boxNode.title = "TEST!!"
+        })
     }
     
     func orderTree() {
@@ -264,6 +279,19 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     //MARK: Change items
     
     public func treeNodeDidChange(treeNode: TreeNode, title: String) {
+        if title.isEmpty {
+            changeNodeTitleToPlaceholderValue(treeNode)
+        } else {
+            broadcastTitleChange(treeNode)
+            orderTree()
+        }
+    }
+    
+    func changeNodeTitleToPlaceholderValue(treeNode: TreeNode) {
+        treeNode.resetTitleToDefaultTitle()
+    }
+    
+    func broadcastTitleChange(treeNode: TreeNode) {
         if let boxNode = treeNode as? BoxNode {
             eventHandler.changeBoxTitle(boxNode.boxId, title: boxNode.title)
         } else if let itemNode = treeNode as? ItemNode {
