@@ -18,6 +18,8 @@
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
 		50E441931B5A9BDF00AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
+		50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441941B5AAAC300AFC62D /* BoxId.swift */; };
+		50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441961B5AAB1000AFC62D /* ItemId.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
@@ -66,6 +68,8 @@
 		509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningServiceTests.swift; sourceTree = "<group>"; };
 		50C251801A2FA0D400595098 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		50E441911B5A9BC000AFC62D /* Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optionals.swift; sourceTree = "<group>"; };
+		50E441941B5AAAC300AFC62D /* BoxId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxId.swift; sourceTree = "<group>"; };
+		50E441961B5AAB1000AFC62D /* ItemId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemId.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
@@ -129,7 +133,7 @@
 			children = (
 				50E441911B5A9BC000AFC62D /* Optionals.swift */,
 			);
-			name = Shared;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		60AEEEC51A248ADA00C05636 /* Application */ = {
@@ -264,7 +268,9 @@
 				508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */,
 				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
 				60C04BCC1A19179000F4665D /* Item.swift */,
+				50E441961B5AAB1000AFC62D /* ItemId.swift */,
 				60BF3C5B1A238B73002598DB /* Box.swift */,
+				50E441941B5AAAC300AFC62D /* BoxId.swift */,
 			);
 			name = Domain;
 			sourceTree = "<group>";
@@ -401,6 +407,8 @@
 				60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */,
 				60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */,
 				60BF3C5C1A238B73002598DB /* Box.swift in Sources */,
+				50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */,
+				50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */,
 				60DBD0661A2787BB00ED4783 /* Identifiable.swift in Sources */,
 				60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */,
 				60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */,

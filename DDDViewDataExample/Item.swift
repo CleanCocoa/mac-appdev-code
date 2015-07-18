@@ -1,30 +1,5 @@
 import Cocoa
 
-public struct ItemId: Equatable, Hashable, CustomDebugStringConvertible, Identifiable {
-    public var identifier: IntegerId { return _identifier }
-    private var _identifier: IntegerId
-    
-    public init(_ identifier: IntegerId) {
-        _identifier = identifier
-    }
-    
-    init(_ identifierNumber: NSNumber) {
-        _identifier = identifierNumber.longLongValue
-    }
-    
-    public var debugDescription: String {
-        return "ItemId: \(identifier)"
-    }
-    
-    public var hashValue: Int {
-        return self._identifier.hashValue
-    }
-}
-
-public func ==(lhs: ItemId, rhs: ItemId) -> Bool {
-    return lhs.identifier == rhs.identifier
-}
-
 public protocol ItemRepository {
     func nextId() -> ItemId
     func addItem(item: Item)

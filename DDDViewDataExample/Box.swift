@@ -1,26 +1,5 @@
 import Cocoa
 
-public struct BoxId: Equatable, CustomDebugStringConvertible, Identifiable {
-    public var identifier: IntegerId { return _identifier }
-    private var _identifier: IntegerId
-    
-    public init(_ identifier: IntegerId) {
-        _identifier = identifier
-    }
-    
-    init(_ identifierNumber: NSNumber) {
-        _identifier = identifierNumber.longLongValue
-    }
-    
-    public var debugDescription: String {
-        return "BoxId: \(identifier)"
-    }
-}
-
-public func ==(lhs: BoxId, rhs: BoxId) -> Bool {
-    return lhs.identifier == rhs.identifier
-}
-
 public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
@@ -30,7 +9,6 @@ public protocol BoxRepository {
     func box(boxId boxId: BoxId) -> Box?
     func count() -> Int
 }
-
 
 public class Box: NSObject {
     public let boxId: BoxId
