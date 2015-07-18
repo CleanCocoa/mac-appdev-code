@@ -33,34 +33,38 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox] {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        let results: [AnyObject]?
+        let results: [AnyObject]
+        
         do {
-            results = try context.executeFetchRequest(request)
-        } catch _ {
-            results = nil
+            try results = context.executeFetchRequest(request)
+        } catch {
+            XCTFail("fetching all boxes failed")
+            return []
         }
         
-        if let boxes = results as? [ManagedBox] {
-            return boxes
+        guard let boxes = results as? [ManagedBox] else {
+            return []
         }
         
-        return []
+        return boxes
     }
     
     func allItems() -> [ManagedItem] {
         let request = NSFetchRequest(entityName: ManagedItem.entityName())
-        let results: [AnyObject]?
+        let results: [AnyObject]
+
         do {
             results = try context.executeFetchRequest(request)
         } catch _ {
-            results = nil
+            XCTFail("fetching all items failed")
+            return []
         }
         
-        if let items = results as? [ManagedItem] {
-            return items
+        guard let items = results as? [ManagedItem] else {
+            return []
         }
         
-        return []
+        return items
     }
     
     func allBoxNodes() -> [NSTreeNode] {

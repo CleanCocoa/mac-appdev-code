@@ -139,7 +139,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         let templateName = "ManagedBoxWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
         
-        assert(hasValue(fetchRequest), "Fetch request named 'ManagedBoxWithUniqueId' is required")
+        precondition(hasValue(fetchRequest), "Fetch request named 'ManagedBoxWithUniqueId' is required")
         
         let result: [AnyObject]
 
@@ -172,7 +172,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         let templateName = "ManagedItemWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
         
-        assert(hasValue(fetchRequest), "Fetch request named 'ManagedItemWithUniqueId' is required")
+        precondition(hasValue(fetchRequest), "Fetch request named 'ManagedItemWithUniqueId' is required")
         
         var error: NSError? = nil
         let count = managedObjectContext.countForFetchRequest(fetchRequest!, error: &error)
@@ -180,7 +180,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         if count == NSNotFound {
             logError(error!, operation: "find existing item with ID '\(identifier)'")
             postReadErrorNotification()
-            assert(false, "error fetching item with id")
+            assertionFailure("error fetching item with id")
             return false
         }
         

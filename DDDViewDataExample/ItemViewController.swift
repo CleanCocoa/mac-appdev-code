@@ -18,7 +18,7 @@ public protocol HandlesItemListChanges: class {
 @objc(NonNilStringValueTransformer)
 public class NonNilStringValueTransformer: NSValueTransformer {
     override public func transformedValue(value: AnyObject?) -> AnyObject? {
-        if value == nil {
+        guard let value = value else {
             return ""
         }
         
@@ -235,7 +235,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
-        assert(indexPath.length == 1, "assumes index path of a box with 1 index only")
+        precondition(indexPath.length == 1, "assumes index path of a box with 1 index only")
         
         let boxNodes: [AnyObject] = itemsController.arrangedObjects.childNodes!!
         let boxIndex = indexPath.indexAtPosition(0)

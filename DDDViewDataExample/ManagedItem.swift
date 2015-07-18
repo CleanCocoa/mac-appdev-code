@@ -56,7 +56,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
             return item
         }
         set {
-            assert(_item == nil, "can be set only before lazy initialization of item")
+            precondition(!hasValue(_item), "can be set only before lazy initialization of item")
             
             let item = newValue
             adapt(item)

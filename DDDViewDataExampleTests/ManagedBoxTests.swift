@@ -18,30 +18,38 @@ class ManagedBoxTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox]? {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        let result: [ManagedBox]?
+        let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request) as? [ManagedBox]
+            try result = context.executeFetchRequest(request)
         } catch {
-            result = nil
             XCTFail("fetching all boxes failed")
+            return nil
         }
         
-        return result
+        guard let boxes = result as? [ManagedBox] else {
+            return nil
+        }
+        
+        return boxes
     }
     
     func allItems() -> [ManagedItem]? {
         let request = NSFetchRequest(entityName: ManagedItem.entityName())
-        let result: [ManagedItem]?
+        let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request) as? [ManagedItem]
+            try result = context.executeFetchRequest(request)
         } catch {
-            result = nil
-            XCTFail("fetching all boxes failed")
+            XCTFail("fetching all items failed")
+            return nil
         }
         
-        return result
+        guard let items = result as? [ManagedItem] else {
+            return nil
+        }
+        
+        return items
     }
 
     func testChangingFetchedBoxTitle_PersistsChanges() {

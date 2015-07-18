@@ -1,6 +1,7 @@
 import Cocoa
 
 public class ServiceLocator {
+    
     public class var sharedInstance: ServiceLocator {
         struct Static {
             static let instance: ServiceLocator = ServiceLocator()
@@ -19,7 +20,7 @@ public class ServiceLocator {
     var managedObjectContext: NSManagedObjectContext?
     
     public func setManagedObjectContext(managedObjectContext: NSManagedObjectContext) {
-        assert(self.managedObjectContext == nil, "managedObjectContext can be set up only once")
+        precondition(!hasValue(self.managedObjectContext), "managedObjectContext can be set up only once")
         self.managedObjectContext = managedObjectContext
     }
     
@@ -30,7 +31,7 @@ public class ServiceLocator {
     }
     
     public func boxRepository() -> BoxRepository {
-        assert(managedObjectContext != nil, "managedObjectContext must be set up")
+        precondition(hasValue(managedObjectContext), "managedObjectContext must be set up")
         return CoreDataBoxRepository(managedObjectContext: managedObjectContext!)
     }
 }

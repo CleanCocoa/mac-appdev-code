@@ -18,15 +18,11 @@ class PersistentStackTests: XCTestCase {
     }()
     
     override func tearDown() {
-        let success: Bool
         do {
             try NSFileManager.defaultManager().removeItemAtURL(storeURL)
-            success = true
         } catch {
-            success = false
+            XCTFail("couldn't clean up test database file")
         }
-        
-        XCTAssertTrue(success, "couldn't clean up test database file")
         
         super.tearDown()
     }

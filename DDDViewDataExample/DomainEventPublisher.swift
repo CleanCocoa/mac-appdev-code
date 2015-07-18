@@ -7,7 +7,7 @@ private struct DomainEventPublisherStatic {
 
 public class DomainEventPublisher {
     public class var sharedInstance: DomainEventPublisher {
-        if DomainEventPublisherStatic.singleton == nil {
+        if !hasValue(DomainEventPublisherStatic.singleton) {
             dispatch_once(&DomainEventPublisherStatic.onceToken) {
                 self.setSharedInstance(DomainEventPublisher())
             }

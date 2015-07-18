@@ -43,23 +43,25 @@ public class Box: NSObject {
     }
     
     public func addItem(item: Item) {
-        assert(item.box == nil, "item should not have a parent box already")
+        precondition(!hasValue(item.box), "item should not have a parent box already")
         
         items.append(item)
     }
     
     public func item(itemId itemId: ItemId) -> Item? {
-        if let index = indexOfItem(itemId: itemId) {
-            return items[index]
+        guard let index = indexOfItem(itemId: itemId) else {
+            return nil
         }
         
-        return nil
+        return items[index]
     }
     
     public func removeItem(itemId itemId: ItemId) {
-        if let index = indexOfItem(itemId: itemId) {
-            items.removeAtIndex(index)
+        guard let index = indexOfItem(itemId: itemId) else {
+            return
         }
+        
+        items.removeAtIndex(index)
     }
     
     func indexOfItem(itemId itemId: ItemId) -> Int? {
