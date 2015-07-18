@@ -21,7 +21,7 @@ public enum DomainEventType: String {
 
 public protocol DomainEvent {
     /// The `DomainEventType` to identify this kind of DomainEvent
-    class var eventType: DomainEventType { get }
+    static var eventType: DomainEventType { get }
     
     init(userInfo: UserInfo)
     func userInfo() -> UserInfo
@@ -42,8 +42,8 @@ public struct BoxProvisionedEvent: DomainEvent {
     }
     
     public init(userInfo: UserInfo) {
-        let boxIdData = userInfo["id"] as NSNumber
-        self.init(boxId: BoxId(boxIdData), title: userInfo["title"] as String)
+        let boxIdData = userInfo["id"] as! NSNumber
+        self.init(boxId: BoxId(boxIdData), title: userInfo["title"] as! String)
     }
     
     public func userInfo() -> UserInfo {
@@ -75,14 +75,14 @@ public struct BoxItemProvisionedEvent: DomainEvent {
     }
     
     public init(userInfo: UserInfo) {
-        let boxData = userInfo["box"] as UserInfo
-        let boxIdData = boxData["id"] as NSNumber
+        let boxData = userInfo["box"] as! UserInfo
+        let boxIdData = boxData["id"] as! NSNumber
         self.boxId = BoxId(boxIdData)
         
-        let itemData = userInfo["item"] as UserInfo
-        let itemIdData = itemData["id"] as NSNumber
+        let itemData = userInfo["item"] as! UserInfo
+        let itemIdData = itemData["id"] as! NSNumber
         self.itemId = ItemId(itemIdData)
-        self.itemTitle = itemData["title"] as String
+        self.itemTitle = itemData["title"] as! String
     }
     
     public func userInfo() -> UserInfo {

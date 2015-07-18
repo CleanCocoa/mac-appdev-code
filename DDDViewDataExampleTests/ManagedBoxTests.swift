@@ -26,12 +26,12 @@ class ManagedBoxTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox]? {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        return context.executeFetchRequest(request, error: nil) as [ManagedBox]?
+        return context.executeFetchRequest(request, error: nil) as? [ManagedBox]
     }
     
     func allItems() -> [ManagedItem]? {
         let request = NSFetchRequest(entityName: ManagedItem.entityName())
-        return context.executeFetchRequest(request, error: nil) as [ManagedItem]?
+        return context.executeFetchRequest(request, error: nil) as? [ManagedItem]
     }
 
     func testChangingFetchedBoxTitle_PersistsChanges() {

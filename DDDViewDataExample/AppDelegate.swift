@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "de.christiantietze.DDDViewDataExample" in the user's Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportURL = urls[urls.count - 1] as NSURL
+        let appSupportURL = urls[urls.count - 1] as! NSURL
         let directory = appSupportURL.URLByAppendingPathComponent("de.christiantietze.DDDViewDataExample")
         
         self.guardApplicationDocumentsDirectory(directory)
@@ -50,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
             
-            let userInfo = NSMutableDictionary()
+            var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to initialize the persistent stack"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Expected a folder to store application data, found a file \(self.applicationDocumentsDirectory.path)."
             
@@ -66,7 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
             
-            let userInfo = NSMutableDictionary()
+            var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to create the application documents directory"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(self.applicationDocumentsDirectory.path) failed."
             

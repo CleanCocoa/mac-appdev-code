@@ -28,10 +28,10 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
     }
     
-    public class func insertManagedBox(boxId: BoxId, title: NSString, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    public class func insertManagedBox(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
         let box: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
-        var managedBox: ManagedBox = box as ManagedBox
+        var managedBox: ManagedBox = box as! ManagedBox
         
         managedBox.uniqueId = uniqueIdFromBoxId(boxId)
         managedBox.title = title
@@ -65,7 +65,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     }
     
     func associatedItems() -> [Item] {
-        let managedItems = self.items.allObjects as [ManagedItem]
+        let managedItems = self.items.allObjects as! [ManagedItem]
         return managedItems.map() { (item: ManagedItem) -> Item in
             return item.item
         }
@@ -84,9 +84,9 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         }
         
         if keyPath == "title" {
-            self.title = change[NSKeyValueChangeNewKey] as String
+            self.title = change[NSKeyValueChangeNewKey] as! String
         } else if keyPath == "items" {
-            let items = change[NSKeyValueChangeNewKey] as [Item]
+            let items = change[NSKeyValueChangeNewKey] as! [Item]
             mergeItems(items)
         }
     }
@@ -110,7 +110,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     func addNewItems(items: [Item], to existingItems: NSMutableSet) {
         for item in items {
             let itemIsInExistingItems = contains(existingItems, { (existingItem: AnyObject) -> Bool in
-                let managedItem = existingItem as ManagedItem
+                let managedItem = existingItem as! ManagedItem
                 return managedItem.item == item
             })
             
@@ -119,6 +119,8 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
             }
         }
     }
+    
+    // MARK: Destructor
     
     deinit {
         if let box = _box {

@@ -105,7 +105,7 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
             return []
         }
         
-        let managedBoxes: [ManagedBox] = results as [ManagedBox]
+        let managedBoxes: [ManagedBox] = results as! [ManagedBox]
         
         return managedBoxes.map({ (managedBox: ManagedBox) -> Box in
             return managedBox.box

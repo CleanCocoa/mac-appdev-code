@@ -10,6 +10,6 @@ import CoreData
 
 @objc(ManagedEntity)
 protocol ManagedEntity: class {
-    class func entityName() -> String
-    class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription?
+    static func entityName() -> String
+    static func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription?
 }

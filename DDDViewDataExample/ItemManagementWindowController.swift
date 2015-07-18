@@ -25,7 +25,7 @@ public class ItemManagementWindowController: NSWindowController {
     @IBOutlet public var itemViewController: ItemViewController!
     
     /// Initialize using the default Nib
-    public override convenience init() {
+    public convenience init() {
         self.init(windowNibName: kItemManagementWindowNibName)
     }
 

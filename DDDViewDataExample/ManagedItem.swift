@@ -30,11 +30,9 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
     
     public class func insertManagedItem(item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         let theItem: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
-        var managedItem: ManagedItem = theItem as ManagedItem
+        var managedItem: ManagedItem = theItem as! ManagedItem
         
-        managedItem.uniqueId = uniqueIdFromItemId(item.itemId)
-        managedItem.title = item.title
-        managedItem.setItem(item)
+        managedItem.item = item
         managedItem.box = managedBox
     }
     
@@ -50,19 +48,39 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
     //MARK: Item Management
     
     private var _item: Item?
-    public lazy var item: Item = {
-        
-        let item = Item(itemId: self.itemId(), title: self.title)
-        // TODO add back-reference to box
-        item.addObserver(self, forKeyPath: "title", options: .New, context: &itemContext)
-        
-        self._item = item
-        return item
-    }()
+    public var item: Item {
+        get {
+            if let item = _item {
+                return item
+            }
+            
+            let item = Item(itemId: self.itemId(), title: self.title)
+            // TODO add back-reference to box
+            observe(item)
+            
+            
+            _item = item
+            
+            return item
+        }
+        set {
+            assert(_item == nil, "can be set only before lazy initialization of item")
+            
+            let item = newValue
+            adapt(item)
+            observe(item)
+            
+            _item = item
+        }
+    }
     
-    public func setItem(item: Item) {
-        assert(_item == nil, "can be set only before lazy initialization of item")
-        _item = item
+    func observe(item: Item) {
+        item.addObserver(self, forKeyPath: "title", options: .New, context: &itemContext)
+    }
+    
+    func adapt(item: Item) {
+        uniqueId = ManagedItem.uniqueIdFromItemId(item.itemId)
+        title = item.title
     }
     
     public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -73,7 +91,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
         }
         
         if keyPath == "title" {
-            self.title = change[NSKeyValueChangeNewKey] as String
+            self.title = change[NSKeyValueChangeNewKey] as! String
         }
     }
     

@@ -57,7 +57,7 @@ public class PersistentStack: NSObject {
         var store = coordinator!.addPersistentStoreWithType(self.storeType, configuration: nil, URL: self.storeURL, options: storeOptions, error: &error)
         
         if store == nil {
-            let dict = NSMutableDictionary()
+            var dict = [NSObject : AnyObject]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             if error != nil {

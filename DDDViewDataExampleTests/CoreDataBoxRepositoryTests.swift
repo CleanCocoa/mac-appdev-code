@@ -41,7 +41,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox]? {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        return context.executeFetchRequest(request, error: nil) as [ManagedBox]?
+        return context.executeFetchRequest(request, error: nil) as? [ManagedBox]
     }
 
     //MARK: Adding Entities

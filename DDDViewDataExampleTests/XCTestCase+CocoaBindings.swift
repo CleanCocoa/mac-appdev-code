@@ -17,7 +17,7 @@ extension XCTestCase {
         }
         
         if let info = object.infoForBinding(binding) {
-            return info[NSOptionsKey]?["NSValueTransformerName"] as String == transformerName
+            return info[NSOptionsKey]?["NSValueTransformerName"] as! String == transformerName
         }
         
         return false
@@ -25,7 +25,7 @@ extension XCTestCase {
     
     func hasBinding(object: NSObject, binding:String, to boundObject: NSObject, throughKeyPath keyPath:String) -> Bool {
         if let info = object.infoForBinding(binding) {
-            return (info[NSObservedObjectKey] as NSObject == boundObject) && (info[NSObservedKeyPathKey] as String == keyPath)
+            return (info[NSObservedObjectKey] as! NSObject == boundObject) && (info[NSObservedKeyPathKey] as! String == keyPath)
         }
         
         return false

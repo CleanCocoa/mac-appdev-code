@@ -62,7 +62,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     }
     
     func allBoxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+        return viewController.itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
     }
     
     //MARK: -
@@ -94,7 +94,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         
         let boxNodes = allBoxNodes()
         XCTAssertEqual(boxNodes.count, 1)
-        let boxNode = boxNodes[0].representedObject as BoxNode
+        let boxNode = boxNodes[0].representedObject as! BoxNode
         XCTAssertEqual(boxNode.boxId, existingId)
         XCTAssertEqual(boxNode.title, existingTitle)
     }
@@ -135,7 +135,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         
         let boxNodes = allBoxNodes()
         XCTAssertEqual(boxNodes.count, 1)
-        let boxNode = boxNodes[0].representedObject as BoxNode
+        let boxNode = boxNodes[0].representedObject as! BoxNode
         XCTAssertEqual(boxNode.children.count, 1)
         if let itemNode = boxNode.children.first as? ItemNode {
             XCTAssertEqual(itemNode.itemId, existingItemId)
@@ -173,7 +173,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func changeSoleBoxNode(title newTitle: String) {
         let soleBoxTreeNode = allBoxNodes().first!
-        let boxNode = soleBoxTreeNode.representedObject as BoxNode
+        let boxNode = soleBoxTreeNode.representedObject as! BoxNode
         boxNode.title = newTitle
     }
     
@@ -188,7 +188,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         changeSoleItemNode(title: newTitle)
         
         let managedBox = soleBox()!
-        let managedItem = managedBox.items.anyObject()! as ManagedItem
+        let managedItem = managedBox.items.anyObject()! as! ManagedItem
         XCTAssertEqual(managedItem.title, newTitle)
     }
     
@@ -204,8 +204,8 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func changeSoleItemNode(title newTitle: String) {
         let soleBoxTreeNode = allBoxNodes().first!
-        let boxNode = soleBoxTreeNode.representedObject as BoxNode
-        let itemNode = boxNode.children.first! as ItemNode
+        let boxNode = soleBoxTreeNode.representedObject as! BoxNode
+        let itemNode = boxNode.children.first! as! ItemNode
         itemNode.title = newTitle
     }
     

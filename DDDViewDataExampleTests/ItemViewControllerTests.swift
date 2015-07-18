@@ -77,7 +77,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func boxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+        return viewController.itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
     }
     
     func boxNodeCount() -> Int {
@@ -90,7 +90,7 @@ class ItemViewControllerTests: XCTestCase {
     
     func itemTreeNode(atBoxIndex boxIndex: Int, itemIndex: Int) -> NSTreeNode {
         let boxNode: NSTreeNode = boxAtIndex(boxIndex)
-        return boxNode.childNodes![itemIndex] as NSTreeNode
+        return boxNode.childNodes![itemIndex] as! NSTreeNode
     }
     
     func boxDataStub() -> BoxData {
@@ -176,7 +176,7 @@ class ItemViewControllerTests: XCTestCase {
     func testItemRowView_TitleCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
         
-        let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as NSTableCellView
+        let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as! NSTableCellView
         let titleTextField = titleCellView.textField!
         XCTAssertTrue(titleTextField.editable)
         XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title", transformingWith: "NonNilStringValueTransformer"))
@@ -185,7 +185,7 @@ class ItemViewControllerTests: XCTestCase {
     func testItemRowView_CountCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
         
-        let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as NSTableCellView
+        let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as! NSTableCellView
         let countTextField = countCellView.textField!
         XCTAssertFalse(countTextField.editable, "count text field should not be editable")
         XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"))
@@ -237,8 +237,8 @@ class ItemViewControllerTests: XCTestCase {
         treeController.addObject(TestBoxNode(title: "second"))
         
         XCTAssertTrue(treeController.selectedNodes.count > 0, "should auto-select")
-        let selectedNode: NSTreeNode = treeController.selectedNodes[0] as NSTreeNode
-        let item: TreeNode = selectedNode.representedObject as TreeNode
+        let selectedNode: NSTreeNode = treeController.selectedNodes[0] as! NSTreeNode
+        let item: TreeNode = selectedNode.representedObject as! TreeNode
         XCTAssertEqual(item.title, "second", "select latest insertion")
     }
     
@@ -260,7 +260,7 @@ class ItemViewControllerTests: XCTestCase {
         // Select first node
         let selectionIndexPath = NSIndexPath(index: 0)
         treeController.setSelectionIndexPath(selectionIndexPath)
-        let selectedBox = (treeController.selectedNodes[0] as NSTreeNode).representedObject as TreeNode
+        let selectedBox = (treeController.selectedNodes[0] as! NSTreeNode).representedObject as! TreeNode
         XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
         
         viewController.consume(itemDataStub(parentBoxId: BoxId(1)))
@@ -286,13 +286,13 @@ class ItemViewControllerTests: XCTestCase {
         
         XCTAssertEqual(boxNodeCount(), 1)
         let soleBoxTreeNode = boxAtIndex(0)
-        let boxNode = soleBoxTreeNode.representedObject as BoxNode
+        let boxNode = soleBoxTreeNode.representedObject as! BoxNode
         XCTAssertEqual(boxNode.boxId, boxId)
         
-        let itemNodes = soleBoxTreeNode.childNodes! as [NSTreeNode]
+        let itemNodes = soleBoxTreeNode.childNodes! as! [NSTreeNode]
         XCTAssertEqual(itemNodes.count, 1)
         if let soleItemTreeNode = itemNodes.first {
-            let itemNode = soleItemTreeNode.representedObject as ItemNode
+            let itemNode = soleItemTreeNode.representedObject as! ItemNode
             XCTAssertEqual(itemNode.itemId, itemId)
         }
     }

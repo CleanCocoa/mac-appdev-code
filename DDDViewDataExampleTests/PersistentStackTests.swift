@@ -26,26 +26,26 @@ class PersistentStackTests: XCTestCase {
     }()
     
     override func tearDown() {
-        if let storeURL: NSURL! = self.storeURL {
+        if let storeURL = self.storeURL {
             var error: NSError?
             let success = NSFileManager.defaultManager().removeItemAtURL(storeURL, error: &error)
             XCTAssertTrue(success, "couldn't clean  up test database file")
-            //String(format: "couldn't clean  up test database file: %@", error!.localizedDescription));
+            //String(format: "couldn't clean  up test database file: %@", error!.localizedDescription))
         }
         
         super.tearDown()
     }
     
     func testInitializer() {
-        XCTAssertNotNil(self.persistentStack, "Should have a persistent stack");
+        XCTAssertNotNil(self.persistentStack, "Should have a persistent stack")
     }
     
     func testManagedObjectContextSetUp() {
         XCTAssertNotNil(self.persistentStack.managedObjectContext, "Should have a managed object context");
-        XCTAssertNotNil(self.persistentStack.managedObjectContext?.persistentStoreCoordinator, "Should have a persistent store coordinator");
-        let store: NSPersistentStore! = self.persistentStack.managedObjectContext?.persistentStoreCoordinator?.persistentStores[0] as NSPersistentStore;
-        XCTAssertNotNil(store, "Should have a persistent store");
-        XCTAssertEqual(store.type, NSSQLiteStoreType, "Should be a sqlite store");
-        XCTAssertNotNil(self.persistentStack.managedObjectContext?.undoManager, "Should have an undo manager");
+        XCTAssertNotNil(self.persistentStack.managedObjectContext?.persistentStoreCoordinator, "Should have a persistent store coordinator")
+        let store: NSPersistentStore! = self.persistentStack.managedObjectContext?.persistentStoreCoordinator?.persistentStores[0] as! NSPersistentStore
+        XCTAssertNotNil(store, "Should have a persistent store")
+        XCTAssertEqual(store.type, NSSQLiteStoreType, "Should be a sqlite store")
+        XCTAssertNotNil(self.persistentStack.managedObjectContext?.undoManager, "Should have an undo manager")
     }
 }

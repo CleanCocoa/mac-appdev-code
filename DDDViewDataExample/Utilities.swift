@@ -23,7 +23,7 @@ func dispatch_async_main(closure: () -> ()) {
 }
 
 func logDetailledErrors(error: NSError) {
-    if let detailedErrors: [NSError] = error.userInfo?[NSDetailedErrorsKey]? as? [NSError] {
+    if let detailedErrors: [NSError] = error.userInfo?[NSDetailedErrorsKey] as? [NSError] {
         for detailedError in detailedErrors {
             NSLog("  DetailedError: \(detailedError.userInfo)")
         }
