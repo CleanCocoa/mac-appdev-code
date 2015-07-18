@@ -32,57 +32,59 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }()
     
     private func guardApplicationDocumentsDirectory(directory: NSURL) {
-        // Make sure the application files directory is there
-        var error: NSError? = nil
-        var success: Bool = true
-        let propertiesOpt: [NSObject: AnyObject]?
+        
         do {
-            propertiesOpt = try directory.resourceValuesForKeys([NSURLIsDirectoryKey])
-        } catch let error1 as NSError {
-            error = error1
-            propertiesOpt = nil
+            if try !directoryExists(directory) {
+                try createDirectory(directory)
+            }
+        } catch let error as NSError {
+            NSApplication.sharedApplication().presentError(error)
+            abort()
         }
         
-        if let properties = propertiesOpt {
-            if let _ = properties[NSURLIsDirectoryKey]?.boolValue {
-                return
+    }
+    
+    private func directoryExists(directory: NSURL) throws -> Bool {
+        
+        let propertiesOpt: [NSObject: AnyObject]
+        
+        do {
+            propertiesOpt = try directory.resourceValuesForKeys([NSURLIsDirectoryKey])
+        } catch let error as NSError {
+            
+            if error.code == NSFileReadNoSuchFileError {
+                return false
             }
+            
+            throw error
+        }
+        
+        if let isDirectory = propertiesOpt[NSURLIsDirectoryKey]?.boolValue where isDirectory == false {
             
             var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to initialize the persistent stack"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Expected a folder to store application data, found a file \(self.applicationDocumentsDirectory.path)."
             
-            if error != nil {
-                userInfo[NSUnderlyingErrorKey] = error
-            }
-            
-            error = NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
-            success = false
-        } else if error!.code == NSFileReadNoSuchFileError {
-            let fileManager = NSFileManager.defaultManager()
-            do {
-                try fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil)
-                return
-            } catch let error1 as NSError {
-                error = error1
-            }
+            throw NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
+        }
+        
+        return true
+    }
+    
+    private func createDirectory(directory: NSURL) throws {
+        
+        let fileManager = NSFileManager.defaultManager()
+        
+        do {
+            try fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil)
+        } catch let fileError as NSError {
             
             var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to create the application documents directory"
-            userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(self.applicationDocumentsDirectory.path) failed."
+            userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(directory.path) failed."
+            userInfo[NSUnderlyingErrorKey] = fileError
             
-            if error != nil {
-                userInfo[NSUnderlyingErrorKey] = error
-            }
-            
-            error = NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
-            success = false
-        }
-        
-        if !success {
-            NSApplication.sharedApplication().presentError(error!)
-            
-            abort()
+            throw NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
         }
     }
     
