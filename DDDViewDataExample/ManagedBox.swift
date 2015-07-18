@@ -31,7 +31,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     public class func insertManagedBox(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
         let box: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
-        var managedBox: ManagedBox = box as! ManagedBox
+        let managedBox: ManagedBox = box as! ManagedBox
         
         managedBox.uniqueId = uniqueIdFromBoxId(boxId)
         managedBox.title = title
@@ -76,7 +76,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         box.addObserver(self, forKeyPath: "items", options: .New, context: &boxContext)
     }
     
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if context != &boxContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
@@ -84,9 +84,9 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         }
         
         if keyPath == "title" {
-            self.title = change[NSKeyValueChangeNewKey] as! String
+            self.title = change?[NSKeyValueChangeNewKey] as! String
         } else if keyPath == "items" {
-            let items = change[NSKeyValueChangeNewKey] as! [Item]
+            let items = change?[NSKeyValueChangeNewKey] as! [Item]
             mergeItems(items)
         }
     }
@@ -100,7 +100,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     func removeMissingItems(items: [Item], from existingItems: NSMutableSet) {
         for item in existingItems {
             if let managedItem: ManagedItem = item as? ManagedItem {
-                if !contains(items, managedItem.item) {
+                if !items.contains(managedItem.item) {
                     existingItems.removeObject(item)
                 }
             }
@@ -109,7 +109,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     
     func addNewItems(items: [Item], to existingItems: NSMutableSet) {
         for item in items {
-            let itemIsInExistingItems = contains(existingItems, { (existingItem: AnyObject) -> Bool in
+            let itemIsInExistingItems = existingItems.contains({ (existingItem: AnyObject) -> Bool in
                 let managedItem = existingItem as! ManagedItem
                 return managedItem.item == item
             })

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public struct ItemId: Equatable, Hashable, DebugPrintable, Identifiable {
+public struct ItemId: Equatable, Hashable, CustomDebugStringConvertible, Identifiable {
     public var identifier: IntegerId { return _identifier }
     private var _identifier: IntegerId
     

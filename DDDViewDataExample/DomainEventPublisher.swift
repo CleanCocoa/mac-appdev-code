@@ -54,7 +54,7 @@ public class DomainEventPublisher {
     public func subscribe<T: DomainEvent>(eventKind: T.Type, queue: NSOperationQueue, usingBlock block: (T!) -> Void) -> NSObjectProtocol {
         let eventType: DomainEventType = T.eventType
         return notificationCenter.addObserverForName(eventType.name, object: nil, queue: queue) {
-            (notification: NSNotification!) -> Void in
+            (notification: NSNotification) -> Void in
             
             let userInfo = notification.userInfo!
             let event: T = T(userInfo: userInfo)

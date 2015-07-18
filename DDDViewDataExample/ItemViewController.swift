@@ -94,7 +94,7 @@ public class ItemNode: NSObject, TreeNode {
     
     public func parentBoxNode(inArray nodes: [BoxNode]) -> BoxNode? {
         for boxNode in nodes {
-            if contains(boxNode.children as! [ItemNode], self) {
+            if (boxNode.children as! [ItemNode]).contains(self) {
                 return boxNode
             }
         }
@@ -162,7 +162,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     func itemNodes(allItemData: [ItemData]) -> [ItemNode] {
-        var result: [ItemNode] = allItemData.map() { (itemData: ItemData) -> ItemNode in
+        let result: [ItemNode] = allItemData.map() { (itemData: ItemData) -> ItemNode in
             self.itemNode(itemData)
         }
         return result
@@ -192,7 +192,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
         orderTree()
         
-        delay(3, { () -> () in
+        delay(3, closure: { () -> () in
             boxNode.title = "TEST!!"
         })
     }
@@ -205,9 +205,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     //MARK: Add Items
     
     @IBAction public func addItem(sender: AnyObject) {
-        if let eventHandler = self.eventHandler {
-            addItemNodeToSelectedBox()
-        }
+        addItemNodeToSelectedBox()
     }
     
     func addItemNodeToSelectedBox() {
@@ -222,7 +220,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
             return nil
         }
         
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as! NSTreeNode
+        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
         
         if (treeNodeRepresentsBoxNode(firstSelectedTreeNode)) {
             let parentNode = firstSelectedTreeNode.parentNode!
@@ -237,9 +235,11 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     func appendItemNodeToBoxIndexPath(parentIndexPath: NSIndexPath) {
-        let parentTreeNode = boxTreeNodeAtIndexPath(parentIndexPath)
-        let boxNode = parentTreeNode.representedObject as! BoxNode
-        eventHandler.createItem(boxNode.boxId)
+        if let eventHandler = eventHandler {
+            let parentTreeNode = boxTreeNodeAtIndexPath(parentIndexPath)
+            let boxNode = parentTreeNode.representedObject as! BoxNode
+            eventHandler.createItem(boxNode.boxId)
+        }
     }
     
     func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
@@ -255,7 +255,6 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     public func consume(itemData: ItemData) {
         if let boxId = itemData.boxId {
             if let boxNode = existingBoxNode(boxId) {
-                let itemId = itemData.itemId
                 let itemNode = self.itemNode(itemData)
                 
                 boxNode.addItemNode(itemNode)
@@ -265,7 +264,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     func existingBoxNode(boxId: BoxId) -> BoxNode? {
-        let boxNodes = itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
+        let boxNodes = itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
         for treeNode in boxNodes {
             let boxNode = treeNode.representedObject as! BoxNode
             if boxNode.boxId == boxId {
@@ -303,7 +302,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     /// Returns all of `itemsController` root-level nodes' represented objects
     func boxNodes() -> [BoxNode] {
-        let rootNodes = itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
+        let rootNodes = itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
         return rootNodes.map { (treeNode: NSTreeNode) -> BoxNode in
             return treeNode.representedObject as! BoxNode
         }
@@ -317,7 +316,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
             return
         }
         
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as! NSTreeNode
+        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
         let indexPath = firstSelectedTreeNode.indexPath
         let treeNode: TreeNode = firstSelectedTreeNode.representedObject as! TreeNode
 

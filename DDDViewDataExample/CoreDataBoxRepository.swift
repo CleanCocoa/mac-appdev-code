@@ -20,7 +20,7 @@ struct DefaultIntegerIdGenerator: GeneratesIntegerId {
         var urandom: UInt64
         urandom = (UInt64(arc4random()) << 32) | UInt64(arc4random())
         
-        var random: IntegerId = (IntegerId) (urandom & 0x7FFFFFFFFFFFFFFF);
+        let random: IntegerId = (IntegerId) (urandom & 0x7FFFFFFFFFFFFFFF);
         
         return random
     }
@@ -37,7 +37,7 @@ struct IdGenerator<Id: Identifiable> {
     func unusedIntegerId() -> IntegerId {
         var identifier: IntegerId
         
-        do {
+        repeat {
             identifier = integerId()
         } while integerIdIsTaken(identifier)
         
@@ -73,13 +73,13 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         ManagedBox.insertManagedBox(box.boxId, title: box.title, inManagedObjectContext: self.managedObjectContext)
     }
     
-    public func removeBox(#boxId: BoxId) {
+    public func removeBox(boxId boxId: BoxId) {
         if let managedBox = managedBoxWithId(boxId) {
             managedObjectContext.deleteObject(managedBox)
         }
     }
     
-    public func box(#boxId: BoxId) -> Box? {
+    public func box(boxId boxId: BoxId) -> Box? {
         if let managedBox = managedBoxWithId(boxId) {
             return managedBox.box
         }
@@ -96,7 +96,13 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         fetchRequest.includesSubentities = true
         
         var error: NSError? = nil
-        let results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
+        let results: [AnyObject]?
+        do {
+            results = try managedObjectContext.executeFetchRequest(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            results = nil
+        }
         
         if results == nil {
             logError(error!, operation: "find existing boxes")
@@ -149,7 +155,13 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         assert(fetchRequest != nil, "Fetch request named 'ManagedBoxWithUniqueId' is required")
         
         var error: NSError? = nil
-        let result = managedObjectContext.executeFetchRequest(fetchRequest!, error:&error);
+        let result: [AnyObject]?
+        do {
+            result = try managedObjectContext.executeFetchRequest(fetchRequest!)
+        } catch let error1 as NSError {
+            error = error1
+            result = nil
+        };
         
         if result == nil {
             logError(error!, operation: "find existing box with ID '\(identifier)'")

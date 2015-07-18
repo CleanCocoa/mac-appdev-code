@@ -54,7 +54,15 @@ public class PersistentStack: NSObject {
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let storeOptions = self.defaultStoreOptions()
-        var store = coordinator!.addPersistentStoreWithType(self.storeType, configuration: nil, URL: self.storeURL, options: storeOptions, error: &error)
+        let store: NSPersistentStore?
+        do {
+            store = try coordinator!.addPersistentStoreWithType(self.storeType, configuration: nil, URL: self.storeURL, options: storeOptions)
+        } catch var error1 as NSError {
+            error = error1
+            store = nil
+        } catch {
+            fatalError()
+        }
         
         if store == nil {
             var dict = [NSObject : AnyObject]()
@@ -86,11 +94,16 @@ public class PersistentStack: NSObject {
             }
             
             var error: NSError? = nil
-            if moc.hasChanges && !moc.save(&error) {
-                NSApplication.sharedApplication().presentError(error!)
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch let error1 as NSError {
+                    error = error1
+                    NSApplication.sharedApplication().presentError(error!)
                 
-                NSLog("Failed to save to data store: \(error!.localizedDescription)")
-                logDetailledErrors(error!)
+                    NSLog("Failed to save to data store: \(error!.localizedDescription)")
+                    logDetailledErrors(error!)
+                }
             }
         }
     }
@@ -126,7 +139,10 @@ public class PersistentStack: NSObject {
         }
         
         var error: NSError? = nil
-        if !moc.save(&error) {
+        do {
+            try moc.save()
+        } catch let error1 as NSError {
+            error = error1
             NSLog("Failed to save to data store: \(error!.localizedDescription)")
             logDetailledErrors(error!)
             

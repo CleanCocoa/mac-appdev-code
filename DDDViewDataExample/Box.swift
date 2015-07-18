@@ -8,7 +8,7 @@
 
 import Cocoa
 
-public struct BoxId: Equatable, DebugPrintable, Identifiable {
+public struct BoxId: Equatable, CustomDebugStringConvertible, Identifiable {
     public var identifier: IntegerId { return _identifier }
     private var _identifier: IntegerId
     
@@ -33,9 +33,9 @@ public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
     func addBox(box: Box)
-    func removeBox(#boxId: BoxId)
+    func removeBox(boxId boxId: BoxId)
     func boxes() -> [Box]
-    func box(#boxId: BoxId) -> Box?
+    func box(boxId boxId: BoxId) -> Box?
     func count() -> Int
 }
 
@@ -56,7 +56,7 @@ public class Box: NSObject {
         items.append(item)
     }
     
-    public func item(#itemId: ItemId) -> Item? {
+    public func item(itemId itemId: ItemId) -> Item? {
         if let index = indexOfItem(itemId: itemId) {
             return items[index]
         }
@@ -64,14 +64,14 @@ public class Box: NSObject {
         return nil
     }
     
-    public func removeItem(#itemId: ItemId) {
+    public func removeItem(itemId itemId: ItemId) {
         if let index = indexOfItem(itemId: itemId) {
             items.removeAtIndex(index)
         }
     }
     
-    func indexOfItem(#itemId: ItemId) -> Int? {
-        for (index, item) in enumerate(items) {
+    func indexOfItem(itemId itemId: ItemId) -> Int? {
+        for (index, item) in items.enumerate() {
             if item.itemId == itemId {
                 return index
             }

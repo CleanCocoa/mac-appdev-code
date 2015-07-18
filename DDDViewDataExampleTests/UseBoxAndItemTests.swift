@@ -41,7 +41,12 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox] {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        let results: [AnyObject]? = context.executeFetchRequest(request, error: nil)
+        let results: [AnyObject]?
+        do {
+            results = try context.executeFetchRequest(request)
+        } catch _ {
+            results = nil
+        }
         
         if let boxes = results as? [ManagedBox] {
             return boxes
@@ -52,7 +57,12 @@ class UseBoxAndItemTests: CoreDataTestCase {
     
     func allItems() -> [ManagedItem] {
         let request = NSFetchRequest(entityName: ManagedItem.entityName())
-        let results: [AnyObject]? = context.executeFetchRequest(request, error: nil)
+        let results: [AnyObject]?
+        do {
+            results = try context.executeFetchRequest(request)
+        } catch _ {
+            results = nil
+        }
         
         if let items = results as? [ManagedItem] {
             return items
@@ -62,7 +72,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     }
     
     func allBoxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
+        return viewController.itemsController.arrangedObjects.childNodes!!
     }
     
     //MARK: -

@@ -21,9 +21,9 @@ class TestBoxRepository: BoxRepository {
     }
     
     func addBox(box: Box) { }
-    func removeBox(#boxId: BoxId) { }
+    func removeBox(boxId boxId: BoxId) { }
     
-    func box(#boxId: BoxId) -> Box? {
+    func box(boxId boxId: BoxId) -> Box? {
         return nil
     }
     

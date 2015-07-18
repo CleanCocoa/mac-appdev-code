@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "de.christiantietze.DDDViewDataExample" in the user's Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportURL = urls[urls.count - 1] as! NSURL
+        let appSupportURL = urls[urls.count - 1] as NSURL
         let directory = appSupportURL.URLByAppendingPathComponent("de.christiantietze.DDDViewDataExample")
         
         self.guardApplicationDocumentsDirectory(directory)
@@ -43,10 +43,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Make sure the application files directory is there
         var error: NSError? = nil
         var success: Bool = true
-        let propertiesOpt = directory.resourceValuesForKeys([NSURLIsDirectoryKey], error: &error)
+        let propertiesOpt: [NSObject: AnyObject]?
+        do {
+            propertiesOpt = try directory.resourceValuesForKeys([NSURLIsDirectoryKey])
+        } catch let error1 as NSError {
+            error = error1
+            propertiesOpt = nil
+        }
         
         if let properties = propertiesOpt {
-            if let isDirectory = properties[NSURLIsDirectoryKey]!.boolValue {
+            if let _ = properties[NSURLIsDirectoryKey]?.boolValue {
                 return
             }
             
@@ -62,8 +68,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             success = false
         } else if error!.code == NSFileReadNoSuchFileError {
             let fileManager = NSFileManager.defaultManager()
-            if fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil, error: &error) {
+            do {
+                try fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil)
                 return
+            } catch let error1 as NSError {
+                error = error1
             }
             
             var userInfo = [NSObject : AnyObject]()

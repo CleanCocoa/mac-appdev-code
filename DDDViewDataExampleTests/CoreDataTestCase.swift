@@ -29,7 +29,15 @@ class CoreDataTestCase: XCTestCase {
         let model = NSManagedObjectModel(contentsOfURL: modelURL!)
         let coord = NSPersistentStoreCoordinator(managedObjectModel: model!)
         var error: NSError? = nil
-        let store: NSPersistentStore? = coord.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: &error)
+        let store: NSPersistentStore?
+        do {
+            store = try coord.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+        } catch var error1 as NSError {
+            error = error1
+            store = nil
+        } catch {
+            fatalError()
+        }
         XCTAssert(store != nil, "store not created: \(error)")
         
         context.persistentStoreCoordinator = coord;
