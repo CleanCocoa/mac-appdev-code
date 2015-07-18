@@ -183,10 +183,6 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         let indexPath = NSIndexPath(index: nodeCount())
         itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
         orderTree()
-        
-        delay(3, closure: { () -> () in
-            boxNode.title = "TEST!!"
-        })
     }
     
     func orderTree() {
