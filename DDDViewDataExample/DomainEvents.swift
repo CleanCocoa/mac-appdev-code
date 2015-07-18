@@ -1,11 +1,3 @@
-//
-//  DomainEvents.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 04/12/14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Foundation
 
 public typealias UserInfo = [NSObject : AnyObject]
