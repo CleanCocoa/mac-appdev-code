@@ -66,17 +66,19 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     public func removeBox(boxId boxId: BoxId) {
-        if let managedBox = managedBoxWithId(boxId) {
-            managedObjectContext.deleteObject(managedBox)
+        guard let managedBox = managedBoxWithId(boxId) else {
+            return
         }
+        
+        managedObjectContext.deleteObject(managedBox)
     }
     
     public func box(boxId boxId: BoxId) -> Box? {
-        if let managedBox = managedBoxWithId(boxId) {
-            return managedBox.box
+        guard let managedBox = managedBoxWithId(boxId) else {
+            return nil
         }
         
-        return nil
+        return managedBox.box
     }
     
     func managedBoxWithId(boxId: BoxId) -> ManagedBox? {

@@ -91,10 +91,12 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
     
     func removeMissingItems(items: [Item], from existingItems: NSMutableSet) {
         for item in existingItems {
-            if let managedItem: ManagedItem = item as? ManagedItem {
-                if !items.contains(managedItem.item) {
-                    existingItems.removeObject(item)
-                }
+            guard let managedItem: ManagedItem = item as? ManagedItem else {
+                continue
+            }
+            
+            if !items.contains(managedItem.item) {
+                existingItems.removeObject(item)
             }
         }
     }

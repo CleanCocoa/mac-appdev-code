@@ -18,11 +18,11 @@ public class Item: NSObject {
     }
     
     public override func isEqual(object: AnyObject?) -> Bool {
-        if let other = object as? Item {
-            return other.itemId == self.itemId
+        guard let other = object as? Item else {
+            return false
         }
         
-        return false
+        return other.itemId == self.itemId
     }
     
     public override var hashValue: Int {

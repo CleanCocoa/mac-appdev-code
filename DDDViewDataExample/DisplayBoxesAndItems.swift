@@ -46,14 +46,18 @@ class DisplayBoxesAndItems {
     
     //TODO: rename "consume" to something better
     func consumeBox(boxData: BoxData) {
-        if let consumer = self.consumer {
-            consumer.consume(boxData)
+        guard let consumer = self.consumer else {
+            return
         }
+        
+        consumer.consume(boxData)
     }
     
     func consumeItem(itemData: ItemData) {
-        if let consumer = self.consumer {
-            consumer.consume(itemData)
+        guard let consumer = self.consumer else {
+            return
         }
+        
+        consumer.consume(itemData)
     }
 }

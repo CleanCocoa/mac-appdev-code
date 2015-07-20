@@ -9,10 +9,12 @@ public class ItemManagementWindowController: NSWindowController {
             return self.itemViewController.eventHandler
         }
         set {
-            if let _ = self.window {
-                // Ensure Nib is loaded
-                self.itemViewController.eventHandler = newValue
+            guard let _ = self.window else {
+                return
             }
+            
+            // Ensure Nib is loaded
+            self.itemViewController.eventHandler = newValue
         }
     }
     
