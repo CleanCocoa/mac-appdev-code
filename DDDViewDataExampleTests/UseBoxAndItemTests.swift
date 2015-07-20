@@ -84,7 +84,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
         
-        let box: ManagedBox = soleBox()
+        let box = soleBox()
         XCTAssert(hasValue(box))
         if let box = box {
             XCTAssertEqual(box.title, "New Box")

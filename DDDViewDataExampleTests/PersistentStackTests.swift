@@ -32,7 +32,7 @@ class PersistentStackTests: XCTestCase {
     }
     
     func testManagedObjectContextSetUp() {
-        XCTAssertNotNil(self.persistentStack.managedObjectContext, "Should have a managed object context");
+        XCTAssertNotNil(self.persistentStack.managedObjectContext, "Should have a managed object context")
         XCTAssertNotNil(self.persistentStack.managedObjectContext?.persistentStoreCoordinator, "Should have a persistent store coordinator")
         let store = self.persistentStack.managedObjectContext?.persistentStoreCoordinator?.persistentStores[0]
         XCTAssertNotNil(store, "Should have a persistent store")

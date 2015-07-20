@@ -10,7 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     lazy var persistentStack: PersistentStack = {
-        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite");
+        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite")
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
@@ -104,7 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         readErrorCallback = notificationCenter.addObserverForName(kCoreDataReadErrorNotificationName, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
             
             let question = NSLocalizedString("Could not read data. Report and Quit?", comment: "Read error quit question message")
-            let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info");
+            let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info")
             let quitButton = NSLocalizedString("Report and Quit", comment: "Report and Quit button title")
             let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
             let alert = NSAlert()

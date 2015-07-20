@@ -15,7 +15,7 @@ class CoreDataTestCase: XCTestCase {
         }
         
         let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        let bundle = NSBundle.mainBundle();
+        let bundle = NSBundle.mainBundle()
         
         guard let modelURL = bundle.URLForResource(modelName, withExtension: "momd") else {
             fatalError("model not loaded")

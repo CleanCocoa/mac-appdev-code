@@ -18,7 +18,7 @@ class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
 }
 
 class CoreDataBoxRepositoryTests: CoreDataTestCase {
-    var repository: CoreDataBoxRepository?
+    var repository: CoreDataBoxRepository!
     
     override func setUp() {
         super.setUp()
@@ -52,7 +52,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let boxId = repository!.nextId()
         let box = Box(boxId: boxId, title: title)
     
-        repository!.addBox(box)
+        repository.addBox(box)
 
         let boxes = self.allBoxes()!
         XCTAssert(boxes.count > 0, "items expected")
@@ -71,7 +71,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let existingId = BoxId(testGenerator.firstAttempt)
         ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
         
-        let boxId = repository!.nextId()
+        let boxId = repository.nextId()
         
         let expectedNextId = BoxId(testGenerator.secondAttempt)
         XCTAssertEqual(boxId, expectedNextId, "Should generate another ID because first one is taken")
