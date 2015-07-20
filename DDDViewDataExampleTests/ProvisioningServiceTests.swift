@@ -52,10 +52,10 @@ class ProvisioningServiceTests: XCTestCase {
         let box = Box(boxId: BoxId(123), title: "irrelevant")
         provisioningService.provisionItem(inBox: box)
         
-        if let event = publisher.lastPublishedEvent as? BoxItemProvisionedEvent {
+        let event = publisher.lastPublishedEvent as? BoxItemProvisionedEvent
+        XCTAssert(hasValue(event))
+        if let event = event {
             XCTAssertEqual(event.boxId, box.boxId)
-        } else {
-            XCTFail("did not publish event")
         }
     }
 }

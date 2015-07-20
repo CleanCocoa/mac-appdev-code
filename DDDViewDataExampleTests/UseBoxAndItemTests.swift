@@ -84,10 +84,10 @@ class UseBoxAndItemTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
         
-        if let box: ManagedBox = soleBox() {
+        let box: ManagedBox = soleBox()
+        XCTAssert(hasValue(box))
+        if let box = box {
             XCTAssertEqual(box.title, "New Box")
-        } else {
-            XCTFail("no boxes found")
         }
     }
     
@@ -117,15 +117,15 @@ class UseBoxAndItemTests: CoreDataTestCase {
         viewController.addItem(self)
         
         // Then
-        if let managedBox: ManagedBox = soleBox() {
-            if let managedItem: ManagedItem = managedBox.items.anyObject() as? ManagedItem {
+        let managedBox = soleBox()
+        XCTAssert(hasValue(managedBox))
+        if let managedBox = managedBox {
+            let managedItem = managedBox.items.anyObject() as? ManagedItem
+            XCTAssert(hasValue(managedItem))
+            if let managedItem = managedItem {
                 XCTAssertEqual(managedItem.title, "New Item")
                 XCTAssertEqual(managedItem.box, managedBox)
-            } else {
-                XCTFail("no items found")
             }
-        } else {
-            XCTFail("no boxes found")
         }
     }
     
@@ -143,10 +143,11 @@ class UseBoxAndItemTests: CoreDataTestCase {
         XCTAssertEqual(boxNodes.count, 1)
         let boxNode = boxNodes[0].representedObject as! BoxNode
         XCTAssertEqual(boxNode.children.count, 1)
-        if let itemNode = boxNode.children.first as? ItemNode {
+        
+        let itemNode = boxNode.children.first as? ItemNode
+        XCTAssert(hasValue(itemNode))
+        if let itemNode = itemNode {
             XCTAssertEqual(itemNode.itemId, existingItemId)
-        } else {
-            XCTFail("no item was recreated")
         }
     }
     

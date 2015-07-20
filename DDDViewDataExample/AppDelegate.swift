@@ -41,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSApplication.sharedApplication().presentError(error)
             abort()
         }
-        
     }
     
     private func directoryExists(directory: NSURL) throws -> Bool {
