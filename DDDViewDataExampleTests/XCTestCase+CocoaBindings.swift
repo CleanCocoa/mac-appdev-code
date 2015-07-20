@@ -1,11 +1,3 @@
-//
-//  XCTestCase+CocoaBindings.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 17.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 import XCTest
 
@@ -16,8 +8,9 @@ extension XCTestCase {
             return false
         }
         
-        if let info = object.infoForBinding(binding) {
-            return info[NSOptionsKey]?["NSValueTransformerName"] as! String == transformerName
+        if let info = object.infoForBinding(binding), options = info[NSOptionsKey] as? [String: AnyObject], boundTransformerName = options["NSValueTransformerName"] as? String {
+            
+            return boundTransformerName == transformerName
         }
         
         return false

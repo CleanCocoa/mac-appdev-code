@@ -1,11 +1,3 @@
-//
-//  ProvisioningServiceTests.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 04/12/14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 import XCTest
 
@@ -21,9 +13,9 @@ class TestBoxRepository: BoxRepository {
     }
     
     func addBox(box: Box) { }
-    func removeBox(#boxId: BoxId) { }
+    func removeBox(boxId boxId: BoxId) { }
     
-    func box(#boxId: BoxId) -> Box? {
+    func box(boxId boxId: BoxId) -> Box? {
         return nil
     }
     
@@ -60,10 +52,10 @@ class ProvisioningServiceTests: XCTestCase {
         let box = Box(boxId: BoxId(123), title: "irrelevant")
         provisioningService.provisionItem(inBox: box)
         
-        if let event = publisher.lastPublishedEvent as? BoxItemProvisionedEvent {
+        let event = publisher.lastPublishedEvent as? BoxItemProvisionedEvent
+        XCTAssert(hasValue(event))
+        if let event = event {
             XCTAssertEqual(event.boxId, box.boxId)
-        } else {
-            XCTFail("did not publish event")
         }
     }
 }

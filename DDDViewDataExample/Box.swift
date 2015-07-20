@@ -1,44 +1,14 @@
-//
-//  Box.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 24.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
-
-public struct BoxId: Equatable, DebugPrintable, Identifiable {
-    public var identifier: IntegerId { return _identifier }
-    private var _identifier: IntegerId
-    
-    public init(_ identifier: IntegerId) {
-        _identifier = identifier
-    }
-    
-    init(_ identifierNumber: NSNumber) {
-        _identifier = identifierNumber.longLongValue
-    }
-    
-    public var debugDescription: String {
-        return "BoxId: \(identifier)"
-    }
-}
-
-public func ==(lhs: BoxId, rhs: BoxId) -> Bool {
-    return lhs.identifier == rhs.identifier
-}
 
 public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
     func addBox(box: Box)
-    func removeBox(#boxId: BoxId)
+    func removeBox(boxId boxId: BoxId)
     func boxes() -> [Box]
-    func box(#boxId: BoxId) -> Box?
+    func box(boxId boxId: BoxId) -> Box?
     func count() -> Int
 }
-
 
 public class Box: NSObject {
     public let boxId: BoxId
@@ -51,27 +21,29 @@ public class Box: NSObject {
     }
     
     public func addItem(item: Item) {
-        assert(item.box == nil, "item should not have a parent box already")
+        precondition(!hasValue(item.box), "item should not have a parent box already")
         
         items.append(item)
     }
     
-    public func item(#itemId: ItemId) -> Item? {
-        if let index = indexOfItem(itemId: itemId) {
-            return items[index]
+    public func item(itemId itemId: ItemId) -> Item? {
+        guard let index = indexOfItem(itemId: itemId) else {
+            return nil
         }
         
-        return nil
+        return items[index]
     }
     
-    public func removeItem(#itemId: ItemId) {
-        if let index = indexOfItem(itemId: itemId) {
-            items.removeAtIndex(index)
+    public func removeItem(itemId itemId: ItemId) {
+        guard let index = indexOfItem(itemId: itemId) else {
+            return
         }
+        
+        items.removeAtIndex(index)
     }
     
-    func indexOfItem(#itemId: ItemId) -> Int? {
-        for (index, item) in enumerate(items) {
+    func indexOfItem(itemId itemId: ItemId) -> Int? {
+        for (index, item) in items.enumerate() {
             if item.itemId == itemId {
                 return index
             }

@@ -1,11 +1,3 @@
-//
-//  CoreDataTestCase.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 16.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 import XCTest
 import CoreData
@@ -18,23 +10,28 @@ class CoreDataTestCase: XCTestCase {
     
     /// Transiert temporary ManagedObjectContext
     internal lazy var context: NSManagedObjectContext = {
-        assert(self.modelName != nil, "modelName required. Call setUp() first")
+        guard let modelName = self.modelName else {
+            preconditionFailure("modelName required. Call setUp() first")
+        }
         
-        let modelName: String! = self.modelName
         let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        let bundle = NSBundle.mainBundle();
-        let modelURL = bundle.URLForResource(modelName, withExtension: "momd")
+        let bundle = NSBundle.mainBundle()
         
-        assert(modelURL != nil, "model not loaded")
-        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
-        let coord = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        var error: NSError? = nil
-        let store: NSPersistentStore? = coord.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: &error)
-        XCTAssert(store != nil, "store not created: \(error)")
+        guard let modelURL = bundle.URLForResource(modelName, withExtension: "momd") else {
+            fatalError("model not loaded")
+        }
         
-        context.persistentStoreCoordinator = coord;
+        let model = NSManagedObjectModel(contentsOfURL: modelURL)
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
+        let store: NSPersistentStore
         
-        XCTAssertNotNil(context, "Core Data context should have been initialized");
+        do {
+            store = try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+        } catch {
+            fatalError("store not created")
+        }
+        
+        context.persistentStoreCoordinator = coordinator
         
         return context
     }()

@@ -1,11 +1,3 @@
-//
-//  ManagedItem.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 24.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Foundation
 import CoreData
 
@@ -30,7 +22,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
     
     public class func insertManagedItem(item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         let theItem: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
-        var managedItem: ManagedItem = theItem as! ManagedItem
+        let managedItem: ManagedItem = theItem as! ManagedItem
         
         managedItem.item = item
         managedItem.box = managedBox
@@ -64,7 +56,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
             return item
         }
         set {
-            assert(_item == nil, "can be set only before lazy initialization of item")
+            precondition(!hasValue(_item), "can be set only before lazy initialization of item")
             
             let item = newValue
             adapt(item)
@@ -83,7 +75,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
         title = item.title
     }
     
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if context != &itemContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
@@ -91,7 +83,7 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
         }
         
         if keyPath == "title" {
-            self.title = change[NSKeyValueChangeNewKey] as! String
+            self.title = change?[NSKeyValueChangeNewKey] as! String
         }
     }
     

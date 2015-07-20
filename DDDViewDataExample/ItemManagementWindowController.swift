@@ -1,11 +1,3 @@
-//
-//  ItemManagementWindowController.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 17.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 
 public let kItemManagementWindowNibName: String = "ItemManagementWindowController"
@@ -13,12 +5,16 @@ public let kItemManagementWindowNibName: String = "ItemManagementWindowControlle
 public class ItemManagementWindowController: NSWindowController {
     
     public weak var eventHandler: HandlesItemListEvents? {
-        get { return self.itemViewController.eventHandler }
+        get {
+            return self.itemViewController.eventHandler
+        }
         set {
-            if let window = self.window {
-                // Ensure Nib is loaded
-                self.itemViewController.eventHandler = newValue
+            guard let _ = self.window else {
+                return
             }
+            
+            // Ensure Nib is loaded
+            self.itemViewController.eventHandler = newValue
         }
     }
     

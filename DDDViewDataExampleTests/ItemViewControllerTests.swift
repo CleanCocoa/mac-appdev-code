@@ -1,11 +1,3 @@
-//
-//  ItemViewController.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 17.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 import XCTest
 
@@ -77,7 +69,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func boxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!! as! [NSTreeNode]
+        return viewController.itemsController.arrangedObjects.childNodes!!
     }
     
     func boxNodeCount() -> Int {
@@ -90,7 +82,7 @@ class ItemViewControllerTests: XCTestCase {
     
     func itemTreeNode(atBoxIndex boxIndex: Int, itemIndex: Int) -> NSTreeNode {
         let boxNode: NSTreeNode = boxAtIndex(boxIndex)
-        return boxNode.childNodes![itemIndex] as! NSTreeNode
+        return boxNode.childNodes![itemIndex] as NSTreeNode
     }
     
     func boxDataStub() -> BoxData {
@@ -237,7 +229,7 @@ class ItemViewControllerTests: XCTestCase {
         treeController.addObject(TestBoxNode(title: "second"))
         
         XCTAssertTrue(treeController.selectedNodes.count > 0, "should auto-select")
-        let selectedNode: NSTreeNode = treeController.selectedNodes[0] as! NSTreeNode
+        let selectedNode: NSTreeNode = treeController.selectedNodes[0]
         let item: TreeNode = selectedNode.representedObject as! TreeNode
         XCTAssertEqual(item.title, "second", "select latest insertion")
     }
@@ -260,7 +252,7 @@ class ItemViewControllerTests: XCTestCase {
         // Select first node
         let selectionIndexPath = NSIndexPath(index: 0)
         treeController.setSelectionIndexPath(selectionIndexPath)
-        let selectedBox = (treeController.selectedNodes[0] as! NSTreeNode).representedObject as! TreeNode
+        let selectedBox = treeController.selectedNodes[0].representedObject as! TreeNode
         XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
         
         viewController.consume(itemDataStub(parentBoxId: BoxId(1)))
@@ -289,7 +281,7 @@ class ItemViewControllerTests: XCTestCase {
         let boxNode = soleBoxTreeNode.representedObject as! BoxNode
         XCTAssertEqual(boxNode.boxId, boxId)
         
-        let itemNodes = soleBoxTreeNode.childNodes! as! [NSTreeNode]
+        let itemNodes = soleBoxTreeNode.childNodes! as [NSTreeNode]
         XCTAssertEqual(itemNodes.count, 1)
         if let soleItemTreeNode = itemNodes.first {
             let itemNode = soleItemTreeNode.representedObject as! ItemNode

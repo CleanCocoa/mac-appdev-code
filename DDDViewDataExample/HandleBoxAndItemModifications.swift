@@ -1,11 +1,3 @@
-//
-//  HandleBoxAndItemModifications.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 25.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 
 class HandleBoxAndItemModifications: HandlesItemListEvents {
@@ -27,24 +19,32 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
     
     func createItem(boxId: BoxId) {
-        if let box = repository.box(boxId: boxId) {
-            provisioningService.provisionItem(inBox: box)
+        guard let box = repository.box(boxId: boxId) else {
+            return
         }
+        
+        provisioningService.provisionItem(inBox: box)
     }
         
     func changeBoxTitle(boxId: BoxId, title: String) {
-        if let box = repository.box(boxId: boxId) {
-            box.title = title
+        guard let box = repository.box(boxId: boxId) else {
+            return
         }
+        
+        box.title = title
     }
     
     func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
-        if let box = repository.box(boxId: boxId) {
-            // TODO add changeItemTitle()
-            if let item = box.item(itemId: itemId) {
-                item.title = title
-            }
+        guard let box = repository.box(boxId: boxId) else {
+            return
         }
+        
+        // TODO add changeItemTitle()
+        guard let item = box.item(itemId: itemId) else {
+            return
+        }
+
+        item.title = title
     }
     
     func removeBox(boxId: BoxId) {
@@ -52,8 +52,10 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
     
     func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
-        if let box = repository.box(boxId: boxId) {
-            box.removeItem(itemId: itemId)
+        guard let box = repository.box(boxId: boxId) else {
+            return
         }
+        
+        box.removeItem(itemId: itemId)
     }
 }

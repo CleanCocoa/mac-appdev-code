@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 16.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 
 let kErrorDomain = "DDDViewDataExampleErrorDomain"
@@ -18,7 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     lazy var persistentStack: PersistentStack = {
-        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite");
+        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite")
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
@@ -31,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "de.christiantietze.DDDViewDataExample" in the user's Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportURL = urls[urls.count - 1] as! NSURL
+        let appSupportURL = urls[urls.count - 1] as NSURL
         let directory = appSupportURL.URLByAppendingPathComponent("de.christiantietze.DDDViewDataExample")
         
         self.guardApplicationDocumentsDirectory(directory)
@@ -40,48 +32,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }()
     
     private func guardApplicationDocumentsDirectory(directory: NSURL) {
-        // Make sure the application files directory is there
-        var error: NSError? = nil
-        var success: Bool = true
-        let propertiesOpt = directory.resourceValuesForKeys([NSURLIsDirectoryKey], error: &error)
         
-        if let properties = propertiesOpt {
-            if let isDirectory = properties[NSURLIsDirectoryKey]!.boolValue {
-                return
+        do {
+            if try !directoryExists(directory) {
+                try createDirectory(directory)
             }
+        } catch let error as NSError {
+            NSApplication.sharedApplication().presentError(error)
+            abort()
+        }
+    }
+    
+    private func directoryExists(directory: NSURL) throws -> Bool {
+        
+        let propertiesOpt: [NSObject: AnyObject]
+        
+        do {
+            propertiesOpt = try directory.resourceValuesForKeys([NSURLIsDirectoryKey])
+        } catch let error as NSError {
+            
+            if error.code == NSFileReadNoSuchFileError {
+                return false
+            }
+            
+            throw error
+        }
+        
+        if let isDirectory = propertiesOpt[NSURLIsDirectoryKey]?.boolValue where isDirectory == false {
             
             var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to initialize the persistent stack"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Expected a folder to store application data, found a file \(self.applicationDocumentsDirectory.path)."
             
-            if error != nil {
-                userInfo[NSUnderlyingErrorKey] = error
-            }
-            
-            error = NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
-            success = false
-        } else if error!.code == NSFileReadNoSuchFileError {
-            let fileManager = NSFileManager.defaultManager()
-            if fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil, error: &error) {
-                return
-            }
+            throw NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
+        }
+        
+        return true
+    }
+    
+    private func createDirectory(directory: NSURL) throws {
+        
+        let fileManager = NSFileManager.defaultManager()
+        
+        do {
+            try fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil)
+        } catch let fileError as NSError {
             
             var userInfo = [NSObject : AnyObject]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to create the application documents directory"
-            userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(self.applicationDocumentsDirectory.path) failed."
+            userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(directory.path) failed."
+            userInfo[NSUnderlyingErrorKey] = fileError
             
-            if error != nil {
-                userInfo[NSUnderlyingErrorKey] = error
-            }
-            
-            error = NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
-            success = false
-        }
-        
-        if !success {
-            NSApplication.sharedApplication().presentError(error!)
-            
-            abort()
+            throw NSError(domain: kErrorDomain, code: 1, userInfo: userInfo)
         }
     }
     
@@ -102,7 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         readErrorCallback = notificationCenter.addObserverForName(kCoreDataReadErrorNotificationName, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
             
             let question = NSLocalizedString("Could not read data. Report and Quit?", comment: "Read error quit question message")
-            let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info");
+            let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info")
             let quitButton = NSLocalizedString("Report and Quit", comment: "Report and Quit button title")
             let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
             let alert = NSAlert()

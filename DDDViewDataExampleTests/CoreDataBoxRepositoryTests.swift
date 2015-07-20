@@ -1,11 +1,3 @@
-//
-//  CoreDataBoxRepositoryTests.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 16.11.14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Cocoa
 import XCTest
 
@@ -26,7 +18,7 @@ class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
 }
 
 class CoreDataBoxRepositoryTests: CoreDataTestCase {
-    var repository: CoreDataBoxRepository?
+    var repository: CoreDataBoxRepository!
     
     override func setUp() {
         super.setUp()
@@ -41,7 +33,16 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     
     func allBoxes() -> [ManagedBox]? {
         let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        return context.executeFetchRequest(request, error: nil) as? [ManagedBox]
+        let result: [ManagedBox]
+        
+        do {
+            try result = context.executeFetchRequest(request) as! [ManagedBox]
+        } catch {
+            XCTFail("fetching all boxes failed")
+            return nil
+        }
+        
+        return result
     }
 
     //MARK: Adding Entities
@@ -51,7 +52,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let boxId = repository!.nextId()
         let box = Box(boxId: boxId, title: title)
     
-        repository!.addBox(box)
+        repository.addBox(box)
 
         let boxes = self.allBoxes()!
         XCTAssert(boxes.count > 0, "items expected")
@@ -70,7 +71,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let existingId = BoxId(testGenerator.firstAttempt)
         ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
         
-        let boxId = repository!.nextId()
+        let boxId = repository.nextId()
         
         let expectedNextId = BoxId(testGenerator.secondAttempt)
         XCTAssertEqual(boxId, expectedNextId, "Should generate another ID because first one is taken")

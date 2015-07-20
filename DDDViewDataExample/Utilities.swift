@@ -1,11 +1,3 @@
-//
-//  Utilities.swift
-//  DDDViewDataExample
-//
-//  Created by Christian Tietze on 03/12/14.
-//  Copyright (c) 2014 Christian Tietze. All rights reserved.
-//
-
 import Foundation
 import CoreData
 
@@ -23,7 +15,7 @@ func dispatch_async_main(closure: () -> ()) {
 }
 
 func logDetailledErrors(error: NSError) {
-    if let detailedErrors: [NSError] = error.userInfo?[NSDetailedErrorsKey] as? [NSError] {
+    if let detailedErrors: [NSError] = error.userInfo[NSDetailedErrorsKey] as? [NSError] {
         for detailedError in detailedErrors {
             NSLog("  DetailedError: \(detailedError.userInfo)")
         }
