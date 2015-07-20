@@ -2,28 +2,21 @@ import Foundation
 
 public typealias UserInfo = [NSObject : AnyObject]
 
-public enum DomainEventType: String {
-    case BoxProvisioned = "Box Provisioned"
-    case BoxItemProvisioned = "Box Item Provisioned"
-    
-    var name: String {
-        return self.rawValue
-    }
-}
-
 public protocol DomainEvent {
-    /// The `DomainEventType` to identify this kind of DomainEvent
-    static var eventType: DomainEventType { get }
+    
+    static var eventName: String { get }
     
     init(userInfo: UserInfo)
     func userInfo() -> UserInfo
-    func notification() -> NSNotification
+}
+
+public func notification<T: DomainEvent>(event: T) -> NSNotification {
+    return NSNotification(name: T.eventName, object: nil, userInfo: event.userInfo())
 }
 
 public struct BoxProvisionedEvent: DomainEvent {
-    public static var eventType: DomainEventType {
-        return DomainEventType.BoxProvisioned
-    }
+    
+    public static let eventName = "Box Provisioned Event"
     
     public let boxId: BoxId
     public let title: String
@@ -45,16 +38,11 @@ public struct BoxProvisionedEvent: DomainEvent {
             "title": title
         ]
     }
-    
-    public func notification() -> NSNotification {
-        return NSNotification(name: BoxProvisionedEvent.eventType.name, object: nil, userInfo: userInfo())
-    }
 }
 
 public struct BoxItemProvisionedEvent: DomainEvent {
-    public static var eventType: DomainEventType {
-        return DomainEventType.BoxItemProvisioned
-    }
+    
+    public static let eventName = "Box Item Provisioned"
     
     public let boxId: BoxId
     public let itemId: ItemId
@@ -87,9 +75,5 @@ public struct BoxItemProvisionedEvent: DomainEvent {
                 "title": itemTitle
             ]
         ]
-    }
-    
-    public func notification() -> NSNotification {
-        return NSNotification(name: BoxItemProvisionedEvent.eventType.name, object: nil, userInfo: userInfo())
     }
 }
