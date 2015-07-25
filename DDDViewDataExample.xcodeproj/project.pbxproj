@@ -30,8 +30,8 @@
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
 		60BF3C581A238676002598DB /* UseBoxAndItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C571A238676002598DB /* UseBoxAndItemTests.swift */; };
 		60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */; };
-		60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5F1A238DA3002598DB /* ManagedBox.swift */; };
-		60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C611A238DA4002598DB /* ManagedItem.swift */; };
+		60BF3C601A238DA3002598DB /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C5F1A238DA3002598DB /* Box.swift */; };
+		60BF3C621A238DA4002598DB /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BF3C611A238DA4002598DB /* Item.swift */; };
 		60C04BA41A18DFD700F4665D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA31A18DFD700F4665D /* AppDelegate.swift */; };
 		60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BA51A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld */; };
 		60C04BA91A18DFD700F4665D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C04BA81A18DFD700F4665D /* Images.xcassets */; };
@@ -79,8 +79,8 @@
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		60BF3C571A238676002598DB /* UseBoxAndItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseBoxAndItemTests.swift; sourceTree = "<group>"; };
 		60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBoxRepository.swift; sourceTree = "<group>"; };
-		60BF3C5F1A238DA3002598DB /* ManagedBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBox.swift; sourceTree = "<group>"; };
-		60BF3C611A238DA4002598DB /* ManagedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedItem.swift; sourceTree = "<group>"; };
+		60BF3C5F1A238DA3002598DB /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		60BF3C611A238DA4002598DB /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		60C04B9E1A18DFD700F4665D /* DDDViewDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDDViewDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C04BA21A18DFD700F4665D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C04BA31A18DFD700F4665D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -277,8 +277,8 @@
 			children = (
 				60A11C051A288763006954EA /* ManagedEntity.swift */,
 				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
-				60BF3C5F1A238DA3002598DB /* ManagedBox.swift */,
-				60BF3C611A238DA4002598DB /* ManagedItem.swift */,
+				60BF3C5F1A238DA3002598DB /* Box.swift */,
+				60BF3C611A238DA4002598DB /* Item.swift */,
 			);
 			name = Item;
 			sourceTree = "<group>";
@@ -405,8 +405,8 @@
 				50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */,
 				50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */,
 				60DBD0661A2787BB00ED4783 /* Identifiable.swift in Sources */,
-				60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */,
-				60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */,
+				60BF3C601A238DA3002598DB /* Box.swift in Sources */,
+				60BF3C621A238DA4002598DB /* Item.swift in Sources */,
 				50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
