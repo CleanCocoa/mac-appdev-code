@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public class ProvisioningService {
     let repository: BoxRepository
@@ -13,19 +14,19 @@ public class ProvisioningService {
     
     public func provisionBox() {
         let boxId = repository.nextId()
-        let box = Box(boxId: boxId, title: "New Box")
+        let title = "New Box"
         
-        repository.addBox(box)
+        repository.addBoxWithId(boxId, title: title)
         
-        eventPublisher.publish(BoxProvisionedEvent(boxId: boxId, title: box.title))
+        eventPublisher.publish(BoxProvisionedEvent(boxId: boxId, title: title))
     }
     
     public func provisionItem(inBox box: Box) {
         let itemId = repository.nextItemId()
-        let item = Item(itemId: itemId, title: "New Item")
-
-        box.addItem(item)
+        let title = "New Item"
         
-        eventPublisher.publish(BoxItemProvisionedEvent(boxId: box.boxId, itemId: itemId, itemTitle: item.title))
+        box.addItemWithId(itemId, title: title)
+        
+        eventPublisher.publish(BoxItemProvisionedEvent(boxId: box.boxId, itemId: itemId, itemTitle: title))
     }
 }

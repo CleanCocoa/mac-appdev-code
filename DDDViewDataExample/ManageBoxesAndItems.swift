@@ -40,7 +40,7 @@ public class ManageBoxesAndItems {
     
     func boxData(boxes: [Box]) -> [BoxData] {
         let allBoxData: [BoxData] = boxes.map() { (box: Box) -> BoxData in
-            let allItemData: [ItemData] = self.itemData(box.items)
+            let allItemData: [ItemData] = self.itemData(box.items.allObjects as! [Item])
             
             return BoxData(boxId: box.boxId, title: box.title, itemData: allItemData)
         }

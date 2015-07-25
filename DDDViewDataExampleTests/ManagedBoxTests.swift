@@ -3,7 +3,7 @@ import XCTest
 
 import DDDViewDataExample
 
-class ManagedBoxTests: CoreDataTestCase {
+class BoxCoreDataTestCase: CoreDataTestCase {
     var repository: CoreDataBoxRepository!
     
     override func setUp() {
@@ -11,13 +11,21 @@ class ManagedBoxTests: CoreDataTestCase {
         repository = CoreDataBoxRepository(managedObjectContext: context)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func createBoxWithId(boxId: BoxId, title: String) {
+        Box.insertManagedBoxWithId(boxId, title: title, inManagedObjectContext: context)
     }
     
-    func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest(entityName: ManagedBox.entityName())
+    func createAndFetchBoxWithId(boxId: BoxId, title: String) -> Box? {
+        createBoxWithId(boxId, title: title)
+        
+        return repository.boxWithId(boxId)
+    }
+}
+
+class BoxTests: BoxCoreDataTestCase {
+    
+    func allBoxes() -> [Box]? {
+        let request = NSFetchRequest(entityName: Box.entityName())
         let result: [AnyObject]
         
         do {
@@ -27,15 +35,15 @@ class ManagedBoxTests: CoreDataTestCase {
             return nil
         }
         
-        guard let boxes = result as? [ManagedBox] else {
+        guard let boxes = result as? [Box] else {
             return nil
         }
         
         return boxes
     }
     
-    func allItems() -> [ManagedItem]? {
-        let request = NSFetchRequest(entityName: ManagedItem.entityName())
+    func allItems() -> [Item]? {
+        let request = NSFetchRequest(entityName: Item.entityName())
         let result: [AnyObject]
         
         do {
@@ -45,7 +53,7 @@ class ManagedBoxTests: CoreDataTestCase {
             return nil
         }
         
-        guard let items = result as? [ManagedItem] else {
+        guard let items = result as? [Item] else {
             return nil
         }
         
@@ -54,50 +62,48 @@ class ManagedBoxTests: CoreDataTestCase {
 
     func testChangingFetchedBoxTitle_PersistsChanges() {
         let boxId = BoxId(1234)
-        ManagedBox.insertManagedBox(boxId, title: "before", inManagedObjectContext: context)
+        let box = createAndFetchBoxWithId(boxId, title: "before")
         
-        let box = repository.box(boxId: boxId)
         XCTAssert(hasValue(box))
         if let box = box {
             box.title = "new title"
 
-            let foundBox = allBoxes()!.first! as ManagedBox
+            let foundBox = allBoxes()!.first! as Box
             XCTAssertEqual(foundBox.title, "new title")
         }
     }
     
     func testChangingFetchedBoxTitle_ToEmptyString_PersistsChanges() {
         let boxId = BoxId(1234)
-        ManagedBox.insertManagedBox(boxId, title: "before", inManagedObjectContext: context)
+        let box = createAndFetchBoxWithId(boxId, title: "before")
         
-        let box = repository.box(boxId: boxId)
         XCTAssert(hasValue(box))
         if let box = box {
             box.title = ""
             
-            let foundBox = allBoxes()!.first! as ManagedBox
+            let foundBox = allBoxes()!.first! as Box
             XCTAssertEqual(foundBox.title, "")
         }
     }
     
     func testAddingItemToFetchedBox_PersistsChanges() {
         let boxId = BoxId(1234)
-        ManagedBox.insertManagedBox(boxId, title: "irrelevant", inManagedObjectContext: context)
+        let box = createAndFetchBoxWithId(boxId, title: "irrelevant")
         
-        let box = repository.box(boxId: boxId)
         XCTAssert(hasValue(box))
         if let box = box {
             let itemId = ItemId(6789)
-            let item = Item(itemId: itemId, title: "the item")
-            box.addItem(item)
+            let itemTitle = "the item"
+            box.addItemWithId(itemId, title: itemTitle)
             
-            let managedBox = allBoxes()!.first! as ManagedBox
+            let managedBox = allBoxes()!.first! as Box
             XCTAssertEqual(managedBox.items.count, 1, "contains item")
             
-            let managedItem = managedBox.items.anyObject() as? ManagedItem
+            let managedItem = managedBox.items.anyObject() as? Item
             XCTAssert(hasValue(managedItem))
             if let managedItem = managedItem {
-                XCTAssertEqual(managedItem.item, item)
+                XCTAssertEqual(managedItem.itemId, itemId)
+                XCTAssertEqual(managedItem.title, itemTitle)
             }
         }
     }

@@ -31,12 +31,12 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         super.tearDown()
     }
     
-    func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest(entityName: ManagedBox.entityName())
-        let result: [ManagedBox]
+    func allBoxes() -> [Box]? {
+        let request = NSFetchRequest(entityName: Box.entityName())
+        let result: [Box]
         
         do {
-            try result = context.executeFetchRequest(request) as! [ManagedBox]
+            try result = context.executeFetchRequest(request) as! [Box]
         } catch {
             XCTFail("fetching all boxes failed")
             return nil
@@ -50,16 +50,15 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     func testAddingBox_InsertsEntityIntoStore() {
         let title = "a title"
         let boxId = repository!.nextId()
-        let box = Box(boxId: boxId, title: title)
     
-        repository.addBox(box)
+        repository.addBoxWithId(boxId, title: title)
 
         let boxes = self.allBoxes()!
         XCTAssert(boxes.count > 0, "items expected")
         
         if let managedBox = boxes.first {
             XCTAssertEqual(managedBox.title, title, "Title should be saved")
-            XCTAssertEqual(managedBox.boxId(), boxId, "Box ID should be saved")
+            XCTAssertEqual(managedBox.boxId, boxId, "Box ID should be saved")
         }
     }
 
@@ -69,7 +68,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let testGenerator = TestIntegerIdGenerator()
         repository = CoreDataBoxRepository(managedObjectContext: context, integerIdGenerator: testGenerator)
         let existingId = BoxId(testGenerator.firstAttempt)
-        ManagedBox.insertManagedBox(existingId, title: "irrelevant", inManagedObjectContext: context)
+        Box.insertManagedBoxWithId(existingId, title: "irrelevant", inManagedObjectContext: context)
         
         let boxId = repository.nextId()
         

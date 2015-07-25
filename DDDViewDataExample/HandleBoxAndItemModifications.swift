@@ -19,7 +19,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
     
     func createItem(boxId: BoxId) {
-        guard let box = repository.box(boxId: boxId) else {
+        guard let box = repository.boxWithId(boxId) else {
             return
         }
         
@@ -27,7 +27,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
         
     func changeBoxTitle(boxId: BoxId, title: String) {
-        guard let box = repository.box(boxId: boxId) else {
+        guard let box = repository.boxWithId(boxId) else {
             return
         }
         
@@ -35,7 +35,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
     
     func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
-        guard let box = repository.box(boxId: boxId) else {
+        guard let box = repository.boxWithId(boxId) else {
             return
         }
         
@@ -52,7 +52,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
     }
     
     func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
-        guard let box = repository.box(boxId: boxId) else {
+        guard let box = repository.boxWithId(boxId) else {
             return
         }
         

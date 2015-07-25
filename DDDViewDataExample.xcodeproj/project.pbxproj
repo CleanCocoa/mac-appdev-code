@@ -40,7 +40,6 @@
 		60C04BC21A18DFFE00F4665D /* PersistentStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC11A18DFFE00F4665D /* PersistentStack.swift */; };
 		60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */; };
 		60C04BC71A18F71000F4665D /* PersistentStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BC61A18F71000F4665D /* PersistentStackTests.swift */; };
-		60C04BCD1A19179000F4665D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BCC1A19179000F4665D /* Item.swift */; };
 		60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C04BD41A191CE000F4665D /* CoreDataBoxRepositoryTests.swift */; };
 		60DBD0661A2787BB00ED4783 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DBD0651A2787BB00ED4783 /* Identifiable.swift */; };
 		60DBD0681A27939600ED4783 /* ManagedBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */; };
@@ -95,7 +94,6 @@
 		60C04BC11A18DFFE00F4665D /* PersistentStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStack.swift; sourceTree = "<group>"; };
 		60C04BC31A18E4FF00F4665D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		60C04BC61A18F71000F4665D /* PersistentStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStackTests.swift; sourceTree = "<group>"; };
-		60C04BCC1A19179000F4665D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		60C04BD41A191CE000F4665D /* CoreDataBoxRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataBoxRepositoryTests.swift; sourceTree = "<group>"; };
 		60DBD0651A2787BB00ED4783 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 		60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBoxTests.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */,
 				508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */,
 				60DBD0651A2787BB00ED4783 /* Identifiable.swift */,
-				60C04BCC1A19179000F4665D /* Item.swift */,
 				50E441961B5AAB1000AFC62D /* ItemId.swift */,
 				60BF3C5B1A238B73002598DB /* Box.swift */,
 				50E441941B5AAAC300AFC62D /* BoxId.swift */,
@@ -401,7 +398,6 @@
 				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
 				50C251811A2FA0D400595098 /* Utilities.swift in Sources */,
 				503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */,
-				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
 				60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */,

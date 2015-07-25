@@ -12,10 +12,10 @@ class TestBoxRepository: BoxRepository {
         return ItemId(0)
     }
     
-    func addBox(box: Box) { }
+    func addBoxWithId(boxId: BoxId, title: String) { }
     func removeBox(boxId boxId: BoxId) { }
     
-    func box(boxId boxId: BoxId) -> Box? {
+    func boxWithId(boxId: BoxId) -> Box? {
         return nil
     }
     
@@ -28,7 +28,7 @@ class TestBoxRepository: BoxRepository {
     }
 }
 
-class ProvisioningServiceTests: XCTestCase {
+class ProvisioningServiceTests: BoxCoreDataTestCase {
     let provisioningService = ProvisioningService(repository: TestBoxRepository())
     let publisher = MockDomainEventPublisher()
     
@@ -49,13 +49,14 @@ class ProvisioningServiceTests: XCTestCase {
     }
 
     func testProvisionItem_PublishesDomainEvent() {
-        let box = Box(boxId: BoxId(123), title: "irrelevant")
-        provisioningService.provisionItem(inBox: box)
+        let box = createAndFetchBoxWithId(BoxId(123), title: "irrelevant")
+        
+        provisioningService.provisionItem(inBox: box!)
         
         let event = publisher.lastPublishedEvent as? BoxItemProvisionedEvent
         XCTAssert(hasValue(event))
         if let event = event {
-            XCTAssertEqual(event.boxId, box.boxId)
+            XCTAssertEqual(event.boxId, box!.boxId)
         }
     }
 }

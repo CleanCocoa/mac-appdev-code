@@ -43,7 +43,7 @@ struct IdGenerator<Id: Identifiable> {
 
 let kCoreDataReadErrorNotificationName = "Core Data Read Error"
 
-public class CoreDataBoxRepository: NSObject, BoxRepository {
+public class CoreDataBoxRepository: NSObject {
     let managedObjectContext: NSManagedObjectContext
     let integerIdGenerator: GeneratesIntegerId
     
@@ -57,36 +57,31 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
         
         super.init()
     }
-    
+}
+
+extension CoreDataBoxRepository: BoxRepository {
+
     //MARK: -
     //MARK: CRUD Actions
     
-    public func addBox(box: Box) {
-        ManagedBox.insertManagedBox(box.boxId, title: box.title, inManagedObjectContext: self.managedObjectContext)
+    public func addBoxWithId(boxId: BoxId, title: String) {
+        Box.insertManagedBoxWithId(boxId, title: title, inManagedObjectContext: self.managedObjectContext)
     }
     
     public func removeBox(boxId boxId: BoxId) {
-        guard let managedBox = managedBoxWithId(boxId) else {
+        guard let managedBox = boxWithId(boxId) else {
             return
         }
         
         managedObjectContext.deleteObject(managedBox)
     }
     
-    public func box(boxId boxId: BoxId) -> Box? {
-        guard let managedBox = managedBoxWithId(boxId) else {
-            return nil
-        }
-        
-        return managedBox.box
-    }
-    
-    func managedBoxWithId(boxId: BoxId) -> ManagedBox? {
-        return managedBoxWithUniqueId(boxId.identifier)
+    public func boxWithId(boxId: BoxId) -> Box? {
+        return boxWithUniqueId(boxId.identifier)
     }
         
     public func boxes() -> [Box] {
-        let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
+        let fetchRequest = NSFetchRequest(entityName: Box.entityName())
         fetchRequest.includesSubentities = true
         
         let results: [AnyObject]
@@ -100,16 +95,12 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
             return []
         }
         
-        let managedBoxes: [ManagedBox] = results as! [ManagedBox]
-        
-        return managedBoxes.map({ (managedBox: ManagedBox) -> Box in
-            return managedBox.box
-        })
+        return results as! [Box]
     }
     
     /// @returns `NSNotFound` on error
     public func count() -> Int {
-        let fetchRequest = NSFetchRequest(entityName: ManagedBox.entityName())
+        let fetchRequest = NSFetchRequest(entityName: Box.entityName())
         fetchRequest.includesSubentities = false
         
         var error: NSError? = nil
@@ -130,13 +121,13 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
     
     public func nextId() -> BoxId {
         let hasManagedBoxWithUniqueId: (IntegerId) -> Bool = { identifier in
-            return self.managedBoxWithUniqueId(identifier) != nil
+            return self.boxWithUniqueId(identifier) != nil
         }
         let generator = IdGenerator<BoxId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasManagedBoxWithUniqueId)
         return generator.nextId()
     }
     
-    func managedBoxWithUniqueId(identifier: IntegerId) -> ManagedBox? {
+    func boxWithUniqueId(identifier: IntegerId) -> Box? {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedBoxWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
@@ -158,18 +149,18 @@ public class CoreDataBoxRepository: NSObject, BoxRepository {
             return nil
         }
         
-        return result[0] as? ManagedBox
+        return result.first as? Box
     }
     
     
     //MARK: Item ID Generation
     
     public func nextItemId() -> ItemId {
-        let generator = IdGenerator<ItemId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasManagedItemWithUniqueId)
+        let generator = IdGenerator<ItemId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasItemWithUniqueId)
         return generator.nextId()
     }
     
-    func hasManagedItemWithUniqueId(identifier: IntegerId) -> Bool {
+    func hasItemWithUniqueId(identifier: IntegerId) -> Bool {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedItemWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
