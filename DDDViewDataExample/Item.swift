@@ -37,7 +37,7 @@ extension Item: ItemType {
     }
 }
 
-extension Item: ManagedEntity {
+extension Item: Entity {
     
     public class func entityName() -> String {
         return "ManagedItem"

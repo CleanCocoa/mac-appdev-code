@@ -22,7 +22,7 @@
 		50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441941B5AAAC300AFC62D /* BoxId.swift */; };
 		50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441961B5AAB1000AFC62D /* ItemId.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
-		60A11C061A288763006954EA /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* ManagedEntity.swift */; };
+		60A11C061A288763006954EA /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* Entity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
 		60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */; };
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
@@ -71,7 +71,7 @@
 		50E441941B5AAAC300AFC62D /* BoxId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxId.swift; sourceTree = "<group>"; };
 		50E441961B5AAB1000AFC62D /* ItemId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemId.swift; sourceTree = "<group>"; };
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
-		60A11C051A288763006954EA /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
+		60A11C051A288763006954EA /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandleBoxAndItemModifications.swift; sourceTree = "<group>"; };
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
@@ -242,7 +242,7 @@
 				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
 				60AEEEC31A239A4300C05636 /* ServiceLocator.swift */,
 				60C04BCB1A19177D00F4665D /* Core Data */,
-				60C04BD31A191BBF00F4665D /* Item */,
+				60C04BD31A191BBF00F4665D /* Box & Item */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -272,15 +272,15 @@
 			name = Domain;
 			sourceTree = "<group>";
 		};
-		60C04BD31A191BBF00F4665D /* Item */ = {
+		60C04BD31A191BBF00F4665D /* Box & Item */ = {
 			isa = PBXGroup;
 			children = (
-				60A11C051A288763006954EA /* ManagedEntity.swift */,
+				60A11C051A288763006954EA /* Entity.swift */,
 				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
 				60BF3C5F1A238DA3002598DB /* Box.swift */,
 				60BF3C611A238DA4002598DB /* Item.swift */,
 			);
-			name = Item;
+			name = "Box & Item";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,7 +388,7 @@
 				60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */,
 				50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */,
 				503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */,
-				60A11C061A288763006954EA /* ManagedEntity.swift in Sources */,
+				60A11C061A288763006954EA /* Entity.swift in Sources */,
 				5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,

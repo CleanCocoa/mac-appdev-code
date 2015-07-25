@@ -46,7 +46,7 @@ public class Box: NSManagedObject {
     
 }
 
-extension Box: ManagedEntity {
+extension Box: Entity {
     
     public class func entityName() -> String {
         return "ManagedBox"
