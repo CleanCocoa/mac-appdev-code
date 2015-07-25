@@ -6,11 +6,20 @@ private var boxContext = 0
 protocol BoxType {
     var boxId: BoxId { get }
     var title: String { get set }
-//    var items: [Item] = []
     
     func addItemWithId(itemId: ItemId, title: String)
     func item(itemId itemId: ItemId) -> Item?
     func removeItem(itemId itemId: ItemId)
+}
+
+public protocol BoxRepository {
+    func nextId() -> BoxId
+    func nextItemId() -> ItemId
+    func addBoxWithId(boxId: BoxId, title: String)
+    func removeBox(boxId boxId: BoxId)
+    func boxes() -> [Box]
+    func boxWithId(boxId: BoxId) -> Box?
+    func count() -> Int
 }
 
 @objc(Box)
@@ -23,12 +32,12 @@ public class Box: NSManagedObject {
     @NSManaged public var items: NSSet
     
     
-    public class func insertManagedBoxWithId(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    public class func insertBoxWithId(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let managedBox = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)as! Box
+        let box = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)as! Box
         
-        managedBox.uniqueId = uniqueIdFromBoxId(boxId)
-        managedBox.title = title
+        box.uniqueId = uniqueIdFromBoxId(boxId)
+        box.title = title
     }
     
     class func uniqueIdFromBoxId(boxId: BoxId) -> NSNumber {
@@ -54,7 +63,7 @@ extension Box: BoxType {
     
     public func addItemWithId(itemId: ItemId, title: String) {
         
-        Item.insertManagedItemWithId(itemId, title: title, intoBox: self, inManagedObjectContext: managedObjectContext!)
+        Item.insertItemWithId(itemId, title: title, intoBox: self, inManagedObjectContext: managedObjectContext!)
     }
     
     public func item(itemId itemId: ItemId) -> Item? {

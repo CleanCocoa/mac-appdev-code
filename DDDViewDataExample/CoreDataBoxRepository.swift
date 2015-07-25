@@ -65,15 +65,15 @@ extension CoreDataBoxRepository: BoxRepository {
     //MARK: CRUD Actions
     
     public func addBoxWithId(boxId: BoxId, title: String) {
-        Box.insertManagedBoxWithId(boxId, title: title, inManagedObjectContext: self.managedObjectContext)
+        Box.insertBoxWithId(boxId, title: title, inManagedObjectContext: self.managedObjectContext)
     }
     
     public func removeBox(boxId boxId: BoxId) {
-        guard let managedBox = boxWithId(boxId) else {
+        guard let box = boxWithId(boxId) else {
             return
         }
         
-        managedObjectContext.deleteObject(managedBox)
+        managedObjectContext.deleteObject(box)
     }
     
     public func boxWithId(boxId: BoxId) -> Box? {

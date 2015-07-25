@@ -16,13 +16,13 @@ public class Item: NSManagedObject {
     @NSManaged public var modificationDate: NSDate
     @NSManaged public var box: Box
     
-    public class func insertManagedItemWithId(itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    public class func insertItemWithId(itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let managedItem = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext) as! Item
+        let item = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext) as! Item
         
-        managedItem.title = title
-        managedItem.uniqueId = uniqueIdFromItemId(itemId)
-        managedItem.box = box
+        item.title = title
+        item.uniqueId = uniqueIdFromItemId(itemId)
+        item.box = box
     }
     
     class func uniqueIdFromItemId(itemId: ItemId) -> NSNumber {

@@ -12,7 +12,7 @@ class BoxCoreDataTestCase: CoreDataTestCase {
     }
     
     func createBoxWithId(boxId: BoxId, title: String) {
-        Box.insertManagedBoxWithId(boxId, title: title, inManagedObjectContext: context)
+        Box.insertBoxWithId(boxId, title: title, inManagedObjectContext: context)
     }
     
     func createAndFetchBoxWithId(boxId: BoxId, title: String) -> Box? {
@@ -96,14 +96,14 @@ class BoxTests: BoxCoreDataTestCase {
             let itemTitle = "the item"
             box.addItemWithId(itemId, title: itemTitle)
             
-            let managedBox = allBoxes()!.first! as Box
-            XCTAssertEqual(managedBox.items.count, 1, "contains item")
+            let box = allBoxes()!.first! as Box
+            XCTAssertEqual(box.items.count, 1, "contains item")
             
-            let managedItem = managedBox.items.anyObject() as? Item
-            XCTAssert(hasValue(managedItem))
-            if let managedItem = managedItem {
-                XCTAssertEqual(managedItem.itemId, itemId)
-                XCTAssertEqual(managedItem.title, itemTitle)
+            let item = box.items.anyObject() as? Item
+            XCTAssert(hasValue(item))
+            if let item = item {
+                XCTAssertEqual(item.itemId, itemId)
+                XCTAssertEqual(item.title, itemTitle)
             }
         }
     }

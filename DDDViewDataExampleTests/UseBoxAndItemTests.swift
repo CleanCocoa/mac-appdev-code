@@ -120,11 +120,11 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
         let box = soleBox()
         XCTAssert(hasValue(box))
         if let box = box {
-            let managedItem = box.items.anyObject() as? Item
-            XCTAssert(hasValue(managedItem))
-            if let managedItem = managedItem {
-                XCTAssertEqual(managedItem.title, "New Item")
-                XCTAssertEqual(managedItem.box, box)
+            let item = box.items.anyObject() as? Item
+            XCTAssert(hasValue(item))
+            if let item = item {
+                XCTAssertEqual(item.title, "New Item")
+                XCTAssertEqual(item.box, box)
             }
         }
     }
@@ -193,8 +193,8 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
         changeSoleItemNode(title: newTitle)
         
         let box = soleBox()!
-        let managedItem = box.items.anyObject()! as! Item
-        XCTAssertEqual(managedItem.title, newTitle)
+        let item = box.items.anyObject()! as! Item
+        XCTAssertEqual(item.title, newTitle)
     }
     
     func createBoxWithItem() {

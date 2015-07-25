@@ -56,9 +56,9 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let boxes = self.allBoxes()!
         XCTAssert(boxes.count > 0, "items expected")
         
-        if let managedBox = boxes.first {
-            XCTAssertEqual(managedBox.title, title, "Title should be saved")
-            XCTAssertEqual(managedBox.boxId, boxId, "Box ID should be saved")
+        if let box = boxes.first {
+            XCTAssertEqual(box.title, title, "Title should be saved")
+            XCTAssertEqual(box.boxId, boxId, "Box ID should be saved")
         }
     }
 
@@ -68,7 +68,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
         let testGenerator = TestIntegerIdGenerator()
         repository = CoreDataBoxRepository(managedObjectContext: context, integerIdGenerator: testGenerator)
         let existingId = BoxId(testGenerator.firstAttempt)
-        Box.insertManagedBoxWithId(existingId, title: "irrelevant", inManagedObjectContext: context)
+        Box.insertBoxWithId(existingId, title: "irrelevant", inManagedObjectContext: context)
         
         let boxId = repository.nextId()
         
