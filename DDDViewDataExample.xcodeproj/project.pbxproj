@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
 		503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */; };
 		508D66EA1A30C9F000D5DF01 /* TestDomainEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D66E91A30C9F000D5DF01 /* TestDomainEventPublisher.swift */; };
 		508D66EC1A30CD8900D5DF01 /* DomainEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */; };
 		509CA3E91A30C5D70001AB6A /* DomainEventPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */; };
-		509CA3EB1A30C91D0001AB6A /* ProvisioningServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */; };
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */; };
 		50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
@@ -55,14 +53,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
 		503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisher.swift; sourceTree = "<group>"; };
 		506007461B660E2900C45369 /* DDDViewDataExample 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DDDViewDataExample 2.xcdatamodel"; sourceTree = "<group>"; };
 		508D66E91A30C9F000D5DF01 /* TestDomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDomainEventPublisher.swift; sourceTree = "<group>"; };
 		508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEvents.swift; sourceTree = "<group>"; };
 		509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisherTests.swift; sourceTree = "<group>"; };
-		509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningServiceTests.swift; sourceTree = "<group>"; };
 		50C251801A2FA0D400595098 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventSubscription.swift; sourceTree = "<group>"; };
 		50E441911B5A9BC000AFC62D /* Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optionals.swift; sourceTree = "<group>"; };
@@ -147,7 +143,6 @@
 				60F7EFEC1A1A508000EB9099 /* ItemViewControllerTests.swift */,
 				60DBD0671A27939600ED4783 /* ManagedBoxTests.swift */,
 				509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */,
-				509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */,
 			);
 			name = Unit;
 			sourceTree = "<group>";
@@ -256,7 +251,6 @@
 		60C04BD01A191A8300F4665D /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				5024903D1A2F64B200CDA666 /* ProvisioningService.swift */,
 				503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */,
 				50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */,
 				508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */,
@@ -383,7 +377,6 @@
 				50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */,
 				503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */,
 				60A11C061A288763006954EA /* Entity.swift in Sources */,
-				5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */,
 				60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */,
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
 				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
@@ -413,7 +406,6 @@
 				60F7EFEB1A1A483500EB9099 /* XCTestCase+CocoaBindings.swift in Sources */,
 				60C04BC41A18E4FF00F4665D /* CoreDataTestCase.swift in Sources */,
 				60BF3C581A238676002598DB /* UseBoxAndItemTests.swift in Sources */,
-				509CA3EB1A30C91D0001AB6A /* ProvisioningServiceTests.swift in Sources */,
 				509CA3E91A30C5D70001AB6A /* DomainEventPublisherTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
