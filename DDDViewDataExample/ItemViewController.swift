@@ -3,11 +3,8 @@ import Cocoa
 @objc(TreeNode)
 public protocol TreeNode: class {
     var title: String { get set }
-    var count: UInt { get }
     var children: [TreeNode] { get }
     var isLeaf: Bool { get }
-    
-    func resetTitleToDefaultTitle()
 }
 
 @objc(NonNilStringValueTransformer)
@@ -23,30 +20,18 @@ public class NonNilStringValueTransformer: NSValueTransformer {
 
 extension Box: TreeNode {
     
-    public dynamic var count: UInt { return 0 }
-    
     public dynamic var children: [TreeNode] {
         return self.managedItems.map { $0 as! TreeNode }
     }
     
     public dynamic var isLeaf: Bool { return false }
-    
-    public func resetTitleToDefaultTitle() {
-        title = "Box"
-    }
 }
 
 extension Item: TreeNode {
     
-    public dynamic var count: UInt { return 0 }
-    
     public dynamic var children: [TreeNode] { return [] }
     
     public dynamic var isLeaf: Bool { return true }
-    
-    public func resetTitleToDefaultTitle() {
-        title = "Item"
-    }
 }
 
 public let kColumnNameTitle = "Title"
