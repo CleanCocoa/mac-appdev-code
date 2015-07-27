@@ -3,18 +3,14 @@ import Cocoa
 public let kItemManagementWindowNibName: String = "ItemManagementWindowController"
 
 public class ItemManagementWindowController: NSWindowController {
-    
-    public weak var eventHandler: HandlesItemListEvents? {
-        get {
-            return self.itemViewController.eventHandler
-        }
-        set {
-            guard let _ = self.window else {
+        
+    var repository: BoxRepository? {
+        didSet {
+            guard hasValue(repository) else {
                 return
             }
             
-            // Ensure Nib is loaded
-            self.itemViewController.eventHandler = newValue
+            itemViewController.repository = repository
         }
     }
     

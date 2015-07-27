@@ -3,10 +3,7 @@ import Cocoa
 public class ManageBoxesAndItems {
     public init() { }
     
-    lazy var eventHandler: HandleBoxAndItemModifications! = {
-        let provisioningService = ProvisioningService(repository: ServiceLocator.boxRepository())
-        return HandleBoxAndItemModifications(provisioningService: provisioningService)
-    }()
+    lazy var repository: BoxRepository = ServiceLocator.boxRepository()
     
     lazy var windowController: ItemManagementWindowController! = {
         let controller = ItemManagementWindowController()
@@ -22,7 +19,11 @@ public class ManageBoxesAndItems {
         prepareWindow()
         showWindow()
     }
-        
+    
+    func prepareWindow() {
+        windowController.repository = self.repository
+    }
+    
     func showWindow() {
         windowController.showWindow(self)
         windowController.window?.makeKeyAndOrderFront(self)
