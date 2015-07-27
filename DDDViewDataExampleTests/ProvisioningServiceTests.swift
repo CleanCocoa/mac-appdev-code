@@ -15,11 +15,11 @@ class TestBoxRepository: BoxRepository {
     func addBoxWithId(boxId: BoxId, title: String) { }
     func removeBox(boxId boxId: BoxId) { }
     
-    func boxWithId(boxId: BoxId) -> Box? {
+    func boxWithId(boxId: BoxId) -> BoxType? {
         return nil
     }
     
-    func boxes() -> [Box] {
+    func boxes() -> [BoxType] {
         return []
     }
     

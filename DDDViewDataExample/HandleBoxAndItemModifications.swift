@@ -31,7 +31,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
             return
         }
         
-        box.title = title
+        box.changeTitle(title)
     }
     
     func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {

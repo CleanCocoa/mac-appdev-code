@@ -38,9 +38,10 @@ public class ManageBoxesAndItems {
         windowController.displayBoxData(allBoxData)
     }
     
-    func boxData(boxes: [Box]) -> [BoxData] {
-        let allBoxData: [BoxData] = boxes.map() { (box: Box) -> BoxData in
-            let allItemData: [ItemData] = self.itemData(box.items.allObjects as! [Item])
+    func boxData(boxes: [BoxType]) -> [BoxData] {
+        let allBoxData: [BoxData] = boxes.map() { (box: BoxType) -> BoxData in
+            
+            let allItemData: [ItemData] = self.itemData(box.items)
             
             return BoxData(boxId: box.boxId, title: box.title, itemData: allItemData)
         }
@@ -48,8 +49,8 @@ public class ManageBoxesAndItems {
         return allBoxData
     }
     
-    func itemData(items: [Item]) -> [ItemData] {
-        return items.map() { (item: Item) -> ItemData in
+    func itemData(items: [ItemType]) -> [ItemData] {
+        return items.map() { (item: ItemType) -> ItemData in
             return ItemData(itemId: item.itemId, title: item.title)
         }
     }

@@ -120,11 +120,11 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
         let box = soleBox()
         XCTAssert(hasValue(box))
         if let box = box {
-            let item = box.items.anyObject() as? Item
+            let item = box.managedItems.anyObject() as? Item
             XCTAssert(hasValue(item))
             if let item = item {
                 XCTAssertEqual(item.title, "New Item")
-                XCTAssertEqual(item.box, box)
+                XCTAssertEqual(item.managedBox, box)
             }
         }
     }
@@ -193,7 +193,7 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
         changeSoleItemNode(title: newTitle)
         
         let box = soleBox()!
-        let item = box.items.anyObject()! as! Item
+        let item = box.managedItems.anyObject()! as! Item
         XCTAssertEqual(item.title, newTitle)
     }
     

@@ -21,7 +21,7 @@ public class ProvisioningService {
         eventPublisher.publish(BoxProvisionedEvent(boxId: boxId, title: title))
     }
     
-    public func provisionItem(inBox box: Box) {
+    public func provisionItem(inBox box: BoxType) {
         let itemId = repository.nextItemId()
         let title = "New Item"
         

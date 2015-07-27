@@ -69,18 +69,18 @@ extension CoreDataBoxRepository: BoxRepository {
     }
     
     public func removeBox(boxId boxId: BoxId) {
-        guard let box = boxWithId(boxId) else {
+        guard let box = boxWithId(boxId) as? Box else {
             return
         }
         
         managedObjectContext.deleteObject(box)
     }
     
-    public func boxWithId(boxId: BoxId) -> Box? {
+    public func boxWithId(boxId: BoxId) -> BoxType? {
         return boxWithUniqueId(boxId.identifier)
     }
         
-    public func boxes() -> [Box] {
+    public func boxes() -> [BoxType] {
         let fetchRequest = NSFetchRequest(entityName: Box.entityName())
         fetchRequest.includesSubentities = true
         
@@ -95,7 +95,7 @@ extension CoreDataBoxRepository: BoxRepository {
             return []
         }
         
-        return results as! [Box]
+        return results.map { $0 as! Box }
     }
     
     /// @returns `NSNotFound` on error

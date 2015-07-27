@@ -3,8 +3,10 @@ import CoreData
 
 private var itemContext = 0
 
-protocol ItemType {
+public protocol ItemType: class {
+    var title: String { get }
     var itemId: ItemId { get }
+    var box: BoxType { get }
 }
 
 @objc(Item)
@@ -14,7 +16,7 @@ public class Item: NSManagedObject {
     @NSManaged public var title: String
     @NSManaged public var creationDate: NSDate
     @NSManaged public var modificationDate: NSDate
-    @NSManaged public var box: Box
+    @NSManaged public var managedBox: Box
     
     public class func insertItemWithId(itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
@@ -22,7 +24,7 @@ public class Item: NSManagedObject {
         
         item.title = title
         item.uniqueId = uniqueIdFromItemId(itemId)
-        item.box = box
+        item.managedBox = box
     }
     
     class func uniqueIdFromItemId(itemId: ItemId) -> NSNumber {
@@ -34,6 +36,10 @@ extension Item: ItemType {
     
     public var itemId: ItemId {
         return ItemId(uniqueId.longLongValue)
+    }
+    
+    public var box: BoxType {
+        return managedBox as BoxType
     }
 }
 

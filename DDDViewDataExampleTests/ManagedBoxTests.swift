@@ -15,7 +15,7 @@ class BoxCoreDataTestCase: CoreDataTestCase {
         Box.insertBoxWithId(boxId, title: title, inManagedObjectContext: context)
     }
     
-    func createAndFetchBoxWithId(boxId: BoxId, title: String) -> Box? {
+    func createAndFetchBoxWithId(boxId: BoxId, title: String) -> BoxType? {
         createBoxWithId(boxId, title: title)
         
         return repository.boxWithId(boxId)
@@ -66,7 +66,7 @@ class BoxTests: BoxCoreDataTestCase {
         
         XCTAssert(hasValue(box))
         if let box = box {
-            box.title = "new title"
+            box.changeTitle("new title")
 
             let foundBox = allBoxes()!.first! as Box
             XCTAssertEqual(foundBox.title, "new title")
@@ -79,7 +79,7 @@ class BoxTests: BoxCoreDataTestCase {
         
         XCTAssert(hasValue(box))
         if let box = box {
-            box.title = ""
+            box.changeTitle("")
             
             let foundBox = allBoxes()!.first! as Box
             XCTAssertEqual(foundBox.title, "")
@@ -99,7 +99,7 @@ class BoxTests: BoxCoreDataTestCase {
             let box = allBoxes()!.first! as Box
             XCTAssertEqual(box.items.count, 1, "contains item")
             
-            let item = box.items.anyObject() as? Item
+            let item = box.managedItems.anyObject() as? Item
             XCTAssert(hasValue(item))
             if let item = item {
                 XCTAssertEqual(item.itemId, itemId)
