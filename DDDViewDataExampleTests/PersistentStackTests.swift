@@ -4,9 +4,9 @@ import XCTest
 import DDDViewDataExample
 
 class TestPersistentStack: PersistentStack {
-    override func defaultStoreOptions() -> Dictionary<String, String> {
+    override func defaultStoreOptions() -> [String: AnyObject] {
         // Prevent iCloud usage (if set up in default options)
-        return Dictionary<String, String>()
+        return [String: AnyObject]()
     }
 }
 

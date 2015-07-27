@@ -106,9 +106,11 @@ public class PersistentStack: NSObject {
         return managedObjectContext.undoManager
     }
     
-    public func defaultStoreOptions() -> Dictionary<String, String> {
-        let opts = Dictionary<String, String>()
-        return opts
+    public func defaultStoreOptions() -> [String: AnyObject] {
+        return [
+            NSMigratePersistentStoresAutomaticallyOption: true,
+            NSInferMappingModelAutomaticallyOption: true
+        ]
     }
     
     /// Save changes in the application's managed object context before the application terminates.
