@@ -5,14 +5,14 @@
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedItem" inverseName="box" inverseEntity="ManagedItem" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedItem" inverseName="box" inverseEntity="ManagedItem" elementID="boxItems" syncable="YES"/>
     </entity>
     <entity name="ManagedItem" representedClassName="Item" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="box" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedBox" inverseName="items" inverseEntity="ManagedBox" syncable="YES"/>
+        <relationship name="box" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedBox" inverseName="items" inverseEntity="ManagedBox" elementID="itemBoxes" syncable="YES"/>
     </entity>
     <fetchRequest name="ManagedBoxWithUniqueId" entity="ManagedBox" predicateString="uniqueId == $IDENTIFIER"/>
     <fetchRequest name="ManagedItemWithUniqueId" entity="ManagedItem" predicateString="uniqueId == $IDENTIFIER" resultType="1"/>
