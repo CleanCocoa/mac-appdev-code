@@ -8,16 +8,10 @@ public class ManageBoxesAndItems {
         return HandleBoxAndItemModifications(provisioningService: provisioningService)
     }()
     
-    lazy var presenter: DisplayBoxesAndItems! = {
-        let service = DisplayBoxesAndItems()
-        return service
-    }()
-
     lazy var windowController: ItemManagementWindowController! = {
         let controller = ItemManagementWindowController()
         controller.loadWindow()
         controller.eventHandler = self.eventHandler
-        self.presenter.consumer = controller.itemViewController
         return controller
     }()
         
@@ -26,35 +20,9 @@ public class ManageBoxesAndItems {
     }()
     
     public func showBoxManagementWindow() {
-        displayBoxes()
         showWindow()
     }
-    
-    func displayBoxes() {
-        let repository = ServiceLocator.boxRepository()
-        let allBoxes = repository.boxes()
-        let allBoxData = boxData(allBoxes)
         
-        windowController.displayBoxData(allBoxData)
-    }
-    
-    func boxData(boxes: [BoxType]) -> [BoxData] {
-        let allBoxData: [BoxData] = boxes.map() { (box: BoxType) -> BoxData in
-            
-            let allItemData: [ItemData] = self.itemData(box.items)
-            
-            return BoxData(boxId: box.boxId, title: box.title, itemData: allItemData)
-        }
-        
-        return allBoxData
-    }
-    
-    func itemData(items: [ItemType]) -> [ItemData] {
-        return items.map() { (item: ItemType) -> ItemData in
-            return ItemData(itemId: item.itemId, title: item.title)
-        }
-    }
-    
     func showWindow() {
         windowController.showWindow(self)
         windowController.window?.makeKeyAndOrderFront(self)

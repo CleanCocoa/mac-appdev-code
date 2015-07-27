@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
-		503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */; };
 		503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */; };
 		508D66EA1A30C9F000D5DF01 /* TestDomainEventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D66E91A30C9F000D5DF01 /* TestDomainEventPublisher.swift */; };
 		508D66EC1A30CD8900D5DF01 /* DomainEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */; };
@@ -59,7 +58,6 @@
 /* Begin PBXFileReference section */
 		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
-		503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayBoxesAndItems.swift; sourceTree = "<group>"; };
 		503210F71A2FCE8F00B8BE74 /* DomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisher.swift; sourceTree = "<group>"; };
 		506007461B660E2900C45369 /* DDDViewDataExample 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DDDViewDataExample 2.xcdatamodel"; sourceTree = "<group>"; };
 		508D66E91A30C9F000D5DF01 /* TestDomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDomainEventPublisher.swift; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 			children = (
 				602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */,
 				60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */,
-				503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -395,7 +392,6 @@
 				602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */,
 				502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */,
 				50C251811A2FA0D400595098 /* Utilities.swift in Sources */,
-				503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
 				60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */,
