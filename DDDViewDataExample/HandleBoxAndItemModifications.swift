@@ -39,12 +39,7 @@ class HandleBoxAndItemModifications: HandlesItemListEvents {
             return
         }
         
-        // TODO add changeItemTitle()
-        guard let item = box.item(itemId: itemId) else {
-            return
-        }
-
-        item.title = title
+        box.changeItemTitle(itemId: itemId, title: title)
     }
     
     func removeBox(boxId: BoxId) {

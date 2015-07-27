@@ -9,10 +9,11 @@ public protocol BoxType: class {
     var items: [ItemType] { get }
     
     func addItemWithId(itemId: ItemId, title: String)
-    func item(itemId itemId: ItemId) -> Item?
+    func item(itemId itemId: ItemId) -> ItemType?
     func removeItem(itemId itemId: ItemId)
     
     func changeTitle(title: String)
+    func changeItemTitle(itemId itemId: ItemId, title: String)
 }
 
 public protocol BoxRepository {
@@ -36,7 +37,7 @@ public class Box: NSManagedObject {
     
     public class func insertBoxWithId(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let box = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)as! Box
+        let box = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext)as! Box
         
         box.uniqueId = uniqueIdFromBoxId(boxId)
         box.title = title
@@ -45,17 +46,16 @@ public class Box: NSManagedObject {
     class func uniqueIdFromBoxId(boxId: BoxId) -> NSNumber {
         return NSNumber(longLong: boxId.identifier)
     }
-    
 }
 
 extension Box: Entity {
     
-    public class func entityName() -> String {
+    public class var entityName: String {
         return "ManagedBox"
     }
     
     public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedObjectContext)
     }
 }
 
@@ -74,8 +74,8 @@ extension Box: BoxType {
         Item.insertItemWithId(itemId, title: title, intoBox: self, inManagedObjectContext: managedObjectContext!)
     }
     
-    public func item(itemId itemId: ItemId) -> Item? {
-        return items.filter { $0.itemId == itemId }.first as? Item
+    public func item(itemId itemId: ItemId) -> ItemType? {
+        return items.filter { $0.itemId == itemId }.first
     }
     
     public func removeItem(itemId itemId: ItemId) {
@@ -83,11 +83,19 @@ extension Box: BoxType {
             return
         }
         
-        let existingItems = self.mutableSetValueForKey("managedItems")
+        let existingItems = mutableSetValueForKey("managedItems")
         existingItems.removeObject(item)
     }
     
     public func changeTitle(title: String) {
         self.title = title
+    }
+    
+    public func changeItemTitle(itemId itemId: ItemId, title: String) {
+        guard let item = item(itemId: itemId) else {
+            return
+        }
+        
+        item.changeTitle(title)
     }
 }

@@ -7,6 +7,8 @@ public protocol ItemType: class {
     var title: String { get }
     var itemId: ItemId { get }
     var box: BoxType { get }
+    
+    func changeTitle(title: String)
 }
 
 @objc(Item)
@@ -20,7 +22,7 @@ public class Item: NSManagedObject {
     
     public class func insertItemWithId(itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let item = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext) as! Item
+        let item = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Item
         
         item.title = title
         item.uniqueId = uniqueIdFromItemId(itemId)
@@ -41,15 +43,19 @@ extension Item: ItemType {
     public var box: BoxType {
         return managedBox as BoxType
     }
+    
+    public func changeTitle(title: String) {
+        self.title = title
+    }
 }
 
 extension Item: Entity {
     
-    public class func entityName() -> String {
+    public class var entityName: String {
         return "ManagedItem"
     }
     
     public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedObjectContext)
     }
 }

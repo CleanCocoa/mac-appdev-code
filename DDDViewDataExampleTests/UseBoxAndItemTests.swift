@@ -32,7 +32,7 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
     }
     
     func allBoxes() -> [Box] {
-        let request = NSFetchRequest(entityName: Box.entityName())
+        let request = NSFetchRequest(entityName: Box.entityName)
         let results: [AnyObject]
         
         do {
@@ -50,7 +50,7 @@ class UseBoxAndItemTests: BoxCoreDataTestCase {
     }
     
     func allItems() -> [Item] {
-        let request = NSFetchRequest(entityName: Item.entityName())
+        let request = NSFetchRequest(entityName: Item.entityName)
         let results: [AnyObject]
 
         do {

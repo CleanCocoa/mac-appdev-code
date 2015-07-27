@@ -81,7 +81,7 @@ extension CoreDataBoxRepository: BoxRepository {
     }
         
     public func boxes() -> [BoxType] {
-        let fetchRequest = NSFetchRequest(entityName: Box.entityName())
+        let fetchRequest = NSFetchRequest(entityName: Box.entityName)
         fetchRequest.includesSubentities = true
         
         let results: [AnyObject]
@@ -100,7 +100,7 @@ extension CoreDataBoxRepository: BoxRepository {
     
     /// @returns `NSNotFound` on error
     public func count() -> Int {
-        let fetchRequest = NSFetchRequest(entityName: Box.entityName())
+        let fetchRequest = NSFetchRequest(entityName: Box.entityName)
         fetchRequest.includesSubentities = false
         
         var error: NSError? = nil
