@@ -192,7 +192,7 @@
             </connections>
             <point key="canvasLocation" x="504" y="452"/>
         </window>
-        <treeController objectClassName="ItemNode" childrenKeyPath="children" leafKeyPath="isLeaf" id="l1V-qr-cFZ" userLabel="Items Controller">
+        <treeController mode="entity" entityName="ManagedBox" automaticallyPreparesContent="YES" childrenKeyPath="children" leafKeyPath="isLeaf" id="l1V-qr-cFZ" userLabel="Items Controller">
             <declaredKeys>
                 <string>count</string>
                 <string>title</string>
@@ -200,8 +200,8 @@
                 <string>children</string>
             </declaredKeys>
             <connections>
-                <binding destination="pNN-YO-ueG" name="managedObjectContext" keyPath="self.managedObjectContext" id="Z9z-FW-wRI"/>
                 <binding destination="pNN-YO-ueG" name="sortDescriptors" keyPath="self.itemsSortDescriptors" id="j2e-El-7Md"/>
+                <binding destination="pNN-YO-ueG" name="managedObjectContext" keyPath="self.managedObjectContext" id="Z9z-FW-wRI"/>
             </connections>
         </treeController>
         <viewController id="pNN-YO-ueG" customClass="ItemViewController" customModule="DDDViewDataExample" customModuleProvider="target">

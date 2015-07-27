@@ -23,7 +23,6 @@
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
 		60A11C061A288763006954EA /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A11C051A288763006954EA /* Entity.swift */; };
 		60AEEEC41A239A4300C05636 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC31A239A4300C05636 /* ServiceLocator.swift */; };
-		60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */; };
 		60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */; };
 		60B2D70B1A1A3B7C0045D11F /* ItemManagementWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */; };
 		60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D70C1A1A40960045D11F /* ItemViewController.swift */; };
@@ -72,7 +71,6 @@
 		602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBoxesAndItems.swift; sourceTree = "<group>"; };
 		60A11C051A288763006954EA /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		60AEEEC31A239A4300C05636 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
-		60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandleBoxAndItemModifications.swift; sourceTree = "<group>"; };
 		60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemManagementWindowController.swift; sourceTree = "<group>"; };
 		60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ItemManagementWindowController.xib; sourceTree = "<group>"; };
 		60B2D70C1A1A40960045D11F /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 			isa = PBXGroup;
 			children = (
 				602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */,
-				60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -383,7 +380,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */,
 				50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */,
 				503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */,
 				60A11C061A288763006954EA /* Entity.swift in Sources */,

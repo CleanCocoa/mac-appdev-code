@@ -11,7 +11,6 @@ public class ManageBoxesAndItems {
     lazy var windowController: ItemManagementWindowController! = {
         let controller = ItemManagementWindowController()
         controller.loadWindow()
-        controller.eventHandler = self.eventHandler
         return controller
     }()
         
@@ -20,6 +19,7 @@ public class ManageBoxesAndItems {
     }()
     
     public func showBoxManagementWindow() {
+        prepareWindow()
         showWindow()
     }
         

@@ -10,11 +10,6 @@ public protocol TreeNode: class {
     func resetTitleToDefaultTitle()
 }
 
-@objc(HandlesItemListChanges)
-public protocol HandlesItemListChanges: class {
-    func treeNodeDidChange(treeNode: TreeNode, title: String)
-}
-
 @objc(NonNilStringValueTransformer)
 public class NonNilStringValueTransformer: NSValueTransformer {
     override public func transformedValue(value: AnyObject?) -> AnyObject? {
@@ -59,7 +54,6 @@ public let kColumnNameCount = "Count"
 
 public class ItemViewController: NSViewController, NSOutlineViewDelegate {
 
-    public weak var eventHandler: HandlesItemListEvents!
     @IBOutlet public weak var itemsController: NSTreeController!
     @IBOutlet public weak var addBoxButton: NSButton!
     @IBOutlet public weak var addItemButton: NSButton!
@@ -68,11 +62,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     var managedObjectContext: NSManagedObjectContext {
         return ServiceLocator.sharedInstance.managedObjectContext!
     }
-    
-    var repo: BoxRepository {
-        return ServiceLocator.boxRepository()
-    }
-    
+        
     public var outlineView: NSOutlineView {
         return self.view as! NSOutlineView
     }
@@ -83,104 +73,72 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
         return [sortByTitle]
     }
     
-    func nodeCount() -> Int {
-        return itemsController.arrangedObjects.childNodes!!.count
-    }
-    
     func hasSelection() -> Bool {
         return itemsController.selectedObjects.count > 0
     }
     
     
-    //MARK: Add Boxes
+    //MARK: Add Boxes and Items
+    
+    var repository: BoxRepository!
     
     @IBAction public func addBox(sender: AnyObject) {
-        guard let eventHandler = self.eventHandler else {
+        guard hasValue(repository) else {
             return
         }
         
-        eventHandler.createBox()
+        let boxId = repository.nextId()
+        repository.addBoxWithId(boxId, title: "NEW BOX!!")
+        
+        refreshTree()
     }
-    
-    // TODO call order tree somewhere?
-    func orderTree() {
-        itemsController.rearrangeObjects()
-    }
-    
-    
-    //MARK: Add Items
     
     @IBAction public func addItem(sender: AnyObject) {
-        addItemNodeToSelectedBox()
-    }
-    
-    func addItemNodeToSelectedBox() {
-        guard let selectionIndexPath = boxIndexPathInSelection() else {
+        guard hasValue(repository) else {
             return
         }
         
-        appendItemNodeToBoxIndexPath(selectionIndexPath)
-    }
-    
-    /// The indexPath of the first node if it's a BoxNode.
-    func boxIndexPathInSelection() -> NSIndexPath? {
-        if (!hasSelection()) {
-            return nil
-        }
-        
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
-        
-        if (treeNodeRepresentsBoxNode(firstSelectedTreeNode)) {
-            let parentNode = firstSelectedTreeNode.parentNode!
-            return parentNode.indexPath
-        }
-        
-        return firstSelectedTreeNode.indexPath
-    }
-    
-    func treeNodeRepresentsBoxNode(treeNode: NSTreeNode) -> Bool {
-        return treeNode.leaf
-    }
-    
-    func appendItemNodeToBoxIndexPath(parentIndexPath: NSIndexPath) {
-        guard let eventHandler = eventHandler else {
+        guard hasSelection() else {
             return
         }
         
-        let parentTreeNode = boxTreeNodeAtIndexPath(parentIndexPath)
-        let boxNode = parentTreeNode.representedObject as! Box
-        eventHandler.createItem(boxNode.boxId)
+        addItemToSelectedBox()
+        
+        refreshTree()
     }
     
-    func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
-        precondition(indexPath.length == 1, "assumes index path of a box with 1 index only")
+    func addItemToSelectedBox() {
+        let selectedNode = itemsController.selectedNodes.first!
+        let itemId = repository.nextItemId()
         
-        let boxNodes: [AnyObject] = itemsController.arrangedObjects.childNodes!!
-        let boxIndex = indexPath.indexAtPosition(0)
-        let boxNode = boxNodes[boxIndex] as! NSTreeNode
-        
-        return boxNode
+        if let box = selectedNode.representedObject as? Box {
+            box.addItemWithId(itemId, title: "NEW ITEM!!")
+        } else if let item = selectedNode.representedObject as? Item {
+            item.box.addItemWithId(itemId, title: "NEW sibling ITEM!!")
+        }
     }
     
+    func refreshTree() {
+        itemsController.rearrangeObjects()
+    }
     
     //MARK: Remove items
     
     @IBAction public func removeSelectedObject(sender: AnyObject) {
-        if (!hasSelection()) {
+        guard hasSelection() else {
             return
         }
-        
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
-        let indexPath = firstSelectedTreeNode.indexPath
-        let treeNode: TreeNode = firstSelectedTreeNode.representedObject as! TreeNode
 
-        if let boxNode = treeNode as? Box {
-            eventHandler.removeBox(boxNode.boxId)
-        } else if let itemNode = treeNode as? Item {
-            
-            eventHandler.removeItem(itemNode.itemId, fromBox: itemNode.box.boxId)
+        let selectedNode = itemsController.selectedNodes.first!
+        
+        if let box = selectedNode.representedObject as? Box {
+            repository.removeBox(boxId: box.boxId)
+        } else if let item = selectedNode.representedObject as? Item {
+            let itemId = item.itemId
+            let box = item.box
+            box.removeItem(itemId: itemId)
         }
         
-        itemsController.removeObjectAtArrangedObjectIndexPath(indexPath)
+        refreshTree()
     }
 }
