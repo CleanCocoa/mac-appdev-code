@@ -11,7 +11,7 @@ class TestPersistentStack: PersistentStack {
 }
 
 class PersistentStackTests: XCTestCase {
-    let storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("test.sqlite"))
+    let storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("test.sqlite")
     lazy var persistentStack: TestPersistentStack = {
         let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
         return TestPersistentStack(storeURL: self.storeURL, modelURL: modelURL!)
