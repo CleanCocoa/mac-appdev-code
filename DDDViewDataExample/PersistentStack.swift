@@ -11,8 +11,10 @@ public class PersistentStack: NSObject {
 
     public var managedObjectContext: NSManagedObjectContext?
     
-    // TODO forbid init()
-    
+    override init() {
+        fatalMethodNotImplemented()
+    }
+
     public init(storeURL:NSURL, modelURL:NSURL) {
         self.storeURL = storeURL
         self.modelURL = modelURL

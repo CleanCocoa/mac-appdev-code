@@ -23,3 +23,7 @@ func logDetailledErrors(error: NSError) {
         NSLog("  \(error.userInfo)")
     }
 }
+
+@noreturn func fatalMethodNotImplemented(function: String = #function) {
+    fatalError("Method \(function) not implemented")
+}
