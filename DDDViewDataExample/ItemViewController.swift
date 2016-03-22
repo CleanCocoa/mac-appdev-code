@@ -116,7 +116,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     var itemsSortDescriptors: [NSSortDescriptor] {
-        let sortByTitle = NSSortDescriptor(key: "title", ascending: true, selector: "caseInsensitiveCompare:")
+        let sortByTitle = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))
         
         return [sortByTitle]
     }
@@ -212,7 +212,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
             return nil
         }
         
-        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first! as NSTreeNode
+        let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first!
         
         if (treeNodeRepresentsBoxNode(firstSelectedTreeNode)) {
             let parentNode = firstSelectedTreeNode.parentNode!

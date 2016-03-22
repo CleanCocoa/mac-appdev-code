@@ -11,7 +11,7 @@ class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
     func integerId() -> IntegerId {
         let identifier = (callCount == 0 ? firstAttempt : secondAttempt)
         
-        callCount++
+        callCount += 1
         
         return identifier
     }

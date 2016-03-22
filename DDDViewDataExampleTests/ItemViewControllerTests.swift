@@ -138,7 +138,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testAddBoxButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.addBoxButton.action, Selector("addBox:"))
+        XCTAssertEqual(viewController.addBoxButton.action, #selector(ItemViewController.addBox(_:)))
     }
     
     func testAddItemButton_IsConnected() {
@@ -146,7 +146,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testAddItemButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.addItemButton.action, Selector("addItem:"))
+        XCTAssertEqual(viewController.addItemButton.action, #selector(NSMenu.addItem(_:)))
     }
     
     func testAddItemButton_CocoaBindings() {
@@ -158,7 +158,7 @@ class ItemViewControllerTests: XCTestCase {
     }
 
     func testRemoveButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.removeButton.action, Selector("removeSelectedObject:"))
+        XCTAssertEqual(viewController.removeButton.action, #selector(ItemViewController.removeSelectedObject(_:)))
     }
     
     func testRemoveButton_CocoaBindings() {

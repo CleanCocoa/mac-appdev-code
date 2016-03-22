@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
         
-        self.notificationCenter.addObserver(persistentStack, selector: "objectContextWillSave", name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
+        self.notificationCenter.addObserver(persistentStack, selector: #selector(PersistentStack.objectContextWillSave), name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
         
         return persistentStack
     }()
