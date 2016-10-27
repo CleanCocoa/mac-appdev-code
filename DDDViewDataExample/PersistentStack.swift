@@ -146,7 +146,7 @@ open class PersistentStack: NSObject {
             alert.addButton(withTitle: cancelButton)
             
             let answer = alert.runModal()
-            if answer == NSAlertFirstButtonReturn {
+            if answer == NSAlertSecondButtonReturn {
                 return .terminateCancel
             }
         }
