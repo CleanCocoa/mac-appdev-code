@@ -2,14 +2,14 @@ import Cocoa
 
 open class ServiceLocator {
     
-    open class var sharedInstance: ServiceLocator {
+    open static var sharedInstance: ServiceLocator {
         struct Static {
             static let instance: ServiceLocator = ServiceLocator()
         }
         return Static.instance
     }
     
-    open class func resetSharedInstance() {
+    open static func resetSharedInstance() {
         sharedInstance.reset()
     }
     
@@ -26,7 +26,7 @@ open class ServiceLocator {
     
     //MARK: Repository Access
     
-    open class func boxRepository() -> BoxRepository {
+    open static func boxRepository() -> BoxRepository {
         return sharedInstance.boxRepository()
     }
     

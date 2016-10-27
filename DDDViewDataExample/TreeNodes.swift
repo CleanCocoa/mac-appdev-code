@@ -10,7 +10,7 @@ import Cocoa
 }
 
 open class BoxNode: NSObject, TreeNode {
-    open class var defaultTitle: String! { return "Box" }
+    open static var defaultTitle: String! { return "Box" }
     open dynamic var title: String = BoxNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {
@@ -44,7 +44,7 @@ open class BoxNode: NSObject, TreeNode {
 }
 
 open class ItemNode: NSObject, TreeNode {
-    open class var defaultTitle: String! { return "Item" }
+    open static var defaultTitle: String! { return "Item" }
     open dynamic var title: String = ItemNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {

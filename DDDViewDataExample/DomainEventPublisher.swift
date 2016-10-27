@@ -5,7 +5,7 @@ open class DomainEventPublisher {
     open static var sharedInstance: DomainEventPublisher = DomainEventPublisher()
     
     /// Reset the static `sharedInstance`, for example for testing
-    open class func resetSharedInstance() {
+    open static func resetSharedInstance() {
         
         DomainEventPublisher.sharedInstance = DomainEventPublisher()
     }
