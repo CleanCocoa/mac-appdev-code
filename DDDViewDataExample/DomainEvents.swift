@@ -28,7 +28,7 @@ public struct BoxProvisionedEvent: DomainEvent {
     
     public init(userInfo: UserInfo) {
         let boxIdData = userInfo["id"] as! NSNumber
-        self.init(boxId: BoxId(boxIdData), title: userInfo["title"] as! String)
+        self.init(boxId: BoxId(fromNumber: boxIdData), title: userInfo["title"] as! String)
     }
     
     public func userInfo() -> UserInfo {
@@ -57,11 +57,11 @@ public struct BoxItemProvisionedEvent: DomainEvent {
     public init(userInfo: UserInfo) {
         let boxData = userInfo["box"] as! UserInfo
         let boxIdData = boxData["id"] as! NSNumber
-        self.boxId = BoxId(boxIdData)
+        self.boxId = BoxId(fromNumber: boxIdData)
         
         let itemData = userInfo["item"] as! UserInfo
         let itemIdData = itemData["id"] as! NSNumber
-        self.itemId = ItemId(itemIdData)
+        self.itemId = ItemId(fromNumber: itemIdData)
         self.itemTitle = itemData["title"] as! String
     }
     
