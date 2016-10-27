@@ -18,7 +18,8 @@ extension XCTestCase {
     
     func hasBinding(_ object: NSObject, binding:String, to boundObject: NSObject, throughKeyPath keyPath:String) -> Bool {
         if let info = object.infoForBinding(binding) {
-            return (info[NSObservedObjectKey] as! NSObject == boundObject) && (info[NSObservedKeyPathKey] as! String == keyPath)
+            return (info[NSObservedObjectKey] as! NSObject).isEqual(boundObject)
+                && (info[NSObservedKeyPathKey] as! String == keyPath)
         }
         
         return false

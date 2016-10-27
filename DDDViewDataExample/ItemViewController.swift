@@ -36,13 +36,23 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
         
         return [sortByTitle]
     }
-    
+
+    fileprivate func itemsControllersArrangedChildren() -> [NSTreeNode] {
+
+        // Since Swift 3, this is weird: `AnyObject.children`
+        // won't know if we're talking about `AppKit.NSTreeNode.children` or
+        // this target's `TreeNode.children` when that property is defined in
+        // a class in this file. This method cares about casting the result to
+        // clarify which one we want to use to the compiler.
+        return (itemsController.arrangedObjects as AnyObject).children!!
+    }
+
     func nodeCount() -> Int {
-        return (itemsController.arrangedObjects as AnyObject).children!.count
+        return itemsControllersArrangedChildren().count
     }
     
     func hasSelection() -> Bool {
-        return itemsController.selectedObjects.count > 0
+        return !itemsController.selectedObjects.isEmpty
     }
     
     
@@ -157,16 +167,16 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
             indexPath.count == 1
             else { preconditionFailure("assumes index path of a box with 1 index only") }
 
-        let boxNodes = (itemsController.arrangedObjects as AnyObject).children!
-        let boxNode = boxNodes[boxIndex] as! NSTreeNode
+        let boxNodes = itemsControllersArrangedChildren()
+        let boxNode = boxNodes[boxIndex]
         
         return boxNode
     }
     
     open func consume(_ itemData: ItemData) {
-        guard let boxId = itemData.boxId, let boxNode = existingBoxNode(boxId) else {
-            return
-        }
+        guard let boxId = itemData.boxId,
+            let boxNode = existingBoxNode(boxId)
+            else { return }
 
         let itemNode = self.itemNode(itemData)
         
@@ -175,14 +185,9 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
     }
     
     func existingBoxNode(_ boxId: BoxId) -> BoxNode? {
-        let boxNodes = (itemsController.arrangedObjects as AnyObject).children!.map { $0 as! NSTreeNode }
-        for treeNode in boxNodes {
-            let boxNode = treeNode.representedObject as! BoxNode
-            if boxNode.boxId == boxId {
-                return boxNode
-            }
-        }
-        return nil
+        return self.boxNodes()
+            .filter { $0.boxId == boxId }
+            .first
     }
     
     
@@ -213,7 +218,7 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
     
     /// Returns all of `itemsController` root-level nodes' represented objects
     func boxNodes() -> [BoxNode] {
-        let rootNodes = (itemsController.arrangedObjects as AnyObject).children!.map { $0 as! NSTreeNode }
+        let rootNodes = itemsControllersArrangedChildren()
         return rootNodes.map { (treeNode: NSTreeNode) -> BoxNode in
             return treeNode.representedObject as! BoxNode
         }

@@ -168,17 +168,23 @@ class ItemViewControllerTests: XCTestCase {
     func testItemRowView_TitleCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
         
-        let titleCellView: NSTableCellView = viewController.outlineView.view(atColumn: 0, row: 0, makeIfNecessary: true) as! NSTableCellView
-        let titleTextField = titleCellView.textField!
+        guard let titleCellView = viewController.outlineView.view(atColumn: 0, row: 0, makeIfNecessary: true) as? NSTableCellView
+            else { XCTFail("expected NSTableCellView at (0,0)"); return }
+
+        guard let titleTextField = titleCellView.textField else { XCTFail("expected cell view with textField"); return }
+
         XCTAssertTrue(titleTextField.isEditable)
         XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title", transformingWith: "NonNilStringValueTransformer"))
     }
     
     func testItemRowView_CountCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
-        
-        let countCellView: NSTableCellView = viewController.outlineView.view(atColumn: 1, row: 0, makeIfNecessary: true) as! NSTableCellView
-        let countTextField = countCellView.textField!
+
+        guard let countCellView: NSTableCellView = viewController.outlineView.view(atColumn: 1, row: 0, makeIfNecessary: true) as? NSTableCellView
+            else { XCTFail("expected NSTableCellView at (0,0)"); return }
+
+        guard let countTextField = countCellView.textField else { XCTFail("expected cell view with textField"); return }
+
         XCTAssertFalse(countTextField.isEditable, "count text field should not be editable")
         XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"))
     }
@@ -208,19 +214,25 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testConsumeBox_WithExistingBox_OrdersThemByTitle() {
+        func title(_ item: NSTreeNode) -> String? {
+            guard let boxNode = item.representedObject as? BoxNode else { return nil }
+
+            return boxNode.title
+        }
+
         // Given
-        let bottomItem = TestBoxNode(title: "ZZZ Should be at the bottom")
+        let bottomItem = TestBoxNode(title: "ZZZ")
         viewController.itemsController.addObject(bottomItem)
-        
-        let existingNode: NSObject = boxAtIndex(0)
-        
+        XCTAssertEqual(boxNodeCount(), 1)
+
         // When
-        viewController.consume(boxDataStub())
-        
+        let newItem = BoxData(boxId: BoxId(1), title: "AAA", itemData: [])
+        viewController.consume(newItem)
+
         // Then
         XCTAssertEqual(boxNodeCount(), 2, "add node to existing one")
-        let lastNode: NSObject = boxAtIndex(1)
-        XCTAssertEqual(existingNode, lastNode, "new node should be put before existing one")
+        XCTAssertEqual(title(boxAtIndex(0)), "AAA", "new node should be put before existing one")
+        XCTAssertEqual(title(boxAtIndex(1)), "ZZZ")
     }
 
     func testAddBox_Twice_SelectsSecondBox() {
