@@ -86,7 +86,7 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
     func mergeItems(_ items: [Item]) {
         let existingItems = self.mutableSetValue(forKey: "items")
         removeMissingItems(items, from: existingItems)
-//        addNewItems(items, to: existingItems)
+        addNew(items: items, to: existingItems)
     }
     
     func removeMissingItems(_ items: [Item], from existingItems: NSMutableSet) {
@@ -101,18 +101,19 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
         }
     }
     
-//    func addNewItems(_ items: [Item], to existingItems: NSMutableSet) {
-//        for item in items {
-//            let itemIsInExistingItems = existingItems.contains({ (existingItem: AnyObject) -> Bool in
-//                let managedItem = existingItem as! ManagedItem
-//                return managedItem.item == item
-//            })
-//            
-//            if !itemIsInExistingItems {
-//                ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
-//            }
-//        }
-//    }
+    fileprivate func addNew(items: [Item], to existingItems: NSMutableSet) {
+
+        for item in items {
+            let itemIsInExistingItems = existingItems.contains {
+                let managedItem = $0 as! ManagedItem
+                return managedItem.item == item
+            }
+
+            if !itemIsInExistingItems {
+                ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
+            }
+        }
+    }
 
     // MARK: Destructor
     
