@@ -27,15 +27,14 @@ public struct BoxProvisionedEvent: DomainEvent {
     }
     
     public init(userInfo: UserInfo) {
-        let boxIdData = userInfo["id"] as! NSNumber
-        self.init(boxId: BoxId(fromNumber: boxIdData), title: userInfo["title"] as! String)
+        let boxIdentfier = userInfo["id"] as! IntegerId
+        self.init(boxId: BoxId(boxIdentfier), title: userInfo["title"] as! String)
     }
     
     public func userInfo() -> UserInfo {
-        // TODO replace NSNumber(...) by using StringLiteralConvertible
         return [
-            "id": NSNumber(value: boxId.identifier as Int64),
-            "title": title
+            "id" : boxId.identifier,
+            "title" : title
         ]
     }
 }
@@ -56,22 +55,22 @@ public struct BoxItemProvisionedEvent: DomainEvent {
     
     public init(userInfo: UserInfo) {
         let boxData = userInfo["box"] as! UserInfo
-        let boxIdData = boxData["id"] as! NSNumber
-        self.boxId = BoxId(fromNumber: boxIdData)
+        let boxIdentifier = boxData["id"] as! IntegerId
+        self.boxId = BoxId(boxIdentifier)
         
         let itemData = userInfo["item"] as! UserInfo
-        let itemIdData = itemData["id"] as! NSNumber
-        self.itemId = ItemId(fromNumber: itemIdData)
+        let itemIdentifier = itemData["id"] as! IntegerId
+        self.itemId = ItemId(itemIdentifier)
         self.itemTitle = itemData["title"] as! String
     }
     
     public func userInfo() -> UserInfo {
         return [
             "box" : [
-                "id" : NSNumber(value: boxId.identifier as Int64)
+                "id" : boxId.identifier
             ],
             "item" : [
-                "id" : NSNumber(value: itemId.identifier as Int64),
+                "id" : itemId.identifier,
                 "title": itemTitle
             ]
         ]
