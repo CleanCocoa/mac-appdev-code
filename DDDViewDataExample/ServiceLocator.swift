@@ -1,15 +1,15 @@
 import Cocoa
 
-public class ServiceLocator {
+open class ServiceLocator {
     
-    public class var sharedInstance: ServiceLocator {
+    open class var sharedInstance: ServiceLocator {
         struct Static {
             static let instance: ServiceLocator = ServiceLocator()
         }
         return Static.instance
     }
     
-    public class func resetSharedInstance() {
+    open class func resetSharedInstance() {
         sharedInstance.reset()
     }
     
@@ -19,18 +19,18 @@ public class ServiceLocator {
     
     var managedObjectContext: NSManagedObjectContext?
     
-    public func setManagedObjectContext(managedObjectContext: NSManagedObjectContext) {
+    open func setManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
         precondition(!hasValue(self.managedObjectContext), "managedObjectContext can be set up only once")
         self.managedObjectContext = managedObjectContext
     }
     
     //MARK: Repository Access
     
-    public class func boxRepository() -> BoxRepository {
+    open class func boxRepository() -> BoxRepository {
         return sharedInstance.boxRepository()
     }
     
-    public func boxRepository() -> BoxRepository {
+    open func boxRepository() -> BoxRepository {
         precondition(hasValue(managedObjectContext), "managedObjectContext must be set up")
         return CoreDataBoxRepository(managedObjectContext: managedObjectContext!)
     }

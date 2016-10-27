@@ -1,8 +1,8 @@
 import Cocoa
 
 public protocol ConsumesBoxAndItem: class {
-    func consume(boxData: BoxData)
-    func consume(itemData: ItemData)
+    func consume(_ boxData: BoxData)
+    func consume(_ itemData: ItemData)
 }
 
 class DisplayBoxesAndItems {
@@ -20,7 +20,7 @@ class DisplayBoxesAndItems {
     }
     
     func subscribe() {
-        let mainQueue = NSOperationQueue.mainQueue()
+        let mainQueue = OperationQueue.main
         
         boxProvisioningObserver = publisher.subscribe(BoxProvisionedEvent.self, queue: mainQueue) {
             [weak self] (event: BoxProvisionedEvent!) in
@@ -45,7 +45,7 @@ class DisplayBoxesAndItems {
     }
     
     //TODO: rename "consume" to something better
-    func consumeBox(boxData: BoxData) {
+    func consumeBox(_ boxData: BoxData) {
         guard let consumer = self.consumer else {
             return
         }
@@ -53,7 +53,7 @@ class DisplayBoxesAndItems {
         consumer.consume(boxData)
     }
     
-    func consumeItem(itemData: ItemData) {
+    func consumeItem(_ itemData: ItemData) {
         guard let consumer = self.consumer else {
             return
         }

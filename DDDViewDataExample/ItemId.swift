@@ -7,9 +7,9 @@ public struct ItemId: Identifiable {
     public init(_ identifier: IntegerId) {
         self.identifier = identifier
     }
-    
-    init(_ identifierNumber: NSNumber) {
-        self.identifier = identifierNumber.longLongValue
+
+    init(fromNumber number: NSNumber) {
+        self.identifier = number.int64Value
     }
 }
 

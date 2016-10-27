@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class TestBoxRepository: BoxRepository {
     func nextId() -> BoxId {
@@ -12,10 +12,10 @@ class TestBoxRepository: BoxRepository {
         return ItemId(0)
     }
     
-    func addBox(box: Box) { }
-    func removeBox(boxId boxId: BoxId) { }
+    func addBox(_ box: Box) { }
+    func removeBox(boxId: BoxId) { }
     
-    func box(boxId boxId: BoxId) -> Box? {
+    func box(boxId: BoxId) -> Box? {
         return nil
     }
     
@@ -34,7 +34,7 @@ class ProvisioningServiceTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        DomainEventPublisher.setSharedInstance(publisher)
+        DomainEventPublisher.sharedInstance = publisher
     }
     
     override func tearDown() {

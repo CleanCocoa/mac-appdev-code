@@ -1,43 +1,23 @@
 import Foundation
 
-private struct DomainEventPublisherStatic {
-    static var singleton: DomainEventPublisher? = nil
-    static var onceToken: dispatch_once_t = 0
-}
-
-public class DomainEventPublisher {
-    
-    public class var sharedInstance: DomainEventPublisher {
+open class DomainEventPublisher {
         
-        if !hasValue(DomainEventPublisherStatic.singleton) {
-            dispatch_once(&DomainEventPublisherStatic.onceToken) {
-                self.setSharedInstance(DomainEventPublisher())
-            }
-        }
-        
-        return DomainEventPublisherStatic.singleton!
-    }
+    open static var sharedInstance: DomainEventPublisher = DomainEventPublisher()
     
     /// Reset the static `sharedInstance`, for example for testing
-    public class func resetSharedInstance() {
+    open class func resetSharedInstance() {
         
-        DomainEventPublisherStatic.singleton = nil
-        DomainEventPublisherStatic.onceToken = 0
-    }
-    
-    public class func setSharedInstance(instance: DomainEventPublisher) {
-        
-        DomainEventPublisherStatic.singleton = instance
+        DomainEventPublisher.sharedInstance = DomainEventPublisher()
     }
 
-    let notificationCenter: NSNotificationCenter
+    let notificationCenter: NotificationCenter
     
     public convenience init() {
         
-        self.init(notificationCenter: NSNotificationCenter.defaultCenter())
+        self.init(notificationCenter: NotificationCenter.default)
     }
     
-    public init(notificationCenter: NSNotificationCenter) {
+    public init(notificationCenter: NotificationCenter) {
         
         self.notificationCenter = notificationCenter
     }
@@ -46,33 +26,33 @@ public class DomainEventPublisher {
     //MARK: -
     //MARK: Event Publishing and Subscribing
     
-    public func publish<T: DomainEvent>(event: T) {
+    open func publish<T: DomainEvent>(_ event: T) {
         
-        notificationCenter.postNotification(notification(event))
+        notificationCenter.post(notification(event))
     }
     
-    public func subscribe<T: DomainEvent>(eventKind: T.Type, usingBlock block: (T!) -> Void) -> DomainEventSubscription {
+    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
         
-        let mainQueue = NSOperationQueue.mainQueue()
+        let mainQueue = OperationQueue.main
         
         return self.subscribe(eventKind, queue: mainQueue, usingBlock: block)
     }
     
-    public func subscribe<T: DomainEvent>(eventKind: T.Type, queue: NSOperationQueue, usingBlock block: (T!) -> Void) -> DomainEventSubscription {
+    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, queue: OperationQueue, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
         
         let eventName: String = T.eventName
-        let observer = notificationCenter.addObserverForName(eventName, object: nil, queue: queue) {
+        let observer = notificationCenter.addObserver(forName: NSNotification.Name(rawValue: eventName), object: nil, queue: queue) {
             notification in
             
-            let userInfo = notification.userInfo!
-            let event: T = T(userInfo: userInfo)
+            let userInfo = (notification as NSNotification).userInfo!
+            let event: T = T(userInfo: userInfo as UserInfo)
             block(event)
         }
         
         return DomainEventSubscription(observer: observer, eventPublisher: self)
     }
     
-    public func unsubscribe(subscriber: AnyObject) {
+    open func unsubscribe(_ subscriber: AnyObject) {
         
         notificationCenter.removeObserver(subscriber)
     }

@@ -1,6 +1,6 @@
 import Cocoa
 
-public class ManageBoxesAndItems {
+open class ManageBoxesAndItems {
     public init() { }
     
     lazy var eventHandler: HandleBoxAndItemModifications! = {
@@ -21,11 +21,11 @@ public class ManageBoxesAndItems {
         return controller
     }()
         
-    public lazy var itemViewController: ItemViewController = {
+    open lazy var itemViewController: ItemViewController = {
         return self.windowController.itemViewController
     }()
     
-    public func showBoxManagementWindow() {
+    open func showBoxManagementWindow() {
         displayBoxes()
         showWindow()
     }
@@ -38,7 +38,7 @@ public class ManageBoxesAndItems {
         windowController.displayBoxData(allBoxData)
     }
     
-    func boxData(boxes: [Box]) -> [BoxData] {
+    func boxData(_ boxes: [Box]) -> [BoxData] {
         let allBoxData: [BoxData] = boxes.map() { (box: Box) -> BoxData in
             let allItemData: [ItemData] = self.itemData(box.items)
             
@@ -48,7 +48,7 @@ public class ManageBoxesAndItems {
         return allBoxData
     }
     
-    func itemData(items: [Item]) -> [ItemData] {
+    func itemData(_ items: [Item]) -> [ItemData] {
         return items.map() { (item: Item) -> ItemData in
             return ItemData(itemId: item.itemId, title: item.title)
         }

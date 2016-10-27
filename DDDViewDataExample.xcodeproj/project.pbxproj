@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50184AE91DC2450A003A62AF /* TreeNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50184AE81DC2450A003A62AF /* TreeNodes.swift */; };
 		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
 		503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */; };
@@ -18,7 +19,6 @@
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */; };
 		50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
-		50E441931B5A9BDF00AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
 		50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441941B5AAAC300AFC62D /* BoxId.swift */; };
 		50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441961B5AAB1000AFC62D /* ItemId.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
@@ -59,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		50184AE81DC2450A003A62AF /* TreeNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeNodes.swift; sourceTree = "<group>"; };
 		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
 		503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayBoxesAndItems.swift; sourceTree = "<group>"; };
@@ -130,17 +131,10 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		50E441901B5A9BAD00AFC62D /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				50E441911B5A9BC000AFC62D /* Optionals.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		60AEEEC51A248ADA00C05636 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
 				602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */,
 				60AEEEC61A248AF300C05636 /* HandleBoxAndItemModifications.swift */,
 				503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */,
@@ -172,7 +166,6 @@
 		60C04B951A18DFD700F4665D = {
 			isa = PBXGroup;
 			children = (
-				50E441901B5A9BAD00AFC62D /* Shared */,
 				60C04BA01A18DFD700F4665D /* DDDViewDataExample */,
 				60C04BB41A18DFD700F4665D /* DDDViewDataExampleTests */,
 				60C04B9F1A18DFD700F4665D /* Products */,
@@ -196,6 +189,7 @@
 				60AEEEC51A248ADA00C05636 /* Application */,
 				60C04BCF1A191A7500F4665D /* User Interface */,
 				50C251801A2FA0D400595098 /* Utilities.swift */,
+				50E441911B5A9BC000AFC62D /* Optionals.swift */,
 				504D01711A2FD2A700403673 /* Resources */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
@@ -243,7 +237,6 @@
 		60C04BCE1A191A6A00F4665D /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				60C04BA31A18DFD700F4665D /* AppDelegate.swift */,
 				60AEEEC31A239A4300C05636 /* ServiceLocator.swift */,
 				60C04BCB1A19177D00F4665D /* Core Data */,
 				60C04BD31A191BBF00F4665D /* Item */,
@@ -257,6 +250,7 @@
 				60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */,
 				60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */,
 				60B2D70C1A1A40960045D11F /* ItemViewController.swift */,
+				50184AE81DC2450A003A62AF /* TreeNodes.swift */,
 				502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */,
 			);
 			name = "User Interface";
@@ -335,14 +329,16 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Christian Tietze";
 				TargetAttributes = {
 					60C04B9D1A18DFD700F4665D = {
 						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 0800;
 					};
 					60C04BB01A18DFD700F4665D = {
 						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 60C04B9D1A18DFD700F4665D;
 					};
 				};
@@ -416,6 +412,7 @@
 				60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */,
 				60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */,
 				50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */,
+				50184AE91DC2450A003A62AF /* TreeNodes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +429,6 @@
 				509CA3E91A30C5D70001AB6A /* DomainEventPublisherTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
-				50E441931B5A9BDF00AFC62D /* Optionals.swift in Sources */,
 				508D66EA1A30C9F000D5DF01 /* TestDomainEventPublisher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,8 +468,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -482,6 +480,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -515,8 +514,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -525,6 +526,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -534,6 +536,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -546,6 +549,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.christiantietze.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -558,6 +562,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.christiantietze.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -578,6 +583,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.christiantietze.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DDDViewDataExample.app/Contents/MacOS/DDDViewDataExample";
 			};
 			name = Debug;
@@ -595,6 +601,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.christiantietze.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DDDViewDataExample.app/Contents/MacOS/DDDViewDataExample";
 			};
 			name = Release;

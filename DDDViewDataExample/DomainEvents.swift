@@ -1,6 +1,6 @@
 import Foundation
 
-public typealias UserInfo = [NSObject : AnyObject]
+public typealias UserInfo = [AnyHashable: Any]
 
 public protocol DomainEvent {
     
@@ -10,8 +10,8 @@ public protocol DomainEvent {
     func userInfo() -> UserInfo
 }
 
-public func notification<T: DomainEvent>(event: T) -> NSNotification {
-    return NSNotification(name: T.eventName, object: nil, userInfo: event.userInfo())
+public func notification<T: DomainEvent>(_ event: T) -> Notification {
+    return Notification(name: Notification.Name(rawValue: T.eventName), object: nil, userInfo: event.userInfo())
 }
 
 public struct BoxProvisionedEvent: DomainEvent {
@@ -28,13 +28,13 @@ public struct BoxProvisionedEvent: DomainEvent {
     
     public init(userInfo: UserInfo) {
         let boxIdData = userInfo["id"] as! NSNumber
-        self.init(boxId: BoxId(boxIdData), title: userInfo["title"] as! String)
+        self.init(boxId: BoxId(fromNumber: boxIdData), title: userInfo["title"] as! String)
     }
     
     public func userInfo() -> UserInfo {
         // TODO replace NSNumber(...) by using StringLiteralConvertible
         return [
-            "id": NSNumber(longLong: boxId.identifier),
+            "id": NSNumber(value: boxId.identifier as Int64),
             "title": title
         ]
     }
@@ -57,21 +57,21 @@ public struct BoxItemProvisionedEvent: DomainEvent {
     public init(userInfo: UserInfo) {
         let boxData = userInfo["box"] as! UserInfo
         let boxIdData = boxData["id"] as! NSNumber
-        self.boxId = BoxId(boxIdData)
+        self.boxId = BoxId(fromNumber: boxIdData)
         
         let itemData = userInfo["item"] as! UserInfo
         let itemIdData = itemData["id"] as! NSNumber
-        self.itemId = ItemId(itemIdData)
+        self.itemId = ItemId(fromNumber: itemIdData)
         self.itemTitle = itemData["title"] as! String
     }
     
     public func userInfo() -> UserInfo {
         return [
             "box" : [
-                "id" : NSNumber(longLong: boxId.identifier)
+                "id" : NSNumber(value: boxId.identifier as Int64)
             ],
             "item" : [
-                "id" : NSNumber(longLong: itemId.identifier),
+                "id" : NSNumber(value: itemId.identifier as Int64),
                 "title": itemTitle
             ]
         ]

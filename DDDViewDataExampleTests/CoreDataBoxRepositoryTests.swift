@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
     let firstAttempt: IntegerId = 1234
@@ -32,11 +32,11 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest(entityName: ManagedBox.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
         let result: [ManagedBox]
         
         do {
-            try result = context.executeFetchRequest(request) as! [ManagedBox]
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all boxes failed")
             return nil

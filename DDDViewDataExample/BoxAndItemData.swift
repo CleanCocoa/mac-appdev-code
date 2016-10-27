@@ -2,13 +2,13 @@ import Foundation
 
 public protocol HandlesItemListEvents: class {
     func createBox()
-    func createItem(boxId: BoxId)
+    func createItem(_ boxId: BoxId)
     
-    func changeBoxTitle(boxId: BoxId, title: String)
-    func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId)
+    func changeBoxTitle(_ boxId: BoxId, title: String)
+    func changeItemTitle(_ itemId: ItemId, title: String, inBox boxId: BoxId)
     
-    func removeBox(boxId: BoxId)
-    func removeItem(itemId: ItemId, fromBox boxId: BoxId)
+    func removeBox(_ boxId: BoxId)
+    func removeItem(_ itemId: ItemId, fromBox boxId: BoxId)
 }
 
 public struct BoxData {

@@ -3,19 +3,19 @@ import CoreData
 
 public let kDefaultModelName: String = "DDDViewDataExample"
 
-public class PersistentStack: NSObject {
+open class PersistentStack: NSObject {
     
     let storeType = NSSQLiteStoreType
-    let storeURL:NSURL
-    let modelURL:NSURL
+    let storeURL: URL
+    let modelURL: URL
 
-    public var managedObjectContext: NSManagedObjectContext?
+    open var managedObjectContext: NSManagedObjectContext?
     
     override init() {
         fatalMethodNotImplemented()
     }
 
-    public init(storeURL:NSURL, modelURL:NSURL) {
+    public init(storeURL: URL, modelURL: URL) {
         self.storeURL = storeURL
         self.modelURL = modelURL
         
@@ -34,13 +34,13 @@ public class PersistentStack: NSObject {
         self.managedObjectContext = managedObjectContext
     }
     
-    public lazy var managedObjectModel: NSManagedObjectModel = {
+    open lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: kDefaultModelName, withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
-    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    open lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. (The directory for the store is created, if necessary.) This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         
         // Create the coordinator and store
@@ -48,16 +48,16 @@ public class PersistentStack: NSObject {
         let store: NSPersistentStore
         
         do {
-            store = try coordinator.addPersistentStoreWithType(self.storeType, configuration: nil, URL: self.storeURL, options: self.defaultStoreOptions())
+            store = try coordinator.addPersistentStore(ofType: self.storeType, configurationName: nil, at: self.storeURL, options: self.defaultStoreOptions())
         } catch var underlyingError as NSError {
             
-            var dict = [NSObject : AnyObject]()
+            var dict = [AnyHashable: Any]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
             dict[NSUnderlyingErrorKey] = underlyingError
             
             let error = NSError(domain: kErrorDomain, code: 9999, userInfo: dict)
-            NSApplication.sharedApplication().presentError(error)
+            NSApplication.shared().presentError(error)
             
             return nil
         } catch {
@@ -70,18 +70,18 @@ public class PersistentStack: NSObject {
     
     // MARK: - Core Data Saving and Undo support
     
-    public func objectContextWillSave() {
+    open func objectContextWillSave() {
         // TODO: update creation/modification dates
     }
     
-    public func save() {
+    open func save() {
         // Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
         guard let managedObjectContext = self.managedObjectContext else {
             return
         }
         
         guard managedObjectContext.commitEditing() else {
-            NSLog("\(NSStringFromClass(self.dynamicType)) unable to commit editing before saving")
+            NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing before saving")
             return
         }
         
@@ -92,14 +92,14 @@ public class PersistentStack: NSObject {
         do {
             try managedObjectContext.save()
         } catch let error as NSError {
-            NSApplication.sharedApplication().presentError(error)
+            NSApplication.shared().presentError(error)
         
             NSLog("Failed to save to data store: \(error.localizedDescription)")
             logDetailledErrors(error)
         }
     }
     
-    public func undoManager() -> NSUndoManager? {
+    open func undoManager() -> UndoManager? {
         // Returns the NSUndoManager for the application. In this case, the manager returned is that of the managed object context for the application.
         guard let managedObjectContext = self.managedObjectContext else {
             return nil
@@ -108,24 +108,24 @@ public class PersistentStack: NSObject {
         return managedObjectContext.undoManager
     }
     
-    public func defaultStoreOptions() -> Dictionary<String, String> {
+    open func defaultStoreOptions() -> Dictionary<String, String> {
         let opts = Dictionary<String, String>()
         return opts
     }
     
     /// Save changes in the application's managed object context before the application terminates.
-    public func saveToTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
+    open func saveToTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
         guard let managedObjectContext = self.managedObjectContext else {
-            return .TerminateNow
+            return .terminateNow
         }
         
         guard managedObjectContext.commitEditing() else {
-            NSLog("\(NSStringFromClass(self.dynamicType)) unable to commit editing to terminate")
-            return .TerminateCancel
+            NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing to terminate")
+            return .terminateCancel
         }
         
         guard managedObjectContext.hasChanges else {
-            return .TerminateNow
+            return .terminateNow
         }
         
         do {
@@ -142,15 +142,15 @@ public class PersistentStack: NSObject {
             let alert = NSAlert()
             alert.messageText = question
             alert.informativeText = info
-            alert.addButtonWithTitle(quitButton)
-            alert.addButtonWithTitle(cancelButton)
+            alert.addButton(withTitle: quitButton)
+            alert.addButton(withTitle: cancelButton)
             
             let answer = alert.runModal()
             if answer == NSAlertFirstButtonReturn {
-                return .TerminateCancel
+                return .terminateCancel
             }
         }
         
-        return .TerminateNow
+        return .terminateNow
     }
 }
