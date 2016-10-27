@@ -12,23 +12,19 @@ open class ManagedItem: NSManagedObject, ManagedEntity {
     @NSManaged open var modificationDate: Date
     @NSManaged open var box: ManagedBox
 
-    open class func entityName() -> String {
+    open static var entityName: String {
         return "ManagedItem"
     }
     
-    open class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
-    }
-    
-    open class func insertManagedItem(_ item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
-        let theItem: AnyObject = NSEntityDescription.insertNewObject(forEntityName: entityName(), into: managedObjectContext)
-        let managedItem: ManagedItem = theItem as! ManagedItem
+    open static func insertManagedItem(_ item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+        
+        let managedItem: ManagedItem = self.create(into: managedObjectContext)
         
         managedItem.item = item
         managedItem.box = managedBox
     }
     
-    class func uniqueIdFromItemId(_ itemId: ItemId) -> NSNumber {
+    static func uniqueIdFromItemId(_ itemId: ItemId) -> NSNumber {
         return NSNumber(value: itemId.identifier as Int64)
     }
     

@@ -32,7 +32,7 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName)
         let result: [ManagedBox]
         
         do {

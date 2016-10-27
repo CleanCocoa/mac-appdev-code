@@ -12,25 +12,20 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
     @NSManaged open var uniqueId: NSNumber
     @NSManaged open var items: NSSet
     
-    open class func entityName() -> String {
+    open static var entityName: String {
         return "ManagedBox"
     }
-    
-    open class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
-    }
-    
-    open class func insertManagedBox(_ boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let box: AnyObject = NSEntityDescription.insertNewObject(forEntityName: entityName(), into: managedObjectContext)
-        let managedBox: ManagedBox = box as! ManagedBox
+    open static func insertManagedBox(_ boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+        
+        let managedBox: ManagedBox = self.create(into: managedObjectContext)
         
         managedBox.uniqueId = uniqueIdFromBoxId(boxId)
         managedBox.title = title
     }
     
-    class func uniqueIdFromBoxId(_ boxId: BoxId) -> NSNumber {
-        return NSNumber(value: boxId.identifier as Int64)
+    static func uniqueIdFromBoxId(_ boxId: BoxId) -> NSNumber {
+        return NSNumber(value: boxId.identifier)
     }
     
     open func boxId() -> BoxId {
@@ -85,23 +80,22 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
     
     func mergeItems(_ items: [Item]) {
         let existingItems = self.mutableSetValue(forKey: "items")
-        removeMissingItems(items, from: existingItems)
-        addNew(items: items, to: existingItems)
+        removeMissing(items: items, from: existingItems)
+        addNewItems(of: items, to: existingItems)
     }
-    
-    func removeMissingItems(_ items: [Item], from existingItems: NSMutableSet) {
+
+    fileprivate func removeMissing(items: [Item], from existingItems: NSMutableSet) {
         for item in existingItems {
-            guard let managedItem: ManagedItem = item as? ManagedItem else {
-                continue
-            }
+            guard let managedItem: ManagedItem = item as? ManagedItem
+                else { continue }
             
             if !items.contains(managedItem.item) {
                 existingItems.remove(item)
             }
         }
     }
-    
-    fileprivate func addNew(items: [Item], to existingItems: NSMutableSet) {
+
+    fileprivate func addNewItems(of items: [Item], to existingItems: NSMutableSet) {
 
         for item in items {
             let itemIsInExistingItems = existingItems.contains {
@@ -123,7 +117,7 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
         }
     }
 
-    func unobserve(_ box: Box) {
+    fileprivate func unobserve(_ box: Box) {
         box.removeObserver(self, forKeyPath: "title")
         box.removeObserver(self, forKeyPath: "items")
     }

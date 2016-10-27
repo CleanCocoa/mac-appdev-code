@@ -17,7 +17,7 @@ class ManagedBoxTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName)
         let result: [AnyObject]
         
         do {
@@ -35,7 +35,7 @@ class ManagedBoxTests: CoreDataTestCase {
     }
     
     func allItems() -> [ManagedItem]? {
-        let request = NSFetchRequest<ManagedBox>(entityName: ManagedItem.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName)
         let result: [AnyObject]
         
         do {

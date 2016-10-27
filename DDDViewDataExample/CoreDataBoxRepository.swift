@@ -86,7 +86,7 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
     }
         
     open func boxes() -> [Box] {
-        let fetchRequest = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
+        let fetchRequest = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName)
         fetchRequest.includesSubentities = true
         
         let results: [AnyObject]
@@ -99,17 +99,15 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
             assertionFailure("error fetching boxes")
             return []
         }
-        
-        let managedBoxes: [ManagedBox] = results as! [ManagedBox]
-        
-        return managedBoxes.map({ (managedBox: ManagedBox) -> Box in
-            return managedBox.box
-        })
+
+        return results
+            .map { $0 as! ManagedBox }
+            .map { $0.box }
     }
     
     /// - returns: `NSNotFound` on error
     open func count() -> Int {
-        let fetchRequest = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
+        let fetchRequest = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName)
         fetchRequest.includesSubentities = false
 
         let count: Int
@@ -130,9 +128,10 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
     //MARK: Box ID Generation
     
     open func nextId() -> BoxId {
-        let hasManagedBoxWithUniqueId: (IntegerId) -> Bool = { identifier in
+        func hasManagedBoxWithUniqueId(identifier: IntegerId) -> Bool {
             return self.managedBoxWithUniqueId(identifier) != nil
         }
+
         let generator = IdGenerator<BoxId>(integerIdGenerator: integerIdGenerator, integerIdIsTaken: hasManagedBoxWithUniqueId)
         return generator.nextId()
     }
@@ -154,12 +153,8 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
             assertionFailure("error fetching box with id")
             return nil
         }
-        
-        if result.count == 0 {
-            return nil
-        }
-        
-        return result[0] as? ManagedBox
+
+        return result.first as? ManagedBox
     }
     
     
