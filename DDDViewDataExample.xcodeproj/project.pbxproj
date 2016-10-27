@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50184AE91DC2450A003A62AF /* TreeNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50184AE81DC2450A003A62AF /* TreeNodes.swift */; };
 		5024903E1A2F64B200CDA666 /* ProvisioningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024903D1A2F64B200CDA666 /* ProvisioningService.swift */; };
 		502FE6E61A2DDAA4000A39C5 /* BoxAndItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */; };
 		503210F61A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		50184AE81DC2450A003A62AF /* TreeNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeNodes.swift; sourceTree = "<group>"; };
 		5024903D1A2F64B200CDA666 /* ProvisioningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningService.swift; sourceTree = "<group>"; };
 		502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxAndItemData.swift; sourceTree = "<group>"; };
 		503210F51A2FCBFB00B8BE74 /* DisplayBoxesAndItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayBoxesAndItems.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				60B2D7081A1A3B7C0045D11F /* ItemManagementWindowController.swift */,
 				60B2D7091A1A3B7C0045D11F /* ItemManagementWindowController.xib */,
 				60B2D70C1A1A40960045D11F /* ItemViewController.swift */,
+				50184AE81DC2450A003A62AF /* TreeNodes.swift */,
 				502FE6E51A2DDAA4000A39C5 /* BoxAndItemData.swift */,
 			);
 			name = "User Interface";
@@ -409,6 +412,7 @@
 				60BF3C601A238DA3002598DB /* ManagedBox.swift in Sources */,
 				60BF3C621A238DA4002598DB /* ManagedItem.swift in Sources */,
 				50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */,
+				50184AE91DC2450A003A62AF /* TreeNodes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
