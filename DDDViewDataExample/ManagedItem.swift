@@ -4,43 +4,43 @@ import CoreData
 private var itemContext = 0
 
 @objc(ManagedItem)
-public class ManagedItem: NSManagedObject, ManagedEntity {
+open class ManagedItem: NSManagedObject, ManagedEntity {
     
-    @NSManaged public var uniqueId: NSNumber
-    @NSManaged public var title: String
-    @NSManaged public var creationDate: NSDate
-    @NSManaged public var modificationDate: NSDate
-    @NSManaged public var box: ManagedBox
+    @NSManaged open var uniqueId: NSNumber
+    @NSManaged open var title: String
+    @NSManaged open var creationDate: Date
+    @NSManaged open var modificationDate: Date
+    @NSManaged open var box: ManagedBox
 
-    public class func entityName() -> String {
+    open class func entityName() -> String {
         return "ManagedItem"
     }
     
-    public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
     
-    public class func insertManagedItem(item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
-        let theItem: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
+    open class func insertManagedItem(_ item: Item, managedBox: ManagedBox, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+        let theItem: AnyObject = NSEntityDescription.insertNewObject(forEntityName: entityName(), into: managedObjectContext)
         let managedItem: ManagedItem = theItem as! ManagedItem
         
         managedItem.item = item
         managedItem.box = managedBox
     }
     
-    class func uniqueIdFromItemId(itemId: ItemId) -> NSNumber {
-        return NSNumber(longLong: itemId.identifier)
+    class func uniqueIdFromItemId(_ itemId: ItemId) -> NSNumber {
+        return NSNumber(value: itemId.identifier as Int64)
     }
     
-    public func itemId() -> ItemId {
-        return ItemId(self.uniqueId.longLongValue)
+    open func itemId() -> ItemId {
+        return ItemId(self.uniqueId.int64Value)
     }
     
     //MARK: -
     //MARK: Item Management
     
-    private var _item: Item?
-    public var item: Item {
+    fileprivate var _item: Item?
+    open var item: Item {
         get {
             if let item = _item {
                 return item
@@ -66,24 +66,24 @@ public class ManagedItem: NSManagedObject, ManagedEntity {
         }
     }
     
-    func observe(item: Item) {
-        item.addObserver(self, forKeyPath: "title", options: .New, context: &itemContext)
+    func observe(_ item: Item) {
+        item.addObserver(self, forKeyPath: "title", options: .new, context: &itemContext)
     }
     
-    func adapt(item: Item) {
+    func adapt(_ item: Item) {
         uniqueId = ManagedItem.uniqueIdFromItemId(item.itemId)
         title = item.title
     }
     
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if context != &itemContext {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
         
         if keyPath == "title" {
-            self.title = change?[NSKeyValueChangeNewKey] as! String
+            self.title = change?[NSKeyValueChangeKey.newKey] as! String
         }
     }
     

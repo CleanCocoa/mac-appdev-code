@@ -3,16 +3,16 @@ import Cocoa
 public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
-    func addBox(box: Box)
-    func removeBox(boxId boxId: BoxId)
+    func addBox(_ box: Box)
+    func removeBox(boxId: BoxId)
     func boxes() -> [Box]
-    func box(boxId boxId: BoxId) -> Box?
+    func box(boxId: BoxId) -> Box?
     func count() -> Int
 }
 
-public class Box: NSObject {
-    public let boxId: BoxId
-    public dynamic var title: String
+open class Box: NSObject {
+    open let boxId: BoxId
+    open dynamic var title: String
     dynamic var items: [Item] = []
     
     public init(boxId: BoxId, title: String) {
@@ -20,13 +20,13 @@ public class Box: NSObject {
         self.title = title
     }
     
-    public func addItem(item: Item) {
+    open func addItem(_ item: Item) {
         precondition(!hasValue(item.box), "item should not have a parent box already")
         
         items.append(item)
     }
     
-    public func item(itemId itemId: ItemId) -> Item? {
+    open func item(itemId: ItemId) -> Item? {
         guard let index = indexOfItem(itemId: itemId) else {
             return nil
         }
@@ -34,16 +34,16 @@ public class Box: NSObject {
         return items[index]
     }
     
-    public func removeItem(itemId itemId: ItemId) {
+    open func removeItem(itemId: ItemId) {
         guard let index = indexOfItem(itemId: itemId) else {
             return
         }
         
-        items.removeAtIndex(index)
+        items.remove(at: index)
     }
     
-    func indexOfItem(itemId itemId: ItemId) -> Int? {
-        for (index, item) in items.enumerate() {
+    func indexOfItem(itemId: ItemId) -> Int? {
+        for (index, item) in items.enumerated() {
             if item.itemId == itemId {
                 return index
             }

@@ -4,45 +4,45 @@ import CoreData
 private var boxContext = 0
 
 @objc(ManagedBox)
-public class ManagedBox: NSManagedObject, ManagedEntity {
+open class ManagedBox: NSManagedObject, ManagedEntity {
 
-    @NSManaged public var creationDate: NSDate
-    @NSManaged public var modificationDate: NSDate
-    @NSManaged public var title: String
-    @NSManaged public var uniqueId: NSNumber
-    @NSManaged public var items: NSSet
+    @NSManaged open var creationDate: Date
+    @NSManaged open var modificationDate: Date
+    @NSManaged open var title: String
+    @NSManaged open var uniqueId: NSNumber
+    @NSManaged open var items: NSSet
     
-    public class func entityName() -> String {
+    open class func entityName() -> String {
         return "ManagedBox"
     }
     
-    public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
     
-    public class func insertManagedBox(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    open class func insertManagedBox(_ boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let box: AnyObject = NSEntityDescription.insertNewObjectForEntityForName(entityName(), inManagedObjectContext: managedObjectContext)
+        let box: AnyObject = NSEntityDescription.insertNewObject(forEntityName: entityName(), into: managedObjectContext)
         let managedBox: ManagedBox = box as! ManagedBox
         
         managedBox.uniqueId = uniqueIdFromBoxId(boxId)
         managedBox.title = title
     }
     
-    class func uniqueIdFromBoxId(boxId: BoxId) -> NSNumber {
-        return NSNumber(longLong: boxId.identifier)
+    class func uniqueIdFromBoxId(_ boxId: BoxId) -> NSNumber {
+        return NSNumber(value: boxId.identifier as Int64)
     }
     
-    public func boxId() -> BoxId {
-        return BoxId(uniqueId.longLongValue)
+    open func boxId() -> BoxId {
+        return BoxId(uniqueId.int64Value)
     }
     
     
     //MARK: -
     //MARK: Box Management
     
-    private var _box: Box?
-    public lazy var box: Box = {
+    fileprivate var _box: Box?
+    open lazy var box: Box = {
         let box = self.createBox()
         self.observe(box)
         self._box = box
@@ -63,57 +63,57 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         }
     }
     
-    func observe(box: Box) {
-        box.addObserver(self, forKeyPath: "title", options: .New, context: &boxContext)
-        box.addObserver(self, forKeyPath: "items", options: .New, context: &boxContext)
+    func observe(_ box: Box) {
+        box.addObserver(self, forKeyPath: "title", options: .new, context: &boxContext)
+        box.addObserver(self, forKeyPath: "items", options: .new, context: &boxContext)
     }
     
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if context != &boxContext {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
         
         if keyPath == "title" {
-            self.title = change?[NSKeyValueChangeNewKey] as! String
+            self.title = change?[NSKeyValueChangeKey.newKey] as! String
         } else if keyPath == "items" {
-            let items = change?[NSKeyValueChangeNewKey] as! [Item]
+            let items = change?[NSKeyValueChangeKey.newKey] as! [Item]
             mergeItems(items)
         }
     }
     
-    func mergeItems(items: [Item]) {
-        let existingItems = self.mutableSetValueForKey("items")
+    func mergeItems(_ items: [Item]) {
+        let existingItems = self.mutableSetValue(forKey: "items")
         removeMissingItems(items, from: existingItems)
-        addNewItems(items, to: existingItems)
+//        addNewItems(items, to: existingItems)
     }
     
-    func removeMissingItems(items: [Item], from existingItems: NSMutableSet) {
+    func removeMissingItems(_ items: [Item], from existingItems: NSMutableSet) {
         for item in existingItems {
             guard let managedItem: ManagedItem = item as? ManagedItem else {
                 continue
             }
             
             if !items.contains(managedItem.item) {
-                existingItems.removeObject(item)
+                existingItems.remove(item)
             }
         }
     }
     
-    func addNewItems(items: [Item], to existingItems: NSMutableSet) {
-        for item in items {
-            let itemIsInExistingItems = existingItems.contains({ (existingItem: AnyObject) -> Bool in
-                let managedItem = existingItem as! ManagedItem
-                return managedItem.item == item
-            })
-            
-            if !itemIsInExistingItems {
-                ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
-            }
-        }
-    }
-    
+//    func addNewItems(_ items: [Item], to existingItems: NSMutableSet) {
+//        for item in items {
+//            let itemIsInExistingItems = existingItems.contains({ (existingItem: AnyObject) -> Bool in
+//                let managedItem = existingItem as! ManagedItem
+//                return managedItem.item == item
+//            })
+//            
+//            if !itemIsInExistingItems {
+//                ManagedItem.insertManagedItem(item, managedBox: self, inManagedObjectContext: managedObjectContext!)
+//            }
+//        }
+//    }
+
     // MARK: Destructor
     
     deinit {
@@ -122,7 +122,7 @@ public class ManagedBox: NSManagedObject, ManagedEntity {
         }
     }
 
-    func unobserve(box: Box) {
+    func unobserve(_ box: Box) {
         box.removeObserver(self, forKeyPath: "title")
         box.removeObserver(self, forKeyPath: "items")
     }

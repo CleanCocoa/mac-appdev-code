@@ -1,6 +1,6 @@
 import Foundation
 
-public class ProvisioningService {
+open class ProvisioningService {
     let repository: BoxRepository
     
     var eventPublisher: DomainEventPublisher {
@@ -11,7 +11,7 @@ public class ProvisioningService {
         self.repository = repository
     }
     
-    public func provisionBox() {
+    open func provisionBox() {
         let boxId = repository.nextId()
         let box = Box(boxId: boxId, title: "New Box")
         
@@ -20,7 +20,7 @@ public class ProvisioningService {
         eventPublisher.publish(BoxProvisionedEvent(boxId: boxId, title: box.title))
     }
     
-    public func provisionItem(inBox box: Box) {
+    open func provisionItem(inBox box: Box) {
         let itemId = repository.nextItemId()
         let item = Item(itemId: itemId, title: "New Item")
 

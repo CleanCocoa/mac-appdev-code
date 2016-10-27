@@ -12,12 +12,12 @@ public protocol TreeNode {
 
 @objc(HandlesItemListChanges)
 public protocol HandlesItemListChanges: class {
-    func treeNodeDidChange(treeNode: TreeNode, title: String)
+    func treeNodeDidChange(_ treeNode: TreeNode, title: String)
 }
 
 @objc(NonNilStringValueTransformer)
-public class NonNilStringValueTransformer: NSValueTransformer {
-    override public func transformedValue(value: AnyObject?) -> AnyObject? {
+open class NonNilStringValueTransformer: ValueTransformer {
+    override open func transformedValue(_ value: Any?) -> Any? {
         guard let value = value else {
             return ""
         }
@@ -26,20 +26,20 @@ public class NonNilStringValueTransformer: NSValueTransformer {
     }
 }
 
-public class BoxNode: NSObject, TreeNode {
-    public class var defaultTitle: String! { return "Box" }
-    public dynamic var title: String = BoxNode.defaultTitle {
+open class BoxNode: NSObject, TreeNode {
+    open class var defaultTitle: String! { return "Box" }
+    open dynamic var title: String = BoxNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
             }
         }
     }
-    public dynamic var count: UInt = 0
-    public dynamic var children: [TreeNode] = []
-    public dynamic var isLeaf: Bool = false
-    public let boxId: BoxId
-    public weak var eventHandler: HandlesItemListChanges?
+    open dynamic var count: UInt = 0
+    open dynamic var children: [TreeNode] = []
+    open dynamic var isLeaf: Bool = false
+    open let boxId: BoxId
+    open weak var eventHandler: HandlesItemListChanges?
     
     public init(boxId: BoxId) {
         self.boxId = boxId
@@ -51,29 +51,29 @@ public class BoxNode: NSObject, TreeNode {
         super.init()
     }
     
-    public func addItemNode(itemNode: ItemNode) {
+    open func addItemNode(_ itemNode: ItemNode) {
         children.append(itemNode)
     }
     
-    public func resetTitleToDefaultTitle() {
+    open func resetTitleToDefaultTitle() {
         self.title = BoxNode.defaultTitle
     }
 }
 
-public class ItemNode: NSObject, TreeNode {
-    public class var defaultTitle: String! { return "Item" }
-    public dynamic var title: String = ItemNode.defaultTitle {
+open class ItemNode: NSObject, TreeNode {
+    open class var defaultTitle: String! { return "Item" }
+    open dynamic var title: String = ItemNode.defaultTitle {
         didSet {
             if let controller = self.eventHandler {
                 controller.treeNodeDidChange(self, title: title)
             }
         }
     }
-    public dynamic var count: UInt = 0
-    public dynamic var children: [TreeNode] = []
-    public dynamic var isLeaf = true
-    public let itemId: ItemId
-    public weak var eventHandler: HandlesItemListChanges?
+    open dynamic var count: UInt = 0
+    open dynamic var children: [TreeNode] = []
+    open dynamic var isLeaf = true
+    open let itemId: ItemId
+    open weak var eventHandler: HandlesItemListChanges?
     
     public init(itemId: ItemId) {
         self.itemId = itemId
@@ -84,7 +84,7 @@ public class ItemNode: NSObject, TreeNode {
         self.title = itemData.title
     }
     
-    public func parentBoxNode(inArray nodes: [BoxNode]) -> BoxNode? {
+    open func parentBoxNode(inArray nodes: [BoxNode]) -> BoxNode? {
         for boxNode in nodes {
             if (boxNode.children as! [ItemNode]).contains(self) {
                 return boxNode
@@ -94,7 +94,7 @@ public class ItemNode: NSObject, TreeNode {
         return nil
     }
     
-    public func resetTitleToDefaultTitle() {
+    open func resetTitleToDefaultTitle() {
         self.title = ItemNode.defaultTitle
     }
 }
@@ -103,15 +103,15 @@ public class ItemNode: NSObject, TreeNode {
 public let kColumnNameTitle = "Title"
 public let kColumnNameCount = "Count"
 
-public class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesItemListChanges, ConsumesBoxAndItem {
+open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesItemListChanges, ConsumesBoxAndItem {
 
-    public weak var eventHandler: HandlesItemListEvents!
-    @IBOutlet public weak var itemsController: NSTreeController!
-    @IBOutlet public weak var addBoxButton: NSButton!
-    @IBOutlet public weak var addItemButton: NSButton!
-    @IBOutlet public weak var removeButton: NSButton!
+    open weak var eventHandler: HandlesItemListEvents!
+    @IBOutlet open weak var itemsController: NSTreeController!
+    @IBOutlet open weak var addBoxButton: NSButton!
+    @IBOutlet open weak var addItemButton: NSButton!
+    @IBOutlet open weak var removeButton: NSButton!
     
-    public var outlineView: NSOutlineView {
+    open var outlineView: NSOutlineView {
         return self.view as! NSOutlineView
     }
     
@@ -122,7 +122,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     func nodeCount() -> Int {
-        return itemsController.arrangedObjects.childNodes!!.count
+        return (itemsController.arrangedObjects as AnyObject).children!.count
     }
     
     func hasSelection() -> Bool {
@@ -132,7 +132,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     //MARK: Populate View
     
-    public func displayBoxData(boxData: [BoxData]) {
+    open func displayBoxData(_ boxData: [BoxData]) {
         removeExistingNodes()
         for data in boxData {
             itemsController.addObject(boxNode(data))
@@ -143,7 +143,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         itemsController.content = NSMutableArray()
     }
     
-    func boxNode(boxData: BoxData) -> BoxNode {
+    func boxNode(_ boxData: BoxData) -> BoxNode {
         let boxNode = BoxNode(boxData: boxData)
         // TODO test the title setup
 //        boxNode.title = boxData.title
@@ -153,14 +153,14 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         return boxNode
     }
     
-    func itemNodes(allItemData: [ItemData]) -> [ItemNode] {
+    func itemNodes(_ allItemData: [ItemData]) -> [ItemNode] {
         let result: [ItemNode] = allItemData.map() { (itemData: ItemData) -> ItemNode in
             self.itemNode(itemData)
         }
         return result
     }
     
-    func itemNode(itemData: ItemData) -> ItemNode {
+    func itemNode(_ itemData: ItemData) -> ItemNode {
         let itemNode = ItemNode(itemData: itemData)
         // TODO test the title setup
 //        itemNode.title = itemData.title
@@ -172,7 +172,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     //MARK: Add Boxes
     
-    @IBAction public func addBox(sender: AnyObject) {
+    @IBAction open func addBox(_ sender: AnyObject) {
         guard let eventHandler = self.eventHandler else {
             return
         }
@@ -180,10 +180,10 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         eventHandler.createBox()
     }
     
-    public func consume(boxData: BoxData) {
+    open func consume(_ boxData: BoxData) {
         let boxNode = self.boxNode(boxData)
-        let indexPath = NSIndexPath(index: nodeCount())
-        itemsController.insertObject(boxNode, atArrangedObjectIndexPath: indexPath)
+        let indexPath = IndexPath(index: nodeCount())
+        itemsController.insert(boxNode, atArrangedObjectIndexPath: indexPath)
         orderTree()
     }
     
@@ -194,7 +194,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     //MARK: Add Items
     
-    @IBAction public func addItem(sender: AnyObject) {
+    @IBAction open func addItem(_ sender: AnyObject) {
         addItemNodeToSelectedBox()
     }
     
@@ -207,7 +207,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     }
     
     /// The indexPath of the first node if it's a BoxNode.
-    func boxIndexPathInSelection() -> NSIndexPath? {
+    func boxIndexPathInSelection() -> IndexPath? {
         if (!hasSelection()) {
             return nil
         }
@@ -215,18 +215,18 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         let firstSelectedTreeNode: NSTreeNode = itemsController.selectedNodes.first!
         
         if (treeNodeRepresentsBoxNode(firstSelectedTreeNode)) {
-            let parentNode = firstSelectedTreeNode.parentNode!
+            let parentNode = firstSelectedTreeNode.parent!
             return parentNode.indexPath
         }
         
         return firstSelectedTreeNode.indexPath
     }
     
-    func treeNodeRepresentsBoxNode(treeNode: NSTreeNode) -> Bool {
-        return treeNode.leaf
+    func treeNodeRepresentsBoxNode(_ treeNode: NSTreeNode) -> Bool {
+        return treeNode.isLeaf
     }
     
-    func appendItemNodeToBoxIndexPath(parentIndexPath: NSIndexPath) {
+    func appendItemNodeToBoxIndexPath(_ parentIndexPath: IndexPath) {
         guard let eventHandler = eventHandler else {
             return
         }
@@ -236,18 +236,19 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         eventHandler.createItem(boxNode.boxId)
     }
     
-    func boxTreeNodeAtIndexPath(indexPath: NSIndexPath) -> NSTreeNode {
-        precondition(indexPath.length == 1, "assumes index path of a box with 1 index only")
-        
-        let boxNodes: [AnyObject] = itemsController.arrangedObjects.childNodes!!
-        let boxIndex = indexPath.indexAtPosition(0)
+    func boxTreeNodeAtIndexPath(_ indexPath: IndexPath) -> NSTreeNode {
+        guard let boxIndex = indexPath.first,
+            indexPath.count == 1
+            else { preconditionFailure("assumes index path of a box with 1 index only") }
+
+        let boxNodes = (itemsController.arrangedObjects as AnyObject).children!
         let boxNode = boxNodes[boxIndex] as! NSTreeNode
         
         return boxNode
     }
     
-    public func consume(itemData: ItemData) {
-        guard let boxId = itemData.boxId, boxNode = existingBoxNode(boxId) else {
+    open func consume(_ itemData: ItemData) {
+        guard let boxId = itemData.boxId, let boxNode = existingBoxNode(boxId) else {
             return
         }
 
@@ -257,8 +258,8 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         orderTree()
     }
     
-    func existingBoxNode(boxId: BoxId) -> BoxNode? {
-        let boxNodes = itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+    func existingBoxNode(_ boxId: BoxId) -> BoxNode? {
+        let boxNodes = (itemsController.arrangedObjects as AnyObject).children!.map { $0 as! NSTreeNode }
         for treeNode in boxNodes {
             let boxNode = treeNode.representedObject as! BoxNode
             if boxNode.boxId == boxId {
@@ -271,7 +272,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     //MARK: Change items
     
-    public func treeNodeDidChange(treeNode: TreeNode, title: String) {
+    open func treeNodeDidChange(_ treeNode: TreeNode, title: String) {
         if title.isEmpty {
             changeNodeTitleToPlaceholderValue(treeNode)
         } else {
@@ -280,15 +281,15 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         }
     }
     
-    func changeNodeTitleToPlaceholderValue(treeNode: TreeNode) {
+    func changeNodeTitleToPlaceholderValue(_ treeNode: TreeNode) {
         treeNode.resetTitleToDefaultTitle()
     }
     
-    func broadcastTitleChange(treeNode: TreeNode) {
+    func broadcastTitleChange(_ treeNode: TreeNode) {
         if let boxNode = treeNode as? BoxNode {
             eventHandler.changeBoxTitle(boxNode.boxId, title: boxNode.title)
         } else if let itemNode = treeNode as? ItemNode,
-            boxNode = itemNode.parentBoxNode(inArray: boxNodes()) {
+            let boxNode = itemNode.parentBoxNode(inArray: boxNodes()) {
                 
             eventHandler.changeItemTitle(itemNode.itemId, title: itemNode.title, inBox: boxNode.boxId)
         }
@@ -296,7 +297,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     /// Returns all of `itemsController` root-level nodes' represented objects
     func boxNodes() -> [BoxNode] {
-        let rootNodes = itemsController.arrangedObjects.childNodes!! as [NSTreeNode]
+        let rootNodes = (itemsController.arrangedObjects as AnyObject).children!.map { $0 as! NSTreeNode }
         return rootNodes.map { (treeNode: NSTreeNode) -> BoxNode in
             return treeNode.representedObject as! BoxNode
         }
@@ -305,7 +306,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
     
     //MARK: Remove items
     
-    @IBAction public func removeSelectedObject(sender: AnyObject) {
+    @IBAction open func removeSelectedObject(_ sender: AnyObject) {
         if (!hasSelection()) {
             return
         }
@@ -317,11 +318,11 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate, Handle
         if let boxNode = treeNode as? BoxNode {
             eventHandler.removeBox(boxNode.boxId)
         } else if let itemNode = treeNode as? ItemNode,
-            boxNode = itemNode.parentBoxNode(inArray: boxNodes()) {
+            let boxNode = itemNode.parentBoxNode(inArray: boxNodes()) {
             
             eventHandler.removeItem(itemNode.itemId, fromBox: boxNode.boxId)
         }
         
-        itemsController.removeObjectAtArrangedObjectIndexPath(indexPath)
+        itemsController.removeObject(atArrangedObjectIndexPath: indexPath)
     }
 }
