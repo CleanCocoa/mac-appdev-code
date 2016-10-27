@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class ManagedBoxTests: CoreDataTestCase {
     var repository: CoreDataBoxRepository!
@@ -17,11 +17,11 @@ class ManagedBoxTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [ManagedBox]? {
-        let request = NSFetchRequest(entityName: ManagedBox.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
         let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request)
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all boxes failed")
             return nil
@@ -35,11 +35,11 @@ class ManagedBoxTests: CoreDataTestCase {
     }
     
     func allItems() -> [ManagedItem]? {
-        let request = NSFetchRequest(entityName: ManagedItem.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedItem.entityName())
         let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request)
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all items failed")
             return nil

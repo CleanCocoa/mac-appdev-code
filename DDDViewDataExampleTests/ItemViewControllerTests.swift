@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class TestBoxNode: BoxNode {
     convenience init(title: String, boxId: BoxId) {
@@ -28,23 +28,23 @@ class EventHandlerStub: HandlesItemListEvents {
         // no op
     }
     
-    func createItem(boxId: BoxId) {
+    func createItem(_ boxId: BoxId) {
         // no op
     }
     
-    func changeBoxTitle(boxId: BoxId, title: String) {
+    func changeBoxTitle(_ boxId: BoxId, title: String) {
         // no op
     }
     
-    func changeItemTitle(itemId: ItemId, title: String, inBox boxId: BoxId) {
+    func changeItemTitle(_ itemId: ItemId, title: String, inBox boxId: BoxId) {
         // no op
     }
     
-    func removeItem(itemId: ItemId, fromBox boxId: BoxId) {
+    func removeItem(_ itemId: ItemId, fromBox boxId: BoxId) {
         // no op
     }
     
-    func removeBox(boxId: BoxId) {
+    func removeBox(_ boxId: BoxId) {
         // no op
     }
 }
@@ -69,20 +69,20 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func boxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!!
+        return (viewController.itemsController.arrangedObjects as AnyObject).children!!
     }
     
     func boxNodeCount() -> Int {
         return boxNodes().count
     }
     
-    func boxAtIndex(index: Int) -> NSTreeNode {
+    func boxAtIndex(_ index: Int) -> NSTreeNode {
         return boxNodes()[index]
     }
     
     func itemTreeNode(atBoxIndex boxIndex: Int, itemIndex: Int) -> NSTreeNode {
         let boxNode: NSTreeNode = boxAtIndex(boxIndex)
-        return boxNode.childNodes![itemIndex] as NSTreeNode
+        return boxNode.children![itemIndex] as NSTreeNode
     }
     
     func boxDataStub() -> BoxData {
@@ -108,8 +108,8 @@ class ItemViewControllerTests: XCTestCase {
     func testOutlineViewColumns_NamedProperly() {
         let outlineView = viewController.outlineView
         
-        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kColumnNameTitle), "outline should include title column")
-        XCTAssertNotNil(outlineView.tableColumnWithIdentifier(kColumnNameCount), "outline should include count column")
+        XCTAssertNotNil(outlineView.tableColumn(withIdentifier: kColumnNameTitle), "outline should include title column")
+        XCTAssertNotNil(outlineView.tableColumn(withIdentifier: kColumnNameCount), "outline should include count column")
     }
     
     func testItemsController_IsConnected() {
@@ -121,10 +121,10 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testItemsController_CocoaBindings() {
-        let controller = viewController.itemsController
+        let controller = viewController.itemsController!
         let outlineView = viewController.outlineView
-        let titleColumn = outlineView.tableColumnWithIdentifier(kColumnNameTitle)
-        let countColumn = outlineView.tableColumnWithIdentifier(kColumnNameCount)
+        let titleColumn = outlineView.tableColumn(withIdentifier: kColumnNameTitle)
+        let countColumn = outlineView.tableColumn(withIdentifier: kColumnNameCount)
         
         XCTAssertTrue(hasBinding(controller, binding: NSSortDescriptorsBinding, to: viewController, throughKeyPath: "self.itemsSortDescriptors"))
         XCTAssertTrue(hasBinding(outlineView, binding: NSContentBinding, to: controller, throughKeyPath: "arrangedObjects"))
@@ -168,18 +168,18 @@ class ItemViewControllerTests: XCTestCase {
     func testItemRowView_TitleCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
         
-        let titleCellView: NSTableCellView = viewController.outlineView.viewAtColumn(0, row: 0, makeIfNecessary: true) as! NSTableCellView
+        let titleCellView: NSTableCellView = viewController.outlineView.view(atColumn: 0, row: 0, makeIfNecessary: true) as! NSTableCellView
         let titleTextField = titleCellView.textField!
-        XCTAssertTrue(titleTextField.editable)
+        XCTAssertTrue(titleTextField.isEditable)
         XCTAssertTrue(hasBinding(titleTextField, binding: NSValueBinding, to: titleCellView, throughKeyPath: "objectValue.title", transformingWith: "NonNilStringValueTransformer"))
     }
     
     func testItemRowView_CountCell_SetUpProperly() {
         viewController.itemsController.addObject(TestBoxNode())
         
-        let countCellView: NSTableCellView = viewController.outlineView.viewAtColumn(1, row: 0, makeIfNecessary: true) as! NSTableCellView
+        let countCellView: NSTableCellView = viewController.outlineView.view(atColumn: 1, row: 0, makeIfNecessary: true) as! NSTableCellView
         let countTextField = countCellView.textField!
-        XCTAssertFalse(countTextField.editable, "count text field should not be editable")
+        XCTAssertFalse(countTextField.isEditable, "count text field should not be editable")
         XCTAssertTrue(hasBinding(countTextField, binding: NSValueBinding, to: countCellView, throughKeyPath: "objectValue.count"))
     }
     
@@ -192,7 +192,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testInitially_AddItemButtonIsDisabled() {
-        XCTAssertFalse(viewController.addItemButton.enabled, "disable item button without boxes")
+        XCTAssertFalse(viewController.addItemButton.isEnabled, "disable item button without boxes")
     }
     
     func testConsumeBox_WithEmptyList_AddsNode() {
@@ -204,7 +204,7 @@ class ItemViewControllerTests: XCTestCase {
     func testConsumeBox_WithEmptyList_EnablesAddItemButton() {
         viewController.consume(boxDataStub())
         
-        XCTAssertTrue(viewController.addItemButton.enabled, "enable item button by adding boxes")
+        XCTAssertTrue(viewController.addItemButton.isEnabled, "enable item button by adding boxes")
     }
     
     func testConsumeBox_WithExistingBox_OrdersThemByTitle() {
@@ -224,7 +224,7 @@ class ItemViewControllerTests: XCTestCase {
     }
 
     func testAddBox_Twice_SelectsSecondBox() {
-        let treeController = viewController.itemsController
+        let treeController = viewController.itemsController!
         treeController.addObject(TestBoxNode(title: "first"))
         treeController.addObject(TestBoxNode(title: "second"))
         
@@ -245,12 +245,12 @@ class ItemViewControllerTests: XCTestCase {
     
     func testConsumeItem_WithSelectedBox_InsertsItemBelowSelectedBox() {
         // Pre-populate
-        let treeController = viewController.itemsController
+        let treeController = viewController.itemsController!
         treeController.addObject(TestBoxNode(title: "first", boxId: BoxId(1)))
         treeController.addObject(TestBoxNode(title: "second", boxId: BoxId(2)))
         
         // Select first node
-        let selectionIndexPath = NSIndexPath(index: 0)
+        let selectionIndexPath = IndexPath(index: 0)
         treeController.setSelectionIndexPath(selectionIndexPath)
         let selectedBox = treeController.selectedNodes[0].representedObject as! TreeNode
         XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
@@ -281,7 +281,7 @@ class ItemViewControllerTests: XCTestCase {
         let boxNode = soleBoxTreeNode.representedObject as! BoxNode
         XCTAssertEqual(boxNode.boxId, boxId)
         
-        let itemNodes = soleBoxTreeNode.childNodes! as [NSTreeNode]
+        let itemNodes = soleBoxTreeNode.children! as [NSTreeNode]
         XCTAssertEqual(itemNodes.count, 1)
         if let soleItemTreeNode = itemNodes.first {
             let itemNode = soleItemTreeNode.representedObject as! ItemNode
@@ -299,7 +299,7 @@ class ItemViewControllerTests: XCTestCase {
         viewController.displayBoxData([boxData])
         
         XCTAssertEqual(boxNodeCount(), 1)
-        XCTAssertEqual(boxAtIndex(0).childNodes!.count, 1)
+        XCTAssertEqual(boxAtIndex(0).children!.count, 1)
     }
 
     
@@ -307,9 +307,9 @@ class ItemViewControllerTests: XCTestCase {
     //MARK: Removing Boxes
     
     func testRemoveBox_RemovesNodeFromTree() {
-        let treeController = viewController.itemsController
+        let treeController = viewController.itemsController!
         treeController.addObject(TestBoxNode(title: "the box"))
-        treeController.setSelectionIndexPath(NSIndexPath(index: 0))
+        treeController.setSelectionIndexPath(IndexPath(index: 0))
         XCTAssertEqual(boxNodeCount(), 1)
         
         viewController.removeSelectedObject(self)
@@ -318,17 +318,17 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testRemoveItem_RemovesNodeFromTree() {
-        let treeController = viewController.itemsController
+        let treeController = viewController.itemsController!
         let rootNode = TestBoxNode(title: "the box")
         rootNode.children = [TestBoxNode(title: "the item")]
         treeController.addObject(rootNode)
-        treeController.setSelectionIndexPath(NSIndexPath(index: 0).indexPathByAddingIndex(0))
-        XCTAssertEqual(boxNodes().first!.childNodes!.count, 1)
+        treeController.setSelectionIndexPath(IndexPath(arrayLiteral: 0, 0))
+        XCTAssertEqual(boxNodes().first!.children!.count, 1)
         
         viewController.removeSelectedObject(self)
         
         XCTAssertEqual(boxNodeCount(), 1)
-        XCTAssertEqual(boxNodes().first!.childNodes!.count, 0)
+        XCTAssertEqual(boxNodes().first!.children!.count, 0)
     }
 
 }

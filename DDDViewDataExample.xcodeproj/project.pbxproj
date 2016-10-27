@@ -18,7 +18,6 @@
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */; };
 		50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
-		50E441931B5A9BDF00AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
 		50E441951B5AAAC300AFC62D /* BoxId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441941B5AAAC300AFC62D /* BoxId.swift */; };
 		50E441971B5AAB1000AFC62D /* ItemId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441961B5AAB1000AFC62D /* ItemId.swift */; };
 		602C6CFA1A28B632004D0A4C /* ManageBoxesAndItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C6CF91A28B632004D0A4C /* ManageBoxesAndItems.swift */; };
@@ -130,14 +129,6 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		50E441901B5A9BAD00AFC62D /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				50E441911B5A9BC000AFC62D /* Optionals.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		60AEEEC51A248ADA00C05636 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,7 +164,6 @@
 		60C04B951A18DFD700F4665D = {
 			isa = PBXGroup;
 			children = (
-				50E441901B5A9BAD00AFC62D /* Shared */,
 				60C04BA01A18DFD700F4665D /* DDDViewDataExample */,
 				60C04BB41A18DFD700F4665D /* DDDViewDataExampleTests */,
 				60C04B9F1A18DFD700F4665D /* Products */,
@@ -197,6 +187,7 @@
 				60AEEEC51A248ADA00C05636 /* Application */,
 				60C04BCF1A191A7500F4665D /* User Interface */,
 				50C251801A2FA0D400595098 /* Utilities.swift */,
+				50E441911B5A9BC000AFC62D /* Optionals.swift */,
 				504D01711A2FD2A700403673 /* Resources */,
 				60C04BA11A18DFD700F4665D /* Supporting Files */,
 			);
@@ -434,7 +425,6 @@
 				509CA3E91A30C5D70001AB6A /* DomainEventPublisherTests.swift in Sources */,
 				60C04BD51A191CE000F4665D /* CoreDataBoxRepositoryTests.swift in Sources */,
 				60F7EFEE1A1A52EB00EB9099 /* ItemViewControllerTests.swift in Sources */,
-				50E441931B5A9BDF00AFC62D /* Optionals.swift in Sources */,
 				508D66EA1A30C9F000D5DF01 /* TestDomainEventPublisher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

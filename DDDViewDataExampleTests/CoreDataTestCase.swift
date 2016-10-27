@@ -2,7 +2,7 @@ import Cocoa
 import XCTest
 import CoreData
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class CoreDataTestCase: XCTestCase {
     /// Managed Object Model file name
@@ -14,19 +14,19 @@ class CoreDataTestCase: XCTestCase {
             preconditionFailure("modelName required. Call setUp() first")
         }
         
-        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        let bundle = NSBundle.mainBundle()
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        let bundle = Bundle.main
         
-        guard let modelURL = bundle.URLForResource(modelName, withExtension: "momd") else {
+        guard let modelURL = bundle.url(forResource: modelName, withExtension: "momd") else {
             fatalError("model not loaded")
         }
         
-        let model = NSManagedObjectModel(contentsOfURL: modelURL)
+        let model = NSManagedObjectModel(contentsOf: modelURL)
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
         let store: NSPersistentStore
         
         do {
-            store = try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+            store = try coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
         } catch {
             fatalError("store not created")
         }
@@ -41,7 +41,7 @@ class CoreDataTestCase: XCTestCase {
         self.setUpWithModelName(modelName)
     }
     
-    func setUpWithModelName(modelName: String) {
+    func setUpWithModelName(_ modelName: String) {
         super.setUp()
         self.modelName = modelName
     }

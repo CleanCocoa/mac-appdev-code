@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class UseBoxAndItemTests: CoreDataTestCase {
     var boxRepository: BoxRepository?
@@ -13,7 +13,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         
-        DomainEventPublisher.setSharedInstance(TestDomainEventPublisher())
+        DomainEventPublisher.sharedInstance = TestDomainEventPublisher()
         
         ServiceLocator.resetSharedInstance()
         ServiceLocator.sharedInstance.setManagedObjectContext(self.context)
@@ -32,11 +32,11 @@ class UseBoxAndItemTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [ManagedBox] {
-        let request = NSFetchRequest(entityName: ManagedBox.entityName())
+        let request = NSFetchRequest<ManagedBox>(entityName: ManagedBox.entityName())
         let results: [AnyObject]
         
         do {
-            try results = context.executeFetchRequest(request)
+            try results = context.fetch(request)
         } catch {
             XCTFail("fetching all boxes failed")
             return []
@@ -50,11 +50,11 @@ class UseBoxAndItemTests: CoreDataTestCase {
     }
     
     func allItems() -> [ManagedItem] {
-        let request = NSFetchRequest(entityName: ManagedItem.entityName())
+        let request = NSFetchRequest<ManagedItem>(entityName: ManagedItem.entityName())
         let results: [AnyObject]
 
         do {
-            results = try context.executeFetchRequest(request)
+            results = try context.fetch(request)
         } catch _ {
             XCTFail("fetching all items failed")
             return []
@@ -68,7 +68,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
     }
     
     func allBoxNodes() -> [NSTreeNode] {
-        return viewController.itemsController.arrangedObjects.childNodes!!
+        return (viewController.itemsController.arrangedObjects as AnyObject).children!!
     }
     
     //MARK: -
@@ -224,7 +224,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         createBoxWithItem()
         
         useCase.showBoxManagementWindow()
-        let itemIndexPath = NSIndexPath(index: 0)
+        let itemIndexPath = IndexPath(index: 0)
         viewController.itemsController.setSelectionIndexPath(itemIndexPath)
         
         // When
@@ -243,7 +243,7 @@ class UseBoxAndItemTests: CoreDataTestCase {
         XCTAssertEqual(managedBox.items.count, 1)
 
         useCase.showBoxManagementWindow()
-        let itemIndexPath = NSIndexPath(index: 0).indexPathByAddingIndex(0)
+        let itemIndexPath = IndexPath(arrayLiteral: 0, 0)
         viewController.itemsController.setSelectionIndexPath(itemIndexPath)
         
         // When

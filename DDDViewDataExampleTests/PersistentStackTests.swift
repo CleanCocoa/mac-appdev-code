@@ -1,7 +1,7 @@
 import Cocoa
 import XCTest
 
-import DDDViewDataExample
+@testable import DDDViewDataExample
 
 class TestPersistentStack: PersistentStack {
     override func defaultStoreOptions() -> Dictionary<String, String> {
@@ -11,15 +11,15 @@ class TestPersistentStack: PersistentStack {
 }
 
 class PersistentStackTests: XCTestCase {
-    let storeURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("test.sqlite")
+    let storeURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("test.sqlite")
     lazy var persistentStack: TestPersistentStack = {
-        let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
+        let modelURL = Bundle.main.url(forResource: kDefaultModelName, withExtension: "momd")
         return TestPersistentStack(storeURL: self.storeURL, modelURL: modelURL!)
     }()
     
     override func tearDown() {
         do {
-            try NSFileManager.defaultManager().removeItemAtURL(storeURL)
+            try FileManager.default.removeItem(at: storeURL)
         } catch {
             XCTFail("couldn't clean up test database file")
         }
