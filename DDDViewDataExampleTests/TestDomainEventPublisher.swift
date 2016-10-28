@@ -2,9 +2,9 @@ import Foundation
 
 @testable import DDDViewDataExample
 
-/// Overrides `NSNotificationCenter` methods with no-op stubs
+/// Overrides `NotificationCenter` methods with no-op stubs
 class NullNotificationCenter: NotificationCenter {
-    override func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
+    override func addObserver(forName name: Notification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
         return NSObject()
     }
     

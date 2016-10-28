@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
         
-        self.notificationCenter.addObserver(persistentStack, selector: #selector(PersistentStack.objectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
+        self.notificationCenter.addObserver(persistentStack, selector: #selector(PersistentStack.objectContextWillSave), name: Notification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
         
         return persistentStack
     }()
@@ -102,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func subscribeToCoreDataReadErrors() {
-        readErrorCallback = notificationCenter.addObserver(forName: NSNotification.Name(rawValue: kCoreDataReadErrorNotificationName), object: nil, queue: OperationQueue.main) { notification in
+        readErrorCallback = notificationCenter.addObserver(forName: coreDataReadErrorNotificationName, object: nil, queue: OperationQueue.main) { notification in
             
             let question = NSLocalizedString("Could not read data. Report and Quit?", comment: "Read error quit question message")
             let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info")
@@ -131,7 +131,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             notificationCenter.removeObserver(readErrorCallback!)
         }
         
-        notificationCenter.removeObserver(persistentStack, name: NSNotification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
+        notificationCenter.removeObserver(persistentStack, name: Notification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
     }
     
     func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager? {

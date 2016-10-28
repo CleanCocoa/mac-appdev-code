@@ -41,7 +41,7 @@ struct IdGenerator<Id: Identifiable> {
     }
 }
 
-let kCoreDataReadErrorNotificationName = "Core Data Read Error"
+let coreDataReadErrorNotificationName = Notification.Name(rawValue: "Core Data Read Error")
 
 open class CoreDataBoxRepository: NSObject, BoxRepository {
     let managedObjectContext: NSManagedObjectContext
@@ -200,6 +200,6 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
     }
     
     func postReadErrorNotification() {
-        notificationCenter.post(name: Notification.Name(rawValue: kCoreDataReadErrorNotificationName), object: self)
+        notificationCenter.post(name: coreDataReadErrorNotificationName, object: self)
     }
 }

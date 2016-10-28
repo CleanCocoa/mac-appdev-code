@@ -41,10 +41,10 @@ open class DomainEventPublisher {
     open func subscribe<T: DomainEvent>(_ eventKind: T.Type, queue: OperationQueue, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
         
         let eventName: String = T.eventName
-        let observer = notificationCenter.addObserver(forName: NSNotification.Name(rawValue: eventName), object: nil, queue: queue) {
+        let observer = notificationCenter.addObserver(forName: Notification.Name(rawValue: eventName), object: nil, queue: queue) {
             notification in
             
-            let userInfo = (notification as NSNotification).userInfo!
+            let userInfo = notification.userInfo!
             let event: T = T(userInfo: userInfo as UserInfo)
             block(event)
         }
