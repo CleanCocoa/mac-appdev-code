@@ -4,7 +4,7 @@ import XCTest
 @testable import DDDViewDataExample
 
 class UseBoxAndItemTests: CoreDataTestCase {
-    var boxRepository: BoxRepository?
+    var boxRepository: BoxRepository!
     var useCase: ManageBoxesAndItems! = ManageBoxesAndItems()
     lazy var viewController: ItemViewController = {
         return self.useCase.itemViewController
@@ -76,19 +76,14 @@ class UseBoxAndItemTests: CoreDataTestCase {
 
     func testAddFirstBox_CreatesBoxRecord() {
         useCase.showBoxManagementWindow()
-        XCTAssertEqual(boxRepository!.count(), 0, "repo starts empty")
+        XCTAssertEqual(boxRepository.count(), 0, "repo starts empty")
         
         // When
         viewController.addBox(self)
     
         // Then
-        XCTAssertEqual(boxRepository!.count(), 1, "stores box record")
-        
-        let box = soleBox()
-        XCTAssert(hasValue(box))
-        if let box = box {
-            XCTAssertEqual(box.title, "New Box")
-        }
+        XCTAssertEqual(boxRepository.count(), 1, "stores box record")
+        XCTAssertEqual(soleBox()?.title, "New Box")
     }
     
     func testExistingBoxes_ShowInView() {
