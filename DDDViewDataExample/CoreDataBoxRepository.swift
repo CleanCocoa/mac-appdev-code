@@ -43,7 +43,7 @@ struct IdGenerator<Id: Identifiable> {
 
 let coreDataReadErrorNotificationName = Notification.Name(rawValue: "Core Data Read Error")
 
-open class CoreDataBoxRepository: NSObject, BoxRepository {
+open class CoreDataBoxRepository: BoxRepository {
     let managedObjectContext: NSManagedObjectContext
     let integerIdGenerator: GeneratesIntegerId
     
@@ -54,8 +54,6 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
     public init(managedObjectContext: NSManagedObjectContext, integerIdGenerator: GeneratesIntegerId) {
         self.managedObjectContext = managedObjectContext
         self.integerIdGenerator = integerIdGenerator
-        
-        super.init()
     }
     
     //MARK: -
@@ -81,7 +79,7 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
         return managedBox.box
     }
     
-    func managedBoxWithId(_ boxId: BoxId) -> ManagedBox? {
+    fileprivate func managedBoxWithId(_ boxId: BoxId) -> ManagedBox? {
         return managedBoxWithUniqueId(boxId.identifier)
     }
         
@@ -136,7 +134,7 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
         return generator.nextId()
     }
     
-    func managedBoxWithUniqueId(_ identifier: IntegerId) -> ManagedBox? {
+    fileprivate func managedBoxWithUniqueId(_ identifier: IntegerId) -> ManagedBox? {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedBoxWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplate(withName: templateName, substitutionVariables: ["IDENTIFIER": NSNumber(value: identifier as Int64)])
@@ -165,7 +163,7 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
         return generator.nextId()
     }
     
-    func hasManagedItemWithUniqueId(_ identifier: IntegerId) -> Bool {
+    fileprivate func hasManagedItemWithUniqueId(_ identifier: IntegerId) -> Bool {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedItemWithUniqueId"
         let fetchRequest = managedObjectModel.fetchRequestFromTemplate(withName: templateName, substitutionVariables: ["IDENTIFIER": NSNumber(value: identifier as Int64)])
@@ -194,8 +192,9 @@ open class CoreDataBoxRepository: NSObject, BoxRepository {
         NSLog("Failed to \(operation): \(error.localizedDescription)")
         logDetailledErrors(error)
     }
-    
-    var notificationCenter: NotificationCenter {
+
+    /// - note: Override-point for error handling in tests.
+    open var notificationCenter: NotificationCenter {
         return NotificationCenter.default
     }
     
