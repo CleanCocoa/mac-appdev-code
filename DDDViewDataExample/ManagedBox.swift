@@ -65,15 +65,15 @@ open class ManagedBox: NSManagedObject, ManagedEntity {
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
-        if context != &boxContext {
+        guard context == &boxContext else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
         
         if keyPath == "title" {
-            self.title = change?[NSKeyValueChangeKey.newKey] as! String
+            self.title = change?[.newKey] as! String
         } else if keyPath == "items" {
-            let items = change?[NSKeyValueChangeKey.newKey] as! [Item]
+            let items = change?[.newKey] as! [Item]
             mergeItems(items)
         }
     }
