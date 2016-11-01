@@ -16,6 +16,8 @@
 		508D66EC1A30CD8900D5DF01 /* DomainEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */; };
 		509CA3E91A30C5D70001AB6A /* DomainEventPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */; };
 		509CA3EB1A30C91D0001AB6A /* ProvisioningServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */; };
+		509EAE911DC8DA8200E3E6A8 /* IdGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509EAE901DC8DA8200E3E6A8 /* IdGenerator.swift */; };
+		509EAE931DC8DAC800E3E6A8 /* DefaultIntegerIdGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509EAE921DC8DAC800E3E6A8 /* DefaultIntegerIdGenerator.swift */; };
 		50C251811A2FA0D400595098 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C251801A2FA0D400595098 /* Utilities.swift */; };
 		50E0F48B1B5D27E600FC4954 /* DomainEventSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */; };
 		50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E441911B5A9BC000AFC62D /* Optionals.swift */; };
@@ -68,6 +70,8 @@
 		508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEvents.swift; sourceTree = "<group>"; };
 		509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisherTests.swift; sourceTree = "<group>"; };
 		509CA3EA1A30C91D0001AB6A /* ProvisioningServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProvisioningServiceTests.swift; sourceTree = "<group>"; };
+		509EAE901DC8DA8200E3E6A8 /* IdGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdGenerator.swift; sourceTree = "<group>"; };
+		509EAE921DC8DAC800E3E6A8 /* DefaultIntegerIdGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultIntegerIdGenerator.swift; sourceTree = "<group>"; };
 		50C251801A2FA0D400595098 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		50E0F48A1B5D27E600FC4954 /* DomainEventSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventSubscription.swift; sourceTree = "<group>"; };
 		50E441911B5A9BC000AFC62D /* Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optionals.swift; sourceTree = "<group>"; };
@@ -129,6 +133,16 @@
 				60C04BAA1A18DFD700F4665D /* MainMenu.xib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		509EAE941DC8DAD600E3E6A8 /* Repository & Identity */ = {
+			isa = PBXGroup;
+			children = (
+				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
+				509EAE901DC8DA8200E3E6A8 /* IdGenerator.swift */,
+				509EAE921DC8DAC800E3E6A8 /* DefaultIntegerIdGenerator.swift */,
+			);
+			name = "Repository & Identity";
 			sourceTree = "<group>";
 		};
 		60AEEEC51A248ADA00C05636 /* Application */ = {
@@ -239,7 +253,8 @@
 			children = (
 				60AEEEC31A239A4300C05636 /* ServiceLocator.swift */,
 				60C04BCB1A19177D00F4665D /* Core Data */,
-				60C04BD31A191BBF00F4665D /* Item */,
+				509EAE941DC8DAD600E3E6A8 /* Repository & Identity */,
+				60C04BD31A191BBF00F4665D /* Entities */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -272,15 +287,14 @@
 			name = Domain;
 			sourceTree = "<group>";
 		};
-		60C04BD31A191BBF00F4665D /* Item */ = {
+		60C04BD31A191BBF00F4665D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				60A11C051A288763006954EA /* ManagedEntity.swift */,
-				60BF3C591A238B11002598DB /* CoreDataBoxRepository.swift */,
 				60BF3C5F1A238DA3002598DB /* ManagedBox.swift */,
 				60BF3C611A238DA4002598DB /* ManagedItem.swift */,
 			);
-			name = Item;
+			name = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60AEEEC71A248AF300C05636 /* HandleBoxAndItemModifications.swift in Sources */,
+				509EAE931DC8DAC800E3E6A8 /* DefaultIntegerIdGenerator.swift in Sources */,
 				50E441921B5A9BC000AFC62D /* Optionals.swift in Sources */,
 				503210F81A2FCE8F00B8BE74 /* DomainEventPublisher.swift in Sources */,
 				60A11C061A288763006954EA /* ManagedEntity.swift in Sources */,
@@ -400,6 +415,7 @@
 				60C04BCD1A19179000F4665D /* Item.swift in Sources */,
 				60B2D70D1A1A40960045D11F /* ItemViewController.swift in Sources */,
 				60B2D70A1A1A3B7C0045D11F /* ItemManagementWindowController.swift in Sources */,
+				509EAE911DC8DA8200E3E6A8 /* IdGenerator.swift in Sources */,
 				60BF3C5A1A238B11002598DB /* CoreDataBoxRepository.swift in Sources */,
 				508D66EC1A30CD8900D5DF01 /* DomainEvents.swift in Sources */,
 				60C04BA71A18DFD700F4665D /* DDDViewDataExample.xcdatamodeld in Sources */,
