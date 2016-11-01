@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         subscribeToCoreDataReadErrors()
         
-        ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
+        ServiceLocator.sharedInstance.setManagedObjectContext(persistentStack.managedObjectContext!)
         manageBoxesAndItems.showBoxManagementWindow()
     }
     
