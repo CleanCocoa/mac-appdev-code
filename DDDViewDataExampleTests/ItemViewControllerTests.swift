@@ -146,7 +146,7 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testAddItemButton_IsWiredToAction() {
-        XCTAssertEqual(viewController.addItemButton.action, #selector(NSMenu.addItem(_:)))
+        XCTAssertEqual(viewController.addItemButton.action, #selector(ItemViewController.addItem(_:)))
     }
     
     func testAddItemButton_CocoaBindings() {
