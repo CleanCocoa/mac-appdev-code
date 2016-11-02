@@ -44,7 +44,7 @@ open class DomainEventPublisher {
             notification in
             
             let userInfo = notification.userInfo!
-            let event: T = T(userInfo: userInfo as UserInfo)
+            let event: T = T(userInfo: userInfo)
             block(event)
         }
         

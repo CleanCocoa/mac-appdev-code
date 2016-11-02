@@ -26,14 +26,14 @@ class DisplayBoxesAndItems {
             [weak self] (event: BoxProvisionedEvent!) in
 
             let boxData = BoxData(boxId: event.boxId, title: event.title)
-            self?.consumeBox(boxData)
+            self?.consume(boxData: boxData)
         }
         
         itemProvisioningObserver = publisher.subscribe(BoxItemProvisionedEvent.self, queue: mainQueue) {
             [weak self] (event: BoxItemProvisionedEvent!) in
             
             let itemData = ItemData(itemId: event.itemId, title: event.itemTitle, boxId: event.boxId)
-            self?.consumeItem(itemData)
+            self?.consume(itemData: itemData)
         }
     }
     
@@ -45,11 +45,11 @@ class DisplayBoxesAndItems {
     }
     
     //TODO: rename "consume" to something better
-    func consumeBox(_ boxData: BoxData) {
+    func consume(boxData: BoxData) {
         consumer?.consume(boxData: boxData)
     }
     
-    func consumeItem(_ itemData: ItemData) {
+    func consume(itemData: ItemData) {
         consumer?.consume(itemData: itemData)
     }
 }
