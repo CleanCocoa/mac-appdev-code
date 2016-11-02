@@ -4,19 +4,29 @@ public typealias UserInfo = [AnyHashable: Any]
 
 public protocol DomainEvent {
     
-    static var eventName: String { get }
+    static var eventName: Notification.Name { get }
     
     init(userInfo: UserInfo)
     func userInfo() -> UserInfo
 }
 
-public func notification<T: DomainEvent>(_ event: T) -> Notification {
-    return Notification(name: Notification.Name(rawValue: T.eventName), object: nil, userInfo: event.userInfo())
+extension DomainEvent {
+
+    public func notification() -> Notification {
+        return Notification(
+            name: type(of: self).eventName,
+            object: nil,
+            userInfo: self.userInfo())
+    }
+
+    func post(notificationCenter: NotificationCenter) {
+        notificationCenter.post(self.notification())
+    }
 }
 
 public struct BoxProvisionedEvent: DomainEvent {
     
-    public static let eventName = "Box Provisioned Event"
+    public static let eventName = Notification.Name(rawValue: "Box Provisioned Event")
     
     public let boxId: BoxId
     public let title: String
@@ -41,7 +51,7 @@ public struct BoxProvisionedEvent: DomainEvent {
 
 public struct BoxItemProvisionedEvent: DomainEvent {
     
-    public static let eventName = "Box Item Provisioned"
+    public static let eventName = Notification.Name(rawValue: "Box Item Provisioned")
     
     public let boxId: BoxId
     public let itemId: ItemId

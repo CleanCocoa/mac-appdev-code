@@ -28,7 +28,7 @@ open class DomainEventPublisher {
     
     open func publish<T: DomainEvent>(_ event: T) {
         
-        notificationCenter.post(notification(event))
+        event.post(notificationCenter: self.notificationCenter)
     }
     
     open func subscribe<T: DomainEvent>(_ eventKind: T.Type, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
@@ -40,8 +40,7 @@ open class DomainEventPublisher {
     
     open func subscribe<T: DomainEvent>(_ eventKind: T.Type, queue: OperationQueue, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
         
-        let eventName: String = T.eventName
-        let observer = notificationCenter.addObserver(forName: Notification.Name(rawValue: eventName), object: nil, queue: queue) {
+        let observer = notificationCenter.addObserver(forName: T.eventName, object: nil, queue: queue) {
             notification in
             
             let userInfo = notification.userInfo!
