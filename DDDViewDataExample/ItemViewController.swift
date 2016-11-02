@@ -8,11 +8,7 @@ public protocol HandlesItemListChanges: class {
 @objc(NonNilStringValueTransformer)
 open class NonNilStringValueTransformer: ValueTransformer {
     override open func transformedValue(_ value: Any?) -> Any? {
-        guard let value = value else {
-            return ""
-        }
-        
-        return value
+        return value ?? ""
     }
 }
 
