@@ -31,14 +31,14 @@ open class DomainEventPublisher {
         event.post(notificationCenter: self.notificationCenter)
     }
     
-    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
+    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, usingBlock block: @escaping (T) -> Void) -> DomainEventSubscription {
         
         let mainQueue = OperationQueue.main
         
         return self.subscribe(eventKind, queue: mainQueue, usingBlock: block)
     }
     
-    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, queue: OperationQueue, usingBlock block: @escaping (T!) -> Void) -> DomainEventSubscription {
+    open func subscribe<T: DomainEvent>(_ eventKind: T.Type, queue: OperationQueue, usingBlock block: @escaping (T) -> Void) -> DomainEventSubscription {
         
         let observer = notificationCenter.addObserver(forName: T.eventName, object: nil, queue: queue) {
             notification in
