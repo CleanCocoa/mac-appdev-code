@@ -1,8 +1,8 @@
 import Cocoa
 
 public protocol ConsumesBoxAndItem: class {
-    func consume(_ boxData: BoxData)
-    func consume(_ itemData: ItemData)
+    func consume(boxData: BoxData)
+    func consume(itemData: ItemData)
 }
 
 class DisplayBoxesAndItems {
@@ -46,18 +46,10 @@ class DisplayBoxesAndItems {
     
     //TODO: rename "consume" to something better
     func consumeBox(_ boxData: BoxData) {
-        guard let consumer = self.consumer else {
-            return
-        }
-        
-        consumer.consume(boxData)
+        consumer?.consume(boxData: boxData)
     }
     
     func consumeItem(_ itemData: ItemData) {
-        guard let consumer = self.consumer else {
-            return
-        }
-        
-        consumer.consume(itemData)
+        consumer?.consume(itemData: itemData)
     }
 }

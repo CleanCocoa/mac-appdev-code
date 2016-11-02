@@ -202,13 +202,13 @@ class ItemViewControllerTests: XCTestCase {
     }
     
     func testConsumeBox_WithEmptyList_AddsNode() {
-        viewController.consume(boxDataStub())
+        viewController.consume(boxData: boxDataStub())
         
         XCTAssertEqual(boxNodeCount(), 1, "adds item to tree")
     }
     
     func testConsumeBox_WithEmptyList_EnablesAddItemButton() {
-        viewController.consume(boxDataStub())
+        viewController.consume(boxData: boxDataStub())
         
         XCTAssertTrue(viewController.addItemButton.isEnabled, "enable item button by adding boxes")
     }
@@ -227,7 +227,7 @@ class ItemViewControllerTests: XCTestCase {
 
         // When
         let newItem = BoxData(boxId: BoxId(1), title: "AAA", itemData: [])
-        viewController.consume(newItem)
+        viewController.consume(boxData: newItem)
 
         // Then
         XCTAssertEqual(boxNodeCount(), 2, "add node to existing one")
@@ -250,7 +250,7 @@ class ItemViewControllerTests: XCTestCase {
     //MARK: Adding Items
     
     func testConsumeItem_WithoutBoxes_DoesNothing() {
-        viewController.consume(itemDataStub())
+        viewController.consume(itemData: itemDataStub())
         
         XCTAssertEqual(boxNodeCount(), 0, "don't add boxes or anything")
     }
@@ -267,7 +267,7 @@ class ItemViewControllerTests: XCTestCase {
         let selectedBox = treeController.selectedNodes[0].representedObject as! TreeNode
         XCTAssertEqual(selectedBox.children.count, 0, "box starts empty")
         
-        viewController.consume(itemDataStub(parentBoxId: BoxId(1)))
+        viewController.consume(itemData: itemDataStub(parentBoxId: BoxId(1)))
         
         // Then
         if selectedBox.children.count > 0 {

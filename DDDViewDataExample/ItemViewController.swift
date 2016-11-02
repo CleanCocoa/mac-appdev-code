@@ -106,7 +106,7 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
         eventHandler.createBox()
     }
     
-    open func consume(_ boxData: BoxData) {
+    open func consume(boxData: BoxData) {
         let boxNode = self.boxNode(boxData)
         let indexPath = IndexPath(index: nodeCount())
         itemsController.insert(boxNode, atArrangedObjectIndexPath: indexPath)
@@ -173,7 +173,7 @@ open class ItemViewController: NSViewController, NSOutlineViewDelegate, HandlesI
         return boxNode
     }
     
-    open func consume(_ itemData: ItemData) {
+    open func consume(itemData: ItemData) {
         guard let boxId = itemData.boxId,
             let boxNode = existingBoxNode(boxId)
             else { return }
