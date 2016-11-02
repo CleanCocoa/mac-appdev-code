@@ -1,6 +1,6 @@
 import Cocoa
 
-public class ManageBoxesAndItems {
+open class ManageBoxesAndItems {
     public init() { }
     
     lazy var repository: BoxRepository = ServiceLocator.boxRepository()
@@ -11,11 +11,11 @@ public class ManageBoxesAndItems {
         return controller
     }()
         
-    public lazy var itemViewController: ItemViewController = {
+    open lazy var itemViewController: ItemViewController = {
         return self.windowController.itemViewController
     }()
     
-    public func showBoxManagementWindow() {
+    open func showBoxManagementWindow() {
         prepareWindow()
         showWindow()
     }

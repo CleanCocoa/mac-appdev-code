@@ -11,7 +11,7 @@ class TestIntegerIdGenerator : NSObject, GeneratesIntegerId {
     func integerId() -> IntegerId {
         let identifier = (callCount == 0 ? firstAttempt : secondAttempt)
         
-        callCount++
+        callCount += 1
         
         return identifier
     }
@@ -32,11 +32,11 @@ class CoreDataBoxRepositoryTests: CoreDataTestCase {
     }
     
     func allBoxes() -> [Box]? {
-        let request = NSFetchRequest(entityName: Box.entityName)
+        let request = NSFetchRequest<Box>(entityName: Box.entityName)
         let result: [Box]
         
         do {
-            try result = context.executeFetchRequest(request) as! [Box]
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all boxes failed")
             return nil

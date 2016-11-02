@@ -43,7 +43,7 @@ struct IdGenerator<Id: Identifiable> {
 
 let kCoreDataReadErrorNotificationName = "Core Data Read Error"
 
-public class CoreDataBoxRepository: NSObject {
+open class CoreDataBoxRepository: NSObject {
     let managedObjectContext: NSManagedObjectContext
     let integerIdGenerator: GeneratesIntegerId
     
@@ -64,55 +64,57 @@ extension CoreDataBoxRepository: BoxRepository {
     //MARK: -
     //MARK: CRUD Actions
     
-    public func addBoxWithId(boxId: BoxId, title: String) {
+    public func addBoxWithId(_ boxId: BoxId, title: String) {
         Box.insertBoxWithId(boxId, title: title, inManagedObjectContext: self.managedObjectContext)
     }
     
-    public func removeBox(boxId boxId: BoxId) {
+    public func removeBox(boxId: BoxId) {
         guard let box = boxWithId(boxId) as? Box else {
             return
         }
         
-        managedObjectContext.deleteObject(box)
+        managedObjectContext.delete(box)
     }
     
-    public func boxWithId(boxId: BoxId) -> BoxType? {
+    public func boxWithId(_ boxId: BoxId) -> BoxType? {
         return boxWithUniqueId(boxId.identifier)
     }
         
-    public func boxes() -> [BoxType] {
-        let fetchRequest = NSFetchRequest(entityName: Box.entityName)
+    open func boxes() -> [BoxType] {
+        let fetchRequest = NSFetchRequest<Box>(entityName: Box.entityName)
         fetchRequest.includesSubentities = true
-        
+
         let results: [AnyObject]
-        
+
         do {
-            results = try managedObjectContext.executeFetchRequest(fetchRequest)
+            results = try managedObjectContext.fetch(fetchRequest)
         } catch let error as NSError {
             logError(error, operation: "find existing boxes")
             postReadErrorNotification()
             assertionFailure("error fetching boxes")
             return []
         }
-        
-        return results.map { $0 as! Box }
+
+        return results
+            .map { $0 as! Box }
     }
     
-    /// @returns `NSNotFound` on error
-    public func count() -> Int {
-        let fetchRequest = NSFetchRequest(entityName: Box.entityName)
+    /// - returns: `NSNotFound` on error
+    open func count() -> Int {
+        let fetchRequest = NSFetchRequest<Box>(entityName: Box.entityName)
         fetchRequest.includesSubentities = false
-        
-        var error: NSError? = nil
-        let count = managedObjectContext.countForFetchRequest(fetchRequest, error: &error)
-        
-        if count == NSNotFound {
-            logError(error!, operation: "fetching box count")
+
+        let count: Int
+
+        do {
+            count = try managedObjectContext.count(for: fetchRequest)
+        } catch {
+            logError(error, operation: "fetching box count")
             postReadErrorNotification()
             assertionFailure("error fetching count")
             return NSNotFound
         }
-        
+
         return count
     }
     
@@ -127,25 +129,21 @@ extension CoreDataBoxRepository: BoxRepository {
         return generator.nextId()
     }
     
-    func boxWithUniqueId(identifier: IntegerId) -> Box? {
+    func boxWithUniqueId(_ identifier: IntegerId) -> Box? {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedBoxWithUniqueId"
-        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
+        let fetchRequest = managedObjectModel.fetchRequestFromTemplate(withName: templateName, substitutionVariables: ["IDENTIFIER": NSNumber(value: identifier as Int64)])
         
         precondition(hasValue(fetchRequest), "Fetch request named 'ManagedBoxWithUniqueId' is required")
         
         let result: [AnyObject]
 
         do {
-            result = try managedObjectContext.executeFetchRequest(fetchRequest!)
+            result = try managedObjectContext.fetch(fetchRequest!)
         } catch let error as NSError {
             logError(error, operation: "find existing box with ID '\(identifier)'")
             postReadErrorNotification()
             assertionFailure("error fetching box with id")
-            return nil
-        }
-        
-        if result.count == 0 {
             return nil
         }
         
@@ -160,18 +158,19 @@ extension CoreDataBoxRepository: BoxRepository {
         return generator.nextId()
     }
     
-    func hasItemWithUniqueId(identifier: IntegerId) -> Bool {
+    func hasItemWithUniqueId(_ identifier: IntegerId) -> Bool {
         let managedObjectModel = managedObjectContext.persistentStoreCoordinator!.managedObjectModel
         let templateName = "ManagedItemWithUniqueId"
-        let fetchRequest = managedObjectModel.fetchRequestFromTemplateWithName(templateName, substitutionVariables: ["IDENTIFIER": NSNumber(longLong: identifier)])
+        let fetchRequest = managedObjectModel.fetchRequestFromTemplate(withName: templateName, substitutionVariables: ["IDENTIFIER": NSNumber(value: identifier as Int64)])
         
         precondition(hasValue(fetchRequest), "Fetch request named 'ManagedItemWithUniqueId' is required")
-        
-        var error: NSError? = nil
-        let count = managedObjectContext.countForFetchRequest(fetchRequest!, error: &error)
-        
-        if count == NSNotFound {
-            logError(error!, operation: "find existing item with ID '\(identifier)'")
+
+        let count: Int
+
+        do {
+            count = try managedObjectContext.count(for: fetchRequest!)
+        } catch {
+            logError(error, operation: "find existing item with ID '\(identifier)'")
             postReadErrorNotification()
             assertionFailure("error fetching item with id")
             return false
@@ -184,16 +183,16 @@ extension CoreDataBoxRepository: BoxRepository {
     //MARK: -
     //MARK: Error Handling
     
-    func logError(error: NSError, operation: String) {
+    func logError(_ error: Error, operation: String) {
         NSLog("Failed to \(operation): \(error.localizedDescription)")
         logDetailledErrors(error)
     }
     
-    var notificationCenter: NSNotificationCenter {
-        return NSNotificationCenter.defaultCenter()
+    var notificationCenter: NotificationCenter {
+        return NotificationCenter.default
     }
     
     func postReadErrorNotification() {
-        notificationCenter.postNotificationName(kCoreDataReadErrorNotificationName, object: self)
+        notificationCenter.post(name: Notification.Name(rawValue: kCoreDataReadErrorNotificationName), object: self)
     }
 }

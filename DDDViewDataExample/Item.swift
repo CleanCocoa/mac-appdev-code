@@ -8,43 +8,43 @@ public protocol ItemType: class {
     var itemId: ItemId { get }
     var box: BoxType { get }
     
-    func changeTitle(title: String)
+    func changeTitle(_ title: String)
 }
 
 @objc(Item)
-public class Item: NSManagedObject {
+open class Item: NSManagedObject {
     
-    @NSManaged public var uniqueId: NSNumber
-    @NSManaged public var title: String
-    @NSManaged public var creationDate: NSDate
-    @NSManaged public var modificationDate: NSDate
-    @NSManaged public var managedBox: Box
+    @NSManaged open var uniqueId: NSNumber
+    @NSManaged open var title: String
+    @NSManaged open var creationDate: Date
+    @NSManaged open var modificationDate: Date
+    @NSManaged open var managedBox: Box
     
-    public class func insertItemWithId(itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    open class func insertItemWithId(_ itemId: ItemId, title: String, intoBox box: Box, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let item = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext) as! Item
+        let item = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext) as! Item
         
         item.title = title
         item.uniqueId = uniqueIdFromItemId(itemId)
         item.managedBox = box
     }
     
-    class func uniqueIdFromItemId(itemId: ItemId) -> NSNumber {
-        return NSNumber(longLong: itemId.identifier)
+    class func uniqueIdFromItemId(_ itemId: ItemId) -> NSNumber {
+        return NSNumber(value: itemId.identifier as Int64)
     }
 }
 
 extension Item: ItemType {
     
     public var itemId: ItemId {
-        return ItemId(uniqueId.longLongValue)
+        return ItemId(uniqueId.int64Value)
     }
     
     public var box: BoxType {
         return managedBox as BoxType
     }
     
-    public func changeTitle(title: String) {
+    public func changeTitle(_ title: String) {
         self.title = title
     }
 }
@@ -55,7 +55,7 @@ extension Item: Entity {
         return "ManagedItem"
     }
     
-    public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedObjectContext)
+    public class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: entityName, in: managedObjectContext)
     }
 }

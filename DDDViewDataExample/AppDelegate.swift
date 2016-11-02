@@ -5,50 +5,50 @@ let kErrorDomain = "DDDViewDataExampleErrorDomain"
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    var notificationCenter: NSNotificationCenter {
-        return NSNotificationCenter.defaultCenter()
+    var notificationCenter: NotificationCenter {
+        return NotificationCenter.default
     }
     
     lazy var persistentStack: PersistentStack = {
-        let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ItemModel.sqlite")
-        let modelURL = NSBundle.mainBundle().URLForResource(kDefaultModelName, withExtension: "momd")
+        let storeURL = self.applicationDocumentsDirectory.appendingPathComponent("ItemModel.sqlite")
+        let modelURL = Bundle.main.url(forResource: kDefaultModelName, withExtension: "momd")
         
         let persistentStack = PersistentStack(storeURL: storeURL, modelURL: modelURL!)
         
-        self.notificationCenter.addObserver(persistentStack, selector: "objectContextWillSave", name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
+        self.notificationCenter.addObserver(persistentStack, selector: #selector(PersistentStack.objectContextWillSave), name: Notification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
         
         return persistentStack
     }()
 
-    lazy var applicationDocumentsDirectory: NSURL = {
+    lazy var applicationDocumentsDirectory: URL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "de.christiantietze.DDDViewDataExample" in the user's Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-        let appSupportURL = urls[urls.count - 1] as NSURL
-        let directory = appSupportURL.URLByAppendingPathComponent("de.christiantietze.DDDViewDataExample")
+        let urls = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        let appSupportURL = urls[urls.count - 1] as URL
+        let directory = appSupportURL.appendingPathComponent("de.christiantietze.DDDViewDataExample")
         
         self.guardApplicationDocumentsDirectory(directory)
         
         return directory
     }()
     
-    private func guardApplicationDocumentsDirectory(directory: NSURL) {
+    fileprivate func guardApplicationDocumentsDirectory(_ directory: URL) {
         
         do {
             if try !directoryExists(directory) {
                 try createDirectory(directory)
             }
         } catch let error as NSError {
-            NSApplication.sharedApplication().presentError(error)
+            NSApplication.shared().presentError(error)
             abort()
         }
     }
     
-    private func directoryExists(directory: NSURL) throws -> Bool {
+    fileprivate func directoryExists(_ directory: URL) throws -> Bool {
         
-        let propertiesOpt: [NSObject: AnyObject]
+        let propertiesOpt: [AnyHashable: Any]
         
         do {
-            propertiesOpt = try directory.resourceValuesForKeys([NSURLIsDirectoryKey])
+            propertiesOpt = try (directory as NSURL).resourceValues(forKeys: [URLResourceKey.isDirectoryKey])
         } catch let error as NSError {
             
             if error.code == NSFileReadNoSuchFileError {
@@ -58,9 +58,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             throw error
         }
         
-        if let isDirectory = propertiesOpt[NSURLIsDirectoryKey]?.boolValue where isDirectory == false {
+        if let isDirectory = propertiesOpt[URLResourceKey.isDirectoryKey] as? Bool,
+            isDirectory == false {
             
-            var userInfo = [NSObject : AnyObject]()
+            var userInfo = [AnyHashable: Any]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to initialize the persistent stack"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Expected a folder to store application data, found a file \(self.applicationDocumentsDirectory.path)."
             
@@ -70,15 +71,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
-    private func createDirectory(directory: NSURL) throws {
+    fileprivate func createDirectory(_ directory: URL) throws {
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         
         do {
-            try fileManager.createDirectoryAtPath(directory.path!, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: directory.path, withIntermediateDirectories: true, attributes: nil)
         } catch let fileError as NSError {
             
-            var userInfo = [NSObject : AnyObject]()
+            var userInfo = [AnyHashable: Any]()
             userInfo[NSLocalizedDescriptionKey] = "Failed to create the application documents directory"
             userInfo[NSLocalizedFailureReasonErrorKey] = "Creation of \(directory.path) failed."
             userInfo[NSUnderlyingErrorKey] = fileError
@@ -93,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var manageBoxesAndItems: ManageBoxesAndItems! = ManageBoxesAndItems()
     var readErrorCallback: NSObjectProtocol?
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         subscribeToCoreDataReadErrors()
         
         ServiceLocator.sharedInstance.managedObjectContext = persistentStack.managedObjectContext
@@ -101,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func subscribeToCoreDataReadErrors() {
-        readErrorCallback = notificationCenter.addObserverForName(kCoreDataReadErrorNotificationName, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+        readErrorCallback = notificationCenter.addObserver(forName: NSNotification.Name(rawValue: kCoreDataReadErrorNotificationName), object: nil, queue: OperationQueue.main) { notification in
             
             let question = NSLocalizedString("Could not read data. Report and Quit?", comment: "Read error quit question message")
             let info = NSLocalizedString("The application cannot read data and thus better not continues to operate. Changes will be saved if possible.", comment: "Read error quit question info")
@@ -110,30 +111,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let alert = NSAlert()
             alert.messageText = question
             alert.informativeText = info
-            alert.addButtonWithTitle(quitButton)
-            alert.addButtonWithTitle(cancelButton)
+            alert.addButton(withTitle: quitButton)
+            alert.addButton(withTitle: cancelButton)
             
             let answer = alert.runModal()
             if answer == NSAlertFirstButtonReturn {
                 //TODO: Add error reporting here
-                return NSApplication.sharedApplication().terminate(self)
+                return NSApplication.shared().terminate(self)
             }
         }
     }
 
-    func applicationShouldTerminate(sender: NSApplication) -> NSApplicationTerminateReply {
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
         return persistentStack.saveToTerminate(sender)
     }
     
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         if readErrorCallback != nil {
             notificationCenter.removeObserver(readErrorCallback!)
         }
         
-        notificationCenter.removeObserver(persistentStack, name: NSManagedObjectContextWillSaveNotification, object: persistentStack.managedObjectContext)
+        notificationCenter.removeObserver(persistentStack, name: NSNotification.Name.NSManagedObjectContextWillSave, object: persistentStack.managedObjectContext)
     }
     
-    func windowWillReturnUndoManager(window: NSWindow) -> NSUndoManager? {
+    func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager? {
         return persistentStack.undoManager()
     }
 }

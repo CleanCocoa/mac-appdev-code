@@ -3,16 +3,16 @@ import Foundation
 import DDDViewDataExample
 
 /// Overrides `NSNotificationCenter` methods with no-op stubs
-class NullNotificationCenter: NSNotificationCenter {
-    override func addObserverForName(name: String?, object obj: AnyObject?, queue: NSOperationQueue?, usingBlock block: (NSNotification) -> Void) -> NSObjectProtocol {
+class NullNotificationCenter: NotificationCenter {
+    override func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
         return NSObject()
     }
     
-    override func removeObserver(observer: AnyObject) {
+    override func removeObserver(_ observer: Any) {
         // no op
     }
     
-    override func postNotification(notification: NSNotification) {
+    override func post(_ notification: Notification) {
         // no op
     }
 }
@@ -27,7 +27,7 @@ class TestDomainEventPublisher: DomainEventPublisher {
 class MockDomainEventPublisher: TestDomainEventPublisher {
     var lastPublishedEvent: DomainEvent?
     
-    override func publish<T: DomainEvent>(event: T) {
+    override func publish<T: DomainEvent>(_ event: T) {
         lastPublishedEvent = event
     }
 }

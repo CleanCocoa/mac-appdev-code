@@ -8,43 +8,43 @@ public protocol BoxType: class {
     var title: String { get }
     var items: [ItemType] { get }
     
-    func addItemWithId(itemId: ItemId, title: String)
-    func item(itemId itemId: ItemId) -> ItemType?
-    func removeItem(itemId itemId: ItemId)
+    func addItemWithId(_ itemId: ItemId, title: String)
+    func item(itemId: ItemId) -> ItemType?
+    func removeItem(itemId: ItemId)
     
-    func changeTitle(title: String)
-    func changeItemTitle(itemId itemId: ItemId, title: String)
+    func changeTitle(_ title: String)
+    func changeItemTitle(itemId: ItemId, title: String)
 }
 
 public protocol BoxRepository {
     func nextId() -> BoxId
     func nextItemId() -> ItemId
-    func addBoxWithId(boxId: BoxId, title: String)
-    func removeBox(boxId boxId: BoxId)
+    func addBoxWithId(_ boxId: BoxId, title: String)
+    func removeBox(boxId: BoxId)
     func boxes() -> [BoxType]
-    func boxWithId(boxId: BoxId) -> BoxType?
+    func boxWithId(_ boxId: BoxId) -> BoxType?
     func count() -> Int
 }
 
 @objc(Box)
-public class Box: NSManagedObject {
+open class Box: NSManagedObject {
 
-    @NSManaged public var creationDate: NSDate
-    @NSManaged public var modificationDate: NSDate
-    @NSManaged public var title: String
-    @NSManaged public var uniqueId: NSNumber
-    @NSManaged public var managedItems: NSSet
+    @NSManaged open var creationDate: Date
+    @NSManaged open var modificationDate: Date
+    @NSManaged open var title: String
+    @NSManaged open var uniqueId: NSNumber
+    @NSManaged open var managedItems: NSSet
     
-    public class func insertBoxWithId(boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
+    open class func insertBoxWithId(_ boxId: BoxId, title: String, inManagedObjectContext managedObjectContext:NSManagedObjectContext) {
         
-        let box = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: managedObjectContext)as! Box
+        let box = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext)as! Box
         
         box.uniqueId = uniqueIdFromBoxId(boxId)
         box.title = title
     }
     
-    class func uniqueIdFromBoxId(boxId: BoxId) -> NSNumber {
-        return NSNumber(longLong: boxId.identifier)
+    class func uniqueIdFromBoxId(_ boxId: BoxId) -> NSNumber {
+        return NSNumber(value: boxId.identifier as Int64)
     }
 }
 
@@ -54,44 +54,44 @@ extension Box: Entity {
         return "ManagedBox"
     }
     
-    public class func entityDescriptionInManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: managedObjectContext)
+    public class func entityDescriptionInManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: entityName, in: managedObjectContext)
     }
 }
 
 extension Box: BoxType {
     
     public var boxId: BoxId {
-        return BoxId(uniqueId.longLongValue)
+        return BoxId(uniqueId.int64Value)
     }
     
     public var items: [ItemType] {
         return managedItems.allObjects.map { $0 as! ItemType }
     }
     
-    public func addItemWithId(itemId: ItemId, title: String) {
+    public func addItemWithId(_ itemId: ItemId, title: String) {
         
         Item.insertItemWithId(itemId, title: title, intoBox: self, inManagedObjectContext: managedObjectContext!)
     }
     
-    public func item(itemId itemId: ItemId) -> ItemType? {
+    public func item(itemId: ItemId) -> ItemType? {
         return items.filter { $0.itemId == itemId }.first
     }
     
-    public func removeItem(itemId itemId: ItemId) {
+    public func removeItem(itemId: ItemId) {
         guard let item = self.item(itemId: itemId) else {
             return
         }
         
-        let existingItems = mutableSetValueForKey("managedItems")
-        existingItems.removeObject(item)
+        let existingItems = mutableSetValue(forKey: "managedItems")
+        existingItems.remove(item)
     }
     
-    public func changeTitle(title: String) {
+    public func changeTitle(_ title: String) {
         self.title = title
     }
     
-    public func changeItemTitle(itemId itemId: ItemId, title: String) {
+    public func changeItemTitle(itemId: ItemId, title: String) {
         guard let item = item(itemId: itemId) else {
             return
         }

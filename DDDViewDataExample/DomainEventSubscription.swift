@@ -1,6 +1,6 @@
 import Foundation
 
-public class DomainEventSubscription {
+open class DomainEventSubscription {
     
     let observer: NSObjectProtocol
     let eventPublisher: DomainEventPublisher

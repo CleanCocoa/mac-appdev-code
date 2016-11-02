@@ -9,7 +9,7 @@ public struct ItemId: Identifiable {
     }
     
     init(_ identifierNumber: NSNumber) {
-        self.identifier = identifierNumber.longLongValue
+        self.identifier = identifierNumber.int64Value
     }
 }
 

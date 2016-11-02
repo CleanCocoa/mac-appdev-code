@@ -8,8 +8,8 @@ public protocol TreeNode: class {
 }
 
 @objc(NonNilStringValueTransformer)
-public class NonNilStringValueTransformer: NSValueTransformer {
-    override public func transformedValue(value: AnyObject?) -> AnyObject? {
+open class NonNilStringValueTransformer: ValueTransformer {
+    override open func transformedValue(_ value: Any?) -> Any? {
         guard let value = value else {
             return ""
         }
@@ -37,23 +37,23 @@ extension Item: TreeNode {
 public let kColumnNameTitle = "Title"
 public let kColumnNameCount = "Count"
 
-public class ItemViewController: NSViewController, NSOutlineViewDelegate {
+open class ItemViewController: NSViewController, NSOutlineViewDelegate {
 
-    @IBOutlet public weak var itemsController: NSTreeController!
-    @IBOutlet public weak var addBoxButton: NSButton!
-    @IBOutlet public weak var addItemButton: NSButton!
-    @IBOutlet public weak var removeButton: NSButton!
+    @IBOutlet open weak var itemsController: NSTreeController!
+    @IBOutlet open weak var addBoxButton: NSButton!
+    @IBOutlet open weak var addItemButton: NSButton!
+    @IBOutlet open weak var removeButton: NSButton!
     
     var managedObjectContext: NSManagedObjectContext {
         return ServiceLocator.sharedInstance.managedObjectContext!
     }
         
-    public var outlineView: NSOutlineView {
+    open var outlineView: NSOutlineView {
         return self.view as! NSOutlineView
     }
     
     var itemsSortDescriptors: [NSSortDescriptor] {
-        let sortByTitle = NSSortDescriptor(key: "title", ascending: true, selector: "caseInsensitiveCompare:")
+        let sortByTitle = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))
         
         return [sortByTitle]
     }
@@ -67,7 +67,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     
     var repository: BoxRepository!
     
-    @IBAction public func addBox(sender: AnyObject) {
+    @IBAction open func addBox(_ sender: AnyObject) {
         guard hasValue(repository) else {
             return
         }
@@ -78,7 +78,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
         refreshTree()
     }
     
-    @IBAction public func addItem(sender: AnyObject) {
+    @IBAction open func addItem(_ sender: AnyObject) {
         guard hasValue(repository) else {
             return
         }
@@ -109,7 +109,7 @@ public class ItemViewController: NSViewController, NSOutlineViewDelegate {
     
     //MARK: Remove items
     
-    @IBAction public func removeSelectedObject(sender: AnyObject) {
+    @IBAction open func removeSelectedObject(_ sender: AnyObject) {
         guard hasSelection() else {
             return
         }

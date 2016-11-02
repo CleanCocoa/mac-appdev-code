@@ -26,7 +26,7 @@ class DomainEventPublisherTests: XCTestCase {
     }
     
     func testManualSingleton() {
-        DomainEventPublisher.setSharedInstance(DomainEventPublisher())
+        DomainEventPublisher.sharedInstance = DomainEventPublisher()
         let first = DomainEventPublisher.sharedInstance
         let second = DomainEventPublisher.sharedInstance
         

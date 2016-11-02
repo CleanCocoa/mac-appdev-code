@@ -11,11 +11,11 @@ class BoxCoreDataTestCase: CoreDataTestCase {
         repository = CoreDataBoxRepository(managedObjectContext: context)
     }
     
-    func createBoxWithId(boxId: BoxId, title: String) {
+    func createBoxWithId(_ boxId: BoxId, title: String) {
         Box.insertBoxWithId(boxId, title: title, inManagedObjectContext: context)
     }
     
-    func createAndFetchBoxWithId(boxId: BoxId, title: String) -> BoxType? {
+    func createAndFetchBoxWithId(_ boxId: BoxId, title: String) -> BoxType? {
         createBoxWithId(boxId, title: title)
         
         return repository.boxWithId(boxId)
@@ -25,11 +25,11 @@ class BoxCoreDataTestCase: CoreDataTestCase {
 class BoxTests: BoxCoreDataTestCase {
     
     func allBoxes() -> [Box]? {
-        let request = NSFetchRequest(entityName: Box.entityName)
+        let request = NSFetchRequest<Box>(entityName: Box.entityName)
         let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request)
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all boxes failed")
             return nil
@@ -43,11 +43,11 @@ class BoxTests: BoxCoreDataTestCase {
     }
     
     func allItems() -> [Item]? {
-        let request = NSFetchRequest(entityName: Item.entityName)
+        let request = NSFetchRequest<Item>(entityName: Item.entityName)
         let result: [AnyObject]
         
         do {
-            try result = context.executeFetchRequest(request)
+            try result = context.fetch(request)
         } catch {
             XCTFail("fetching all items failed")
             return nil
