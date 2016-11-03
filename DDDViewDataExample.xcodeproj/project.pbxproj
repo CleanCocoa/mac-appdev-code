@@ -133,6 +133,8 @@
 		506593FD1DCB161000C0A94D /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		506593FE1DCB161000C0A94D /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		506594131DCB177500C0A94D /* Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optionals.swift; sourceTree = "<group>"; };
+		5065941E1DCB1E9200C0A94D /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		5065941F1DCB1E9200C0A94D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		508D66E91A30C9F000D5DF01 /* TestDomainEventPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDomainEventPublisher.swift; sourceTree = "<group>"; };
 		508D66EB1A30CD8900D5DF01 /* DomainEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEvents.swift; sourceTree = "<group>"; };
 		509CA3E81A30C5D70001AB6A /* DomainEventPublisherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainEventPublisherTests.swift; sourceTree = "<group>"; };
@@ -385,6 +387,8 @@
 		60C04B951A18DFD700F4665D = {
 			isa = PBXGroup;
 			children = (
+				5065941E1DCB1E9200C0A94D /* LICENSE */,
+				5065941F1DCB1E9200C0A94D /* README.md */,
 				506594121DCB177500C0A94D /* Shared */,
 				60C04BA01A18DFD700F4665D /* DDDViewDataExample */,
 				60C04BB41A18DFD700F4665D /* DDDViewDataExampleTests */,
